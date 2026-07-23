@@ -1,6 +1,6 @@
 /**
  * Validation Service
- * 
+ *
  * Wraps the design-core linter and provides comprehensive validation reports
  * including token completeness and WCAG compliance checks.
  */
@@ -67,9 +67,7 @@ export class DefaultValidationService implements ValidationService {
    * Checks WCAG AA and AAA compliance for all color combinations.
    * Simplified implementation for demonstration.
    */
-  private checkWCAGCompliance(
-    designSystem: DesignSystemState
-  ): { aa: boolean; aaa: boolean } {
+  private checkWCAGCompliance(designSystem: DesignSystemState): { aa: boolean; aaa: boolean } {
     // In a real implementation, this would:
     // 1. Extract all background/foreground color combinations
     // 2. Calculate contrast ratios for each

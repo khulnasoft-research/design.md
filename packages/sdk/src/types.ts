@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {
-  StitchConfig,
-  StitchConfigInput,
-  StitchConfigSchema,
-} from "./spec/client.js";
+export { StitchConfig, StitchConfigInput, StitchConfigSchema } from './spec/client.js';
 
 export interface ThumbnailScreenshot {
   name: string;
@@ -56,5 +52,5 @@ export interface ProjectData {
 
 export interface GenerateScreenParams {
   prompt: string;
-  deviceType?: "MOBILE" | "DESKTOP" | "DEVICE_TYPE_UNSPECIFIED";
+  deviceType?: 'MOBILE' | 'DESKTOP' | 'DEVICE_TYPE_UNSPECIFIED';
 }

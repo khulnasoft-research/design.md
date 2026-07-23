@@ -1,6 +1,6 @@
 /**
  * Design System Versioning
- * 
+ *
  * Manages versions, releases, and change tracking for design systems.
  * Supports semantic versioning and changelog generation.
  */
@@ -159,10 +159,7 @@ export class VersionComparator {
     return this.compareVersions(v1, v2) === 0;
   }
 
-  static incrementVersion(
-    version: string,
-    type: 'major' | 'minor' | 'patch'
-  ): string {
+  static incrementVersion(version: string, type: 'major' | 'minor' | 'patch'): string {
     const parsed = this.parseVersion(version);
 
     switch (type) {

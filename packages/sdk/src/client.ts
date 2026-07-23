@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
-import { ListToolsResultSchema } from "@modelcontextprotocol/sdk/types.js";
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { ListToolsResultSchema } from '@modelcontextprotocol/sdk/types.js';
 import {
   StitchConfigSchema,
   StitchConfig,
   StitchToolClientSpec,
   VirtualToolDefinition,
-} from "./spec/client.js";
-import { StitchError, StitchErrorCode } from "./spec/errors.js";
-import { buildAuthHeaders as buildBaseAuthHeaders } from "./auth.js";
-import { SDK_VERSION } from "./version.js";
-import { repairToolSchemas } from "./schema-repair.js";
-import { EntityManager } from "./entity-manager.js";
+} from './spec/client.js';
+import { StitchError, StitchErrorCode } from './spec/errors.js';
+import { buildAuthHeaders as buildBaseAuthHeaders } from './auth.js';
+import { SDK_VERSION } from './version.js';
+import { repairToolSchemas } from './schema-repair.js';
+import { EntityManager } from './entity-manager.js';
 
 /**
  * Authenticated tool pipe for the Stitch MCP Server.
@@ -38,9 +38,9 @@ import { EntityManager } from "./entity-manager.js";
  *   const result = await client.callTool("generate_screen_from_text", { ... });
  */
 export class StitchToolClient implements StitchToolClientSpec {
-  name: "stitch-tool-client" = "stitch-tool-client";
-  description: "Authenticated tool pipe for Stitch MCP Server" =
-    "Authenticated tool pipe for Stitch MCP Server";
+  name: 'stitch-tool-client' = 'stitch-tool-client';
+  description: 'Authenticated tool pipe for Stitch MCP Server' =
+    'Authenticated tool pipe for Stitch MCP Server';
 
   private client: Client;
   private transport: StreamableHTTPClientTransport | null = null;
@@ -53,7 +53,7 @@ export class StitchToolClient implements StitchToolClientSpec {
   constructor(
     inputConfig?: Partial<StitchConfig> & {
       localVirtualTools?: VirtualToolDefinition[];
-    },
+    }
   ) {
     const rawConfig = {
       accessToken: inputConfig?.accessToken || process.env.STITCH_ACCESS_TOKEN,
@@ -67,8 +67,8 @@ export class StitchToolClient implements StitchToolClientSpec {
     this.entities = new EntityManager(this);
 
     this.client = new Client(
-      { name: "stitch-core-client", version: SDK_VERSION },
-      { capabilities: {} },
+      { name: 'stitch-core-client', version: SDK_VERSION },
+      { capabilities: {} }
     );
   }
 
@@ -77,7 +77,7 @@ export class StitchToolClient implements StitchToolClientSpec {
    */
   private buildAuthHeaders(): Record<string, string> {
     return {
-      Accept: "application/json, text/event-stream",
+      Accept: 'application/json, text/event-stream',
       ...buildBaseAuthHeaders({
         apiKey: this.config.apiKey,
         accessToken: this.config.accessToken,
@@ -89,40 +89,31 @@ export class StitchToolClient implements StitchToolClientSpec {
   private parseToolResponse<T>(result: any, name: string): T {
     if (result.isError) {
       const errorText = (result.content as any[])
-        .map((c: any) => (c.type === "text" ? c.text : ""))
-        .join("");
+        .map((c: any) => (c.type === 'text' ? c.text : ''))
+        .join('');
 
-      let code: StitchErrorCode = "UNKNOWN_ERROR";
+      let code: StitchErrorCode = 'UNKNOWN_ERROR';
       const lowerErrorText = errorText.toLowerCase();
 
-      if (
-        lowerErrorText.includes("rate limit") ||
-        lowerErrorText.includes("429")
-      ) {
-        code = "RATE_LIMITED";
+      if (lowerErrorText.includes('rate limit') || lowerErrorText.includes('429')) {
+        code = 'RATE_LIMITED';
+      } else if (lowerErrorText.includes('not found') || lowerErrorText.includes('404')) {
+        code = 'NOT_FOUND';
+      } else if (lowerErrorText.includes('permission') || lowerErrorText.includes('403')) {
+        code = 'PERMISSION_DENIED';
       } else if (
-        lowerErrorText.includes("not found") ||
-        lowerErrorText.includes("404")
+        lowerErrorText.includes('unauthorized') ||
+        lowerErrorText.includes('unauthenticated') ||
+        lowerErrorText.includes('invalid authentication') ||
+        lowerErrorText.includes('401')
       ) {
-        code = "NOT_FOUND";
-      } else if (
-        lowerErrorText.includes("permission") ||
-        lowerErrorText.includes("403")
-      ) {
-        code = "PERMISSION_DENIED";
-      } else if (
-        lowerErrorText.includes("unauthorized") ||
-        lowerErrorText.includes("unauthenticated") ||
-        lowerErrorText.includes("invalid authentication") ||
-        lowerErrorText.includes("401")
-      ) {
-        code = "AUTH_FAILED";
+        code = 'AUTH_FAILED';
       }
 
       throw new StitchError({
         code,
         message: `Tool Call Failed [${name}]: ${errorText}`,
-        recoverable: code === "RATE_LIMITED",
+        recoverable: code === 'RATE_LIMITED',
       });
     }
 
@@ -130,10 +121,8 @@ export class StitchToolClient implements StitchToolClientSpec {
     const anyResult = result as any;
     if (anyResult.structuredContent) return anyResult.structuredContent as T;
 
-    const textContent = (result.content as any[]).find(
-      (c: any) => c.type === "text",
-    );
-    if (textContent && textContent.type === "text") {
+    const textContent = (result.content as any[]).find((c: any) => c.type === 'text');
+    if (textContent && textContent.type === 'text') {
       try {
         return JSON.parse(textContent.text) as T;
       } catch {
@@ -158,17 +147,14 @@ export class StitchToolClient implements StitchToolClientSpec {
 
   private async doConnect() {
     // Create transport with auth headers injected per-instance (no global fetch mutation)
-    this.transport = new StreamableHTTPClientTransport(
-      new URL(this.config.baseUrl),
-      {
-        requestInit: {
-          headers: this.buildAuthHeaders(),
-        },
+    this.transport = new StreamableHTTPClientTransport(new URL(this.config.baseUrl), {
+      requestInit: {
+        headers: this.buildAuthHeaders(),
       },
-    );
+    });
 
     this.transport.onerror = (err) => {
-      console.error("Stitch Transport Error:", err);
+      console.error('Stitch Transport Error:', err);
       this.isConnected = false;
     };
 
@@ -187,11 +173,9 @@ export class StitchToolClient implements StitchToolClientSpec {
       return localTool.execute(this, args);
     }
 
-    const result = await this.client.callTool(
-      { name, arguments: args },
-      undefined,
-      { timeout: this.config.timeout },
-    );
+    const result = await this.client.callTool({ name, arguments: args }, undefined, {
+      timeout: this.config.timeout,
+    });
 
     return this.parseToolResponse<T>(result, name);
   }
@@ -209,38 +193,38 @@ export class StitchToolClient implements StitchToolClientSpec {
    *   Neither means "API keys are unsupported." See upload-handler.ts for full context.
    */
   async httpPost<T>(path: string, body: unknown): Promise<T> {
-    const url = `${this.config.baseUrl.replace(/\/mcp$/, "").replace(/\/$/, "")}/v1/${path}`;
+    const url = `${this.config.baseUrl.replace(/\/mcp$/, '').replace(/\/$/, '')}/v1/${path}`;
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
         ...this.buildAuthHeaders(),
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     });
 
     if (!response.ok) {
-      const text = await response.text().catch(() => "");
+      const text = await response.text().catch(() => '');
       const lowerText = text.toLowerCase();
-      let code: StitchErrorCode = "UNKNOWN_ERROR";
-      if (response.status === 429 || lowerText.includes("rate limit")) {
-        code = "RATE_LIMITED";
-      } else if (response.status === 404 || lowerText.includes("not found")) {
-        code = "NOT_FOUND";
-      } else if (response.status === 403 || lowerText.includes("permission")) {
-        code = "PERMISSION_DENIED";
+      let code: StitchErrorCode = 'UNKNOWN_ERROR';
+      if (response.status === 429 || lowerText.includes('rate limit')) {
+        code = 'RATE_LIMITED';
+      } else if (response.status === 404 || lowerText.includes('not found')) {
+        code = 'NOT_FOUND';
+      } else if (response.status === 403 || lowerText.includes('permission')) {
+        code = 'PERMISSION_DENIED';
       } else if (
         response.status === 401 ||
-        lowerText.includes("401") ||
-        lowerText.includes("unauthorized") ||
-        lowerText.includes("unauthenticated")
+        lowerText.includes('401') ||
+        lowerText.includes('unauthorized') ||
+        lowerText.includes('unauthenticated')
       ) {
-        code = "AUTH_FAILED";
+        code = 'AUTH_FAILED';
       }
       throw new StitchError({
         code,
         message: `HTTP ${response.status}: ${text || response.statusText}`,
-        recoverable: code === "RATE_LIMITED",
+        recoverable: code === 'RATE_LIMITED',
       });
     }
 
@@ -259,8 +243,8 @@ export class StitchToolClient implements StitchToolClientSpec {
     // By using request() directly, we get the raw tool list, apply schema
     // repair to inject missing $defs, and avoid the AJV crash entirely.
     const remoteTools = await (this.client as any).request(
-      { method: "tools/list", params: {} },
-      ListToolsResultSchema,
+      { method: 'tools/list', params: {} },
+      ListToolsResultSchema
     );
 
     const tools = remoteTools.tools || [];

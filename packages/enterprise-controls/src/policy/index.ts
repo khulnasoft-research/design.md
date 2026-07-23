@@ -1,6 +1,6 @@
 /**
  * Policy Engine
- * 
+ *
  * Enforces organizational policies on design systems (e.g., color constraints,
  * naming conventions, component restrictions, etc.)
  */
@@ -182,9 +182,7 @@ export class DefaultPolicyEngine implements PolicyEngine {
 
     // Sort by severity
     const severityOrder = { error: 0, warning: 1, info: 2 };
-    violations.sort(
-      (a, b) => severityOrder[a.severity] - severityOrder[b.severity]
-    );
+    violations.sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity]);
 
     return {
       compliant: violations.some((v) => v.severity === 'error') === false,
@@ -245,7 +243,10 @@ export class DefaultPolicyEngine implements PolicyEngine {
     return violations;
   }
 
-  private checkTypographyPolicy(policy: Policy, designSystem: DesignSystemState): PolicyViolation[] {
+  private checkTypographyPolicy(
+    policy: Policy,
+    designSystem: DesignSystemState
+  ): PolicyViolation[] {
     const violations: PolicyViolation[] = [];
 
     if (policy.id === 'typography_scale_limit') {

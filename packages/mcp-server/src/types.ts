@@ -17,7 +17,4 @@ export type ToolDefinition = {
   };
 };
 
-export type ToolHandler = (
-  id: number | string,
-  args: Record<string, unknown>
-) => Promise<unknown>;
+export type ToolHandler = (id: number | string, args: Record<string, unknown>) => Promise<unknown>;

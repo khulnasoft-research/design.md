@@ -125,13 +125,13 @@ export class DefaultAIGenerationService implements AIGenerationService {
             output: 1500,
             total: 2000,
           },
-          notes: [
-            'Mock generation - integrate with Vercel AI SDK for real generation',
-          ],
+          notes: ['Mock generation - integrate with Vercel AI SDK for real generation'],
         },
       };
     } catch (error) {
-      throw new Error(`AI generation failed: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `AI generation failed: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
   }
 
@@ -160,14 +160,10 @@ export class DefaultAIGenerationService implements AIGenerationService {
         model: request.config.model,
         generatedAt: new Date().toISOString(),
         duration,
-        notes: [
-          'Mock streaming - integrate with Vercel AI SDK for real streaming',
-        ],
+        notes: ['Mock streaming - integrate with Vercel AI SDK for real streaming'],
       },
     };
   }
-
-
 
   /**
    * Create mock design system draft for testing
@@ -183,19 +179,25 @@ export class DefaultAIGenerationService implements AIGenerationService {
       createdAt: now,
       designSystem: {
         colors: new Map([
-          ['primary', { type: 'color', hex: '#0070f3', r: 0, g: 112, b: 243, a: 1, luminance: 0.5 }],
+          [
+            'primary',
+            { type: 'color', hex: '#0070f3', r: 0, g: 112, b: 243, a: 1, luminance: 0.5 },
+          ],
           [
             'secondary',
             { type: 'color', hex: '#7c3aed', r: 124, g: 58, b: 237, a: 1, luminance: 0.3 },
           ],
-          ['neutral-50', { type: 'color', hex: '#fafafa', r: 250, g: 250, b: 250, a: 1, luminance: 0.98 }],
-          ['neutral-900', { type: 'color', hex: '#0a0a0a', r: 10, g: 10, b: 10, a: 1, luminance: 0.02 }],
+          [
+            'neutral-50',
+            { type: 'color', hex: '#fafafa', r: 250, g: 250, b: 250, a: 1, luminance: 0.98 },
+          ],
+          [
+            'neutral-900',
+            { type: 'color', hex: '#0a0a0a', r: 10, g: 10, b: 10, a: 1, luminance: 0.02 },
+          ],
         ]),
         typography: new Map([
-          [
-            'heading-1',
-            { type: 'typography' },
-          ],
+          ['heading-1', { type: 'typography' }],
           [
             'body-regular',
             {
@@ -237,8 +239,6 @@ export class DefaultAIGenerationService implements AIGenerationService {
 /**
  * Factory for creating AI generation service
  */
-export function createAIGenerationService(
-  config: AIGenerationConfig
-): AIGenerationService {
+export function createAIGenerationService(config: AIGenerationConfig): AIGenerationService {
   return new DefaultAIGenerationService(config);
 }

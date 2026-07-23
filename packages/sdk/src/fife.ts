@@ -34,9 +34,9 @@ export interface FifeImageOptions {
  * @returns A suffix string like "=w780", "=h1200", "=w780-h1688", or "" if no options.
  */
 export function buildFifeSuffix(options?: FifeImageOptions): string {
-  if (!options) return "";
+  if (!options) return '';
   const parts: string[] = [];
   if (options.width) parts.push(`w${options.width}`);
   if (options.height) parts.push(`h${options.height}`);
-  return parts.length > 0 ? `=${parts.join("-")}` : "";
+  return parts.length > 0 ? `=${parts.join('-')}` : '';
 }

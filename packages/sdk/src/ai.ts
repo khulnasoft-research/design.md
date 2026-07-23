@@ -27,4 +27,4 @@
  *   prompt: "Create a login page",
  * });
  */
-export { stitchTools } from "./tools-adapter.js";
+export { stitchTools } from './tools-adapter.js';

@@ -1,6 +1,6 @@
 /**
  * Approval Workflows
- * 
+ *
  * Manages design system approval processes with configurable routing,
  * multi-level approvals, and compliance tracking.
  */
@@ -134,25 +134,13 @@ export interface ApprovalManager {
   ): Promise<ApprovalRequest>;
 
   /** Approve a design system (move to next step or complete) */
-  approve(
-    requestId: string,
-    approverId: string,
-    comments?: string
-  ): Promise<ApprovalRequest>;
+  approve(requestId: string, approverId: string, comments?: string): Promise<ApprovalRequest>;
 
   /** Reject a design system */
-  reject(
-    requestId: string,
-    approverId: string,
-    reason: string
-  ): Promise<ApprovalRequest>;
+  reject(requestId: string, approverId: string, reason: string): Promise<ApprovalRequest>;
 
   /** Request changes (send back to designer) */
-  requestChanges(
-    requestId: string,
-    approverId: string,
-    feedback: string
-  ): Promise<ApprovalRequest>;
+  requestChanges(requestId: string, approverId: string, feedback: string): Promise<ApprovalRequest>;
 
   /** Get current approval status */
   getStatus(requestId: string): Promise<ApprovalRequest | null>;
@@ -217,9 +205,7 @@ export class InMemoryApprovalWorkflowStore implements ApprovalWorkflowStore {
     this.workflows.delete(id);
   }
 
-  async createApprovalRequest(
-    request: Omit<ApprovalRequest, 'id'>
-  ): Promise<ApprovalRequest> {
+  async createApprovalRequest(request: Omit<ApprovalRequest, 'id'>): Promise<ApprovalRequest> {
     const id = `approval_${Date.now()}`;
     const newRequest: ApprovalRequest = { ...request, id };
     this.approvalRequests.set(id, newRequest);
@@ -346,11 +332,7 @@ export class DefaultApprovalManager implements ApprovalManager {
     return request;
   }
 
-  async reject(
-    requestId: string,
-    approverId: string,
-    reason: string
-  ): Promise<ApprovalRequest> {
+  async reject(requestId: string, approverId: string, reason: string): Promise<ApprovalRequest> {
     const request = await this.store.getApprovalRequest(requestId);
     if (!request) {
       throw new Error(`Approval request not found: ${requestId}`);

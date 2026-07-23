@@ -56,22 +56,16 @@ export interface FeedbackProcessor {
   /**
    * Process feedback and return updated draft
    */
-  processFeedback(
-    request: FeedbackProcessingRequest
-  ): Promise<FeedbackProcessingResult>;
+  processFeedback(request: FeedbackProcessingRequest): Promise<FeedbackProcessingResult>;
 }
 
 /**
  * Default feedback processor implementation
  */
 export class DefaultFeedbackProcessor implements FeedbackProcessor {
-  async processFeedback(
-    request: FeedbackProcessingRequest
-  ): Promise<FeedbackProcessingResult> {
+  async processFeedback(request: FeedbackProcessingRequest): Promise<FeedbackProcessingResult> {
     const startTime = Date.now();
-    const updatedDraft = JSON.parse(
-      JSON.stringify(request.draft)
-    ) as DesignSystemDraft;
+    const updatedDraft = JSON.parse(JSON.stringify(request.draft)) as DesignSystemDraft;
     const changes = {
       colorsModified: 0,
       typographyModified: 0,

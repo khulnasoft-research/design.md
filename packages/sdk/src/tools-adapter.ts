@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { Tool } from "ai";
-import { toolDefinitions } from "../generated/src/tool-definitions.js";
-import { getOrCreateClient } from "./singleton.js";
+import type { Tool } from 'ai';
+import { toolDefinitions } from '../generated/src/tool-definitions.js';
+import { getOrCreateClient } from './singleton.js';
 
 /**
  * Well-known symbol used by the Vercel AI SDK to identify schema objects.
  * Using Symbol.for() ensures we match the exact same symbol the SDK uses
  * internally, without importing any runtime code from `ai`.
  */
-const schemaSymbol = Symbol.for("vercel.ai.schema");
+const schemaSymbol = Symbol.for('vercel.ai.schema');
 
 /**
  * Returns Stitch tools in Vercel AI SDK format.
@@ -61,7 +61,7 @@ export function stitchTools(options?: {
       // dynamicTool() + jsonSchema() would produce. The `ai` package
       // is NOT imported at runtime — only the type is used above.
       {
-        type: "dynamic" as const,
+        type: 'dynamic' as const,
         description: t.description,
         inputSchema: {
           [schemaSymbol]: true,
@@ -71,9 +71,8 @@ export function stitchTools(options?: {
             return t.inputSchema;
           },
         },
-        execute: async (args: unknown) =>
-          client.callTool(t.name, args as Record<string, any>),
+        execute: async (args: unknown) => client.callTool(t.name, args as Record<string, any>),
       } as unknown as Tool,
-    ]),
+    ])
   );
 }

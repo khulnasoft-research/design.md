@@ -9,10 +9,7 @@ export type {
   GenerationResult,
   AIGenerationService,
 } from './generation/index.js';
-export {
-  DefaultAIGenerationService,
-  createAIGenerationService,
-} from './generation/index.js';
+export { DefaultAIGenerationService, createAIGenerationService } from './generation/index.js';
 
 // Feedback Processing
 export type {
@@ -20,10 +17,7 @@ export type {
   FeedbackProcessingResult,
   FeedbackProcessor,
 } from './feedback/index.js';
-export {
-  DefaultFeedbackProcessor,
-  createFeedbackProcessor,
-} from './feedback/index.js';
+export { DefaultFeedbackProcessor, createFeedbackProcessor } from './feedback/index.js';
 
 // Re-export workflow types from design-core
 export type {

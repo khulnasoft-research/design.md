@@ -29,19 +29,10 @@ import type {
   UserWithRoles,
   AuthorizationDecision,
 } from '@scalify/enterprise-controls/rbac';
-import type {
-  AuditLogger,
-} from '@scalify/enterprise-controls/audit';
-import type {
-  PolicyEngine,
-  PolicyEnforcementResult,
-} from '@scalify/enterprise-controls/policy';
-import type {
-  ApprovalManager,
-} from '@scalify/enterprise-controls/approval';
-import type {
-  VersionManager,
-} from '@scalify/enterprise-controls/versioning';
+import type { AuditLogger } from '@scalify/enterprise-controls/audit';
+import type { PolicyEngine, PolicyEnforcementResult } from '@scalify/enterprise-controls/policy';
+import type { ApprovalManager } from '@scalify/enterprise-controls/approval';
+import type { VersionManager } from '@scalify/enterprise-controls/versioning';
 
 export interface OrchestrationServiceOptions {
   store: WorkflowStore;
@@ -105,7 +96,7 @@ export class OrchestrationService {
         userId: user.userId,
         action: `${action}_denied`,
         resource,
-        resourceId: context?.resourceId as string || 'unknown',
+        resourceId: (context?.resourceId as string) || 'unknown',
         outcome: 'failure',
         failureReason: decision.reason,
         changes: {},
@@ -137,10 +128,7 @@ export class OrchestrationService {
    * Submit a design prompt and initiate draft generation.
    * Returns immediately with a queued status; actual generation happens asynchronously.
    */
-  async submitPrompt(
-    request: PromptRequest,
-    user?: UserWithRoles
-  ): Promise<PromptAcknowledgment> {
+  async submitPrompt(request: PromptRequest, user?: UserWithRoles): Promise<PromptAcknowledgment> {
     const startTime = Date.now();
 
     // RBAC: check prompt:create permission
@@ -240,10 +228,7 @@ export class OrchestrationService {
   /**
    * List all drafts for a tenant.
    */
-  async listDrafts(
-    tenantId: string,
-    user?: UserWithRoles
-  ): Promise<DesignSystemDraft[]> {
+  async listDrafts(tenantId: string, user?: UserWithRoles): Promise<DesignSystemDraft[]> {
     if (user) {
       await this.enforcePermission(user, 'design_system', 'read');
     }
@@ -341,9 +326,8 @@ export class OrchestrationService {
 
     // RBAC: check approval_request:create or approval_request:approve permission
     if (user) {
-      const permission = request.action === 'reject'
-        ? 'approval_request_reject'
-        : 'approval_request_approve';
+      const permission =
+        request.action === 'reject' ? 'approval_request_reject' : 'approval_request_approve';
       await this.enforcePermission(user, 'approval_request', permission, {
         resourceId: request.draftId,
       });
@@ -372,16 +356,14 @@ export class OrchestrationService {
         changes: {},
         duration: Date.now() - startTime,
       });
-      throw new Error(
-        `Design system has validation errors: ${errorFindings}`
-      );
+      throw new Error(`Design system has validation errors: ${errorFindings}`);
     }
 
     // Policy enforcement: run policy checks before approval
     if (this.policyEngine) {
       const policyResult = await this.policyEngine.enforce(draft.designSystem);
       if (!policyResult.compliant) {
-        const errors = policyResult.violations.filter(v => v.severity === 'error');
+        const errors = policyResult.violations.filter((v) => v.severity === 'error');
         if (errors.length > 0 && request.action !== 'reject') {
           await this.logAudit({
             tenantId: request.tenantId,
@@ -390,12 +372,12 @@ export class OrchestrationService {
             resource: 'design_system',
             resourceId: request.draftId,
             outcome: 'failure',
-            failureReason: `Policy violations: ${errors.map(e => e.message).join('; ')}`,
+            failureReason: `Policy violations: ${errors.map((e) => e.message).join('; ')}`,
             changes: {},
             duration: Date.now() - startTime,
           });
           throw new Error(
-            `Design system violates organizational policies: ${errors.map(e => e.message).join('; ')}`
+            `Design system violates organizational policies: ${errors.map((e) => e.message).join('; ')}`
           );
         }
       }
@@ -571,7 +553,7 @@ export class OrchestrationService {
       auditTrail: {
         promptId: '',
         iterationCount: 0,
-        approvalChain: approval.approvalChain?.map(r => r.user) || [],
+        approvalChain: approval.approvalChain?.map((r) => r.user) || [],
         exportedAt: new Date().toISOString(),
         exportedBy: user?.userId || request.metadata?.exportedBy || 'system',
       },
@@ -651,10 +633,7 @@ export class OrchestrationService {
   /**
    * Get the version history for a design system.
    */
-  async getVersionHistory(
-    designSystemId: string,
-    user?: UserWithRoles
-  ) {
+  async getVersionHistory(designSystemId: string, user?: UserWithRoles) {
     if (!this.versionManager) return [];
 
     if (user) {
@@ -685,11 +664,7 @@ export class OrchestrationService {
       });
     }
 
-    return this.versionManager.generateChangelog(
-      designSystemId,
-      fromVersion,
-      toVersion
-    );
+    return this.versionManager.generateChangelog(designSystemId, fromVersion, toVersion);
   }
 
   /**

@@ -1,49 +1,70 @@
 import { z } from 'zod';
-export declare const ParserInputSchema: z.ZodObject<{
+export declare const ParserInputSchema: z.ZodObject<
+  {
     content: z.ZodString;
-}, "strip", z.ZodTypeAny, {
+  },
+  'strip',
+  z.ZodTypeAny,
+  {
     content: string;
-}, {
+  },
+  {
     content: string;
-}>;
+  }
+>;
 export type ParserInput = z.infer<typeof ParserInputSchema>;
-export declare const ParserErrorCode: z.ZodEnum<["EMPTY_CONTENT", "NO_YAML_FOUND", "YAML_PARSE_ERROR", "DUPLICATE_SECTION", "UNKNOWN_ERROR"]>;
+export declare const ParserErrorCode: z.ZodEnum<
+  ['EMPTY_CONTENT', 'NO_YAML_FOUND', 'YAML_PARSE_ERROR', 'DUPLICATE_SECTION', 'UNKNOWN_ERROR']
+>;
 export interface SourceLocation {
-    line: number;
-    column: number;
-    block: 'frontmatter' | number;
+  line: number;
+  column: number;
+  block: 'frontmatter' | number;
 }
 export interface ParsedDesignSystem {
-    version?: string | undefined;
-    name?: string | undefined;
-    description?: string | undefined;
-    colors?: Record<string, any> | undefined;
-    typography?: Record<string, Record<string, any>> | undefined;
-    rounded?: Record<string, any> | undefined;
-    spacing?: Record<string, any> | undefined;
-    components?: Record<string, Record<string, any>> | undefined;
-    sourceMap: Map<string, SourceLocation>;
-    sections?: string[] | undefined;
-    documentSections?: Array<{
+  version?: string | undefined;
+  name?: string | undefined;
+  description?: string | undefined;
+  colors?: Record<string, any> | undefined;
+  typography?: Record<string, Record<string, any>> | undefined;
+  rounded?: Record<string, any> | undefined;
+  spacing?: Record<string, any> | undefined;
+  components?: Record<string, Record<string, any>> | undefined;
+  sourceMap: Map<string, SourceLocation>;
+  sections?: string[] | undefined;
+  documentSections?:
+    | Array<{
         heading: string;
         content: string;
-    }> | undefined;
-    rawValues?: Record<string, unknown> | undefined;
+      }>
+    | undefined;
+  rawValues?: Record<string, unknown> | undefined;
 }
-export declare const SCHEMA_KEYS: readonly ["version", "name", "description", "colors", "typography", "rounded", "spacing", "components"];
+export declare const SCHEMA_KEYS: readonly [
+  'version',
+  'name',
+  'description',
+  'colors',
+  'typography',
+  'rounded',
+  'spacing',
+  'components',
+];
 export type SchemaKey = (typeof SCHEMA_KEYS)[number];
-export type ParserResult = {
-    success: true;
-    data: ParsedDesignSystem;
-} | {
-    success: false;
-    error: {
+export type ParserResult =
+  | {
+      success: true;
+      data: ParsedDesignSystem;
+    }
+  | {
+      success: false;
+      error: {
         code: z.infer<typeof ParserErrorCode>;
         message: string;
         recoverable: boolean;
+      };
     };
-};
 export interface ParserSpec {
-    execute(input: ParserInput): ParserResult;
+  execute(input: ParserInput): ParserResult;
 }
 //# sourceMappingURL=spec.d.ts.map

@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import path from "node:path";
-import { describe, it, expect } from "vitest";
-import { generateText, stepCountIs, type Tool } from "ai";
-import { stitchTools } from "../../src/ai.js";
-import { createGeminiModel } from "../helpers/model-helpers.js";
-import { validateComponent } from "../helpers/component-validator.js";
+import path from 'node:path';
+import { describe, it, expect } from 'vitest';
+import { generateText, stepCountIs, type Tool } from 'ai';
+import { stitchTools } from '../../src/ai.js';
+import { createGeminiModel } from '../helpers/model-helpers.js';
+import { validateComponent } from '../helpers/component-validator.js';
 import {
   extractStitchAssets,
   parseGeneratedFiles,
   writePreviewApp,
-} from "../helpers/stitch-html.js";
+} from '../helpers/stitch-html.js';
 
 const hasEnv =
   !!(process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY) &&
@@ -30,8 +30,8 @@ const hasEnv =
 
 const runIfConfigured = hasEnv ? describe : describe.skip;
 
-runIfConfigured("AI SDK E2E with Gemini", () => {
-  it("creates a project via stitchTools()", async () => {
+runIfConfigured('AI SDK E2E with Gemini', () => {
+  it('creates a project via stitchTools()', async () => {
     const tools = stitchTools();
     const model = await createGeminiModel();
     const result = await generateText({
@@ -44,12 +44,12 @@ runIfConfigured("AI SDK E2E with Gemini", () => {
     expect(toolCalls.length).toBeGreaterThan(0);
   }, 30000);
 
-  it("design → React component → preview app", async () => {
+  it('design → React component → preview app', async () => {
     const tools = stitchTools();
     const model = await createGeminiModel();
 
     // ── Phase 1: Get a design from Stitch ────────────────────────────
-    console.log("\n🎨 Phase 1: Getting design from Stitch...");
+    console.log('\n🎨 Phase 1: Getting design from Stitch...');
     const designResult = await generateText({
       model,
       tools,
@@ -65,16 +65,14 @@ screen details including the HTML. Call the tools you need.`,
       .find((o: any) => o?.htmlCode?.downloadUrl);
     expect(screenOutput).toBeDefined();
 
-    const htmlContent = await fetch(screenOutput.htmlCode.downloadUrl).then(
-      (r) => r.text(),
-    );
+    const htmlContent = await fetch(screenOutput.htmlCode.downloadUrl).then((r) => r.text());
     const { tailwindConfig, fontLinks } = extractStitchAssets(htmlContent);
     console.log(
-      `   HTML: ${htmlContent.length} chars | config: ${tailwindConfig ? "✅" : "❌"} | fonts: ${fontLinks.length}`,
+      `   HTML: ${htmlContent.length} chars | config: ${tailwindConfig ? '✅' : '❌'} | fonts: ${fontLinks.length}`
     );
 
     // ── Phase 2: LLM generates a complete React app ──────────────────
-    console.log("⚛️  Phase 2: Generating React app...");
+    console.log('⚛️  Phase 2: Generating React app...');
     const codegenResult = await generateText({
       model,
       prompt: `You are converting a Stitch design into a complete, runnable Vite + React + TypeScript app.
@@ -99,38 +97,36 @@ Rules:
 - Each component file has a default export
 - Output ONLY code with FILE markers, no markdown fences, no commentary
 
-${tailwindConfig ? `TAILWIND CONFIG (from the design):\n${tailwindConfig}\n` : ""}
-${fontLinks.length > 0 ? `GOOGLE FONT LINKS (include in index.html <head>):\n${fontLinks.join("\n")}\n` : ""}
+${tailwindConfig ? `TAILWIND CONFIG (from the design):\n${tailwindConfig}\n` : ''}
+${fontLinks.length > 0 ? `GOOGLE FONT LINKS (include in index.html <head>):\n${fontLinks.join('\n')}\n` : ''}
 HTML DESIGN:
 ${htmlContent}`,
     });
 
     const files = parseGeneratedFiles(codegenResult.text);
     console.log(
-      `   Generated ${Object.keys(files).length} files: ${Object.keys(files).join(", ")}`,
+      `   Generated ${Object.keys(files).length} files: ${Object.keys(files).join(', ')}`
     );
     expect(Object.keys(files).length).toBeGreaterThanOrEqual(4);
 
     // ── Phase 3: Validate components via SWC ─────────────────────────
-    console.log("🔍 Phase 3: Validating components...");
+    console.log('🔍 Phase 3: Validating components...');
     const componentFiles = Object.entries(files).filter(
-      ([name]) =>
-        name.endsWith(".tsx") && !["App.tsx", "main.tsx"].includes(name),
+      ([name]) => name.endsWith('.tsx') && !['App.tsx', 'main.tsx'].includes(name)
     );
     for (const [filename, content] of componentFiles) {
       const v = await validateComponent(content);
-      const status = v.parseError ? "💥" : v.valid ? "✅" : "⚠️";
+      const status = v.parseError ? '💥' : v.valid ? '✅' : '⚠️';
       console.log(
-        `   ${filename}: ${status}${v.hardcodedHexValues.length ? " hex:" + v.hardcodedHexValues : ""}`,
+        `   ${filename}: ${status}${v.hardcodedHexValues.length ? ' hex:' + v.hardcodedHexValues : ''}`
       );
       expect(v.parseError).toBeUndefined();
       expect(v.hasDefaultExport).toBe(true);
-      if (!v.hasPropsInterface)
-        console.warn(`   ⚠️  ${filename} missing Props interface`);
+      if (!v.hasPropsInterface) console.warn(`   ⚠️  ${filename} missing Props interface`);
     }
 
     // ── Phase 4: Write preview app ───────────────────────────────────
-    const previewDir = path.resolve(process.cwd(), "../../.stitch/preview");
+    const previewDir = path.resolve(process.cwd(), '../../.stitch/preview');
     writePreviewApp(files, previewDir);
     console.log(`\n✅ cd .stitch/preview && npm install && npm run dev`);
   }, 180000);

@@ -1,15 +1,11 @@
 /**
  * Storage Abstraction Layer
- * 
+ *
  * Defines the interface for persisting workflow state (prompts, drafts, iterations, approvals).
  * Implementations can use various backends (PostgreSQL, DynamoDB, etc.)
  */
 
-import type {
-  DesignSystemDraft,
-  ApprovalRecord,
-  IterationRecord,
-} from '@scalify/design-core';
+import type { DesignSystemDraft, ApprovalRecord, IterationRecord } from '@scalify/design-core';
 
 /**
  * Enhanced PromptRequest with ID and metadata
@@ -155,7 +151,7 @@ export class InMemoryWorkflowStore implements WorkflowStore {
   }
 
   async listPrompts(tenantId: string): Promise<StoredPrompt[]> {
-    return Array.from(this.prompts.values()).filter(p => p.tenantId === tenantId);
+    return Array.from(this.prompts.values()).filter((p) => p.tenantId === tenantId);
   }
 
   // ========== DRAFT STORAGE ==========
@@ -169,17 +165,13 @@ export class InMemoryWorkflowStore implements WorkflowStore {
     return draft?.tenantId === tenantId ? draft || null : null;
   }
 
-  async getDraftByPromptId(
-    promptId: string
-  ): Promise<DesignSystemDraft | null> {
-    const drafts = Array.from(this.drafts.values()).filter(
-      d => d.promptId === promptId
-    );
+  async getDraftByPromptId(promptId: string): Promise<DesignSystemDraft | null> {
+    const drafts = Array.from(this.drafts.values()).filter((d) => d.promptId === promptId);
     return drafts.length > 0 ? drafts[drafts.length - 1] || null : null;
   }
 
   async listDrafts(tenantId: string): Promise<DesignSystemDraft[]> {
-    return Array.from(this.drafts.values()).filter(d => d.tenantId === tenantId);
+    return Array.from(this.drafts.values()).filter((d) => d.tenantId === tenantId);
   }
 
   async updateDraft(draft: DesignSystemDraft): Promise<void> {
@@ -193,10 +185,7 @@ export class InMemoryWorkflowStore implements WorkflowStore {
     return iterations.length + 1;
   }
 
-  async saveIteration(
-    draftId: string,
-    record: IterationRecord
-  ): Promise<void> {
+  async saveIteration(draftId: string, record: IterationRecord): Promise<void> {
     if (!this.iterations.has(draftId)) {
       this.iterations.set(draftId, []);
     }
@@ -216,10 +205,7 @@ export class InMemoryWorkflowStore implements WorkflowStore {
     this.approvals.set(approval.designSystemId, approval);
   }
 
-  async getApproval(
-    designSystemId: string,
-    tenantId: string
-  ): Promise<StoredApproval | null> {
+  async getApproval(designSystemId: string, tenantId: string): Promise<StoredApproval | null> {
     const approval = this.approvals.get(designSystemId);
     return approval?.tenantId === tenantId ? approval || null : null;
   }
@@ -231,7 +217,7 @@ export class InMemoryWorkflowStore implements WorkflowStore {
 
   async listApprovedSystems(tenantId: string): Promise<StoredApproval[]> {
     return Array.from(this.approvals.values()).filter(
-      a => a.tenantId === tenantId && a.status === 'approved'
+      (a) => a.tenantId === tenantId && a.status === 'approved'
     );
   }
 }

@@ -1,12 +1,12 @@
 /**
  * Prompt Analysis Module
- * 
+ *
  * Analyzes design prompts to extract structured insights:
  * - Design intentions (minimalist, bold, etc.)
  * - Constraints (WCAG levels, dark mode, etc.)
  * - Target platforms (web, mobile, prototype)
  * - Brand values and priorities
- * 
+ *
  * This module uses pattern matching and simple NLP to extract actionable
  * information from free-form design prompts.
  */
@@ -16,31 +16,31 @@ import type { PromptRequest } from '@scalify/design-core';
 export interface PromptAnalysis {
   /** Design intentions extracted from prompt */
   intentions: string[];
-  
+
   /** Constraints and requirements */
   constraints: string[];
-  
+
   /** Target platforms */
   targetPlatforms: string[];
-  
+
   /** Brand values and characteristics */
   brandValues: string[];
-  
+
   /** Color palette preferences */
   colorPreferences: string[];
-  
+
   /** Typography preferences */
   typographyPreferences: string[];
-  
+
   /** Component focus areas */
   componentFocus: string[];
-  
+
   /** Accessibility requirements */
   accessibilityRequirements: string[];
-  
+
   /** Original prompt for reference */
   originalPrompt: string;
-  
+
   /** Analysis confidence score (0-1) */
   confidence: number;
 }
@@ -97,7 +97,7 @@ function extractIntentions(prompt: string): string[] {
     'informal',
   ];
 
-  return intentions.filter(intention => prompt.includes(intention));
+  return intentions.filter((intention) => prompt.includes(intention));
 }
 
 /**
@@ -205,7 +205,7 @@ function extractBrandValues(prompt: string): string[] {
     'friendly',
   ];
 
-  return values.filter(value => prompt.includes(value));
+  return values.filter((value) => prompt.includes(value));
 }
 
 /**

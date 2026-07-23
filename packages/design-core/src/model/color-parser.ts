@@ -315,7 +315,9 @@ export function parseCssColor(colorStr: string): ParsedColorResult | null {
       const a2 = c2.a !== undefined ? c2.a : 1;
 
       const aMix = a1 * f1 + a2 * f2;
-      let r = 0, g = 0, b = 0;
+      let r = 0,
+        g = 0,
+        b = 0;
 
       if (aMix > 0) {
         r = Math.round((c1.r * a1 * f1 + c2.r * a2 * f2) / aMix);
@@ -362,7 +364,9 @@ function makeResult(r: number, g: number, b: number, a?: number): ParsedColorRes
 
   let hex = `#${hexR}${hexG}${hexB}`;
   if (a !== undefined && a < 1) {
-    const hexA = Math.round(a * 255).toString(16).padStart(2, '0');
+    const hexA = Math.round(a * 255)
+      .toString(16)
+      .padStart(2, '0');
     hex += hexA;
   }
 
@@ -455,13 +459,24 @@ function splitList(str: string): string[] {
   let depth = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str[i];
-    if (char === '(') { depth++; current += char; }
-    else if (char === ')') { depth--; current += char; }
-    else if (depth === 0 && (char === ',' || /\s/.test(char))) {
-      if (current.trim()) { results.push(current.trim()); current = ''; }
-    } else { current += char; }
+    if (char === '(') {
+      depth++;
+      current += char;
+    } else if (char === ')') {
+      depth--;
+      current += char;
+    } else if (depth === 0 && (char === ',' || /\s/.test(char))) {
+      if (current.trim()) {
+        results.push(current.trim());
+        current = '';
+      }
+    } else {
+      current += char;
+    }
   }
-  if (current.trim()) { results.push(current.trim()); }
+  if (current.trim()) {
+    results.push(current.trim());
+  }
   return results;
 }
 
@@ -471,12 +486,22 @@ function splitByComma(str: string): string[] {
   let depth = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str[i];
-    if (char === '(') { depth++; current += char; }
-    else if (char === ')') { depth--; current += char; }
-    else if (depth === 0 && char === ',') { results.push(current.trim()); current = ''; }
-    else { current += char; }
+    if (char === '(') {
+      depth++;
+      current += char;
+    } else if (char === ')') {
+      depth--;
+      current += char;
+    } else if (depth === 0 && char === ',') {
+      results.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
   }
-  if (current.trim()) { results.push(current.trim()); }
+  if (current.trim()) {
+    results.push(current.trim());
+  }
   return results;
 }
 
@@ -510,13 +535,34 @@ function hslToRgb(h: number, s: number, l: number): { r: number; g: number; b: n
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
   const m = l - c / 2;
 
-  let r_ = 0, g_ = 0, b_ = 0;
-  if (h < 60) { r_ = c; g_ = x; b_ = 0; }
-  else if (h < 120) { r_ = x; g_ = c; b_ = 0; }
-  else if (h < 180) { r_ = 0; g_ = c; b_ = x; }
-  else if (h < 240) { r_ = 0; g_ = x; b_ = c; }
-  else if (h < 300) { r_ = x; g_ = 0; b_ = c; }
-  else { r_ = c; g_ = 0; b_ = x; }
+  let r_ = 0,
+    g_ = 0,
+    b_ = 0;
+  if (h < 60) {
+    r_ = c;
+    g_ = x;
+    b_ = 0;
+  } else if (h < 120) {
+    r_ = x;
+    g_ = c;
+    b_ = 0;
+  } else if (h < 180) {
+    r_ = 0;
+    g_ = c;
+    b_ = x;
+  } else if (h < 240) {
+    r_ = 0;
+    g_ = x;
+    b_ = c;
+  } else if (h < 300) {
+    r_ = x;
+    g_ = 0;
+    b_ = c;
+  } else {
+    r_ = c;
+    g_ = 0;
+    b_ = x;
+  }
 
   return {
     r: Math.max(0, Math.min(255, Math.round((r_ + m) * 255))),

@@ -4,16 +4,16 @@
  * Usage:
  *   STITCH_API_KEY=your-key bun packages/sdk/examples/browse-projects.ts
  */
-import "./_require-key.js";
-import { stitch } from "@google/stitch-sdk";
+import './_require-key.js';
+import { stitch } from '@google/stitch-sdk';
 
-console.log("🔍 Fetching your Stitch projects...\n");
+console.log('🔍 Fetching your Stitch projects...\n');
 
 try {
   const projects = await stitch.projects();
 
   if (projects.length === 0) {
-    console.log("📭 No projects found.");
+    console.log('📭 No projects found.');
     process.exit(0);
   }
 
@@ -26,6 +26,6 @@ try {
     console.log(`   📱 Screens: ${screens.length}`);
   }
 } catch (e: any) {
-  console.error("\n❌ Failed to fetch projects:");
+  console.error('\n❌ Failed to fetch projects:');
   console.error(e.message);
 }

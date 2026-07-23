@@ -1,6 +1,6 @@
 /**
  * Role-Based Access Control (RBAC)
- * 
+ *
  * Manages roles, permissions, and access control for the enterprise platform.
  * Supports hierarchical roles and fine-grained permissions.
  */
@@ -334,9 +334,7 @@ export class DefaultRBACManager implements RBACManager {
       );
 
       if (hasPermission) {
-        const grantedBy = context.user.roles
-          .map((r) => r.name)
-          .join(', ');
+        const grantedBy = context.user.roles.map((r) => r.name).join(', ');
 
         return {
           allowed: true,
@@ -394,7 +392,7 @@ export class DefaultRBACManager implements RBACManager {
   async assignRoleToUser(userId: string, tenantId: string, roleId: string): Promise<void> {
     const key = `${tenantId}:${userId}`;
     const roles = this.userRoles.get(key) || [];
-    
+
     // Get the role (system or custom)
     const systemRole = Object.values(SYSTEM_ROLES).find((r) => r.id === roleId);
     const customRole = this.customRoles.get(roleId);
@@ -409,7 +407,10 @@ export class DefaultRBACManager implements RBACManager {
   async revokeRoleFromUser(userId: string, tenantId: string, roleId: string): Promise<void> {
     const key = `${tenantId}:${userId}`;
     const roles = this.userRoles.get(key) || [];
-    this.userRoles.set(key, roles.filter((r) => r.id !== roleId));
+    this.userRoles.set(
+      key,
+      roles.filter((r) => r.id !== roleId)
+    );
   }
 
   async createRole(role: Omit<Role, 'id' | 'isSystemRole'>): Promise<Role> {

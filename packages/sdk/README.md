@@ -7,13 +7,11 @@ Generate UI screens from text prompts and extract their HTML and screenshots pro
 Set your API key and generate a screen:
 
 ```ts
-import { stitch } from "@google/stitch-sdk";
+import { stitch } from '@google/stitch-sdk';
 
 // STITCH_API_KEY must be set in the environment
-const project = await stitch.createProject("My App");
-const screen = await project.generate(
-  "A login page with email and password fields",
-);
+const project = await stitch.createProject('My App');
+const screen = await project.generate('A login page with email and password fields');
 const html = await screen.getHtml();
 const imageUrl = await screen.getImage();
 ```
@@ -37,7 +35,7 @@ npm install @google/stitch-sdk ai
 ### List existing projects
 
 ```ts
-import { stitch } from "@google/stitch-sdk";
+import { stitch } from '@google/stitch-sdk';
 
 const projects = await stitch.projects();
 for (const project of projects) {
@@ -52,7 +50,7 @@ for (const project of projects) {
 If you already have a project ID, reference it directly:
 
 ```ts
-const project = stitch.project("4044680601076201931");
+const project = stitch.project('4044680601076201931');
 // Call methods on it — each method fetches data as needed
 const screens = await project.screens();
 ```
@@ -60,18 +58,18 @@ const screens = await project.screens();
 ### Edit a screen
 
 ```ts
-const screen = await project.generate("A dashboard with charts");
-const edited = await screen.edit("Make the background dark and add a sidebar");
+const screen = await project.generate('A dashboard with charts');
+const edited = await screen.edit('Make the background dark and add a sidebar');
 const editedHtml = await edited.getHtml();
 ```
 
 ### Generate variants
 
 ```ts
-const variants = await screen.variants("Try different color schemes", {
+const variants = await screen.variants('Try different color schemes', {
   variantCount: 3,
-  creativeRange: "EXPLORE",
-  aspects: ["COLOR_SCHEME", "LAYOUT"],
+  creativeRange: 'EXPLORE',
+  aspects: ['COLOR_SCHEME', 'LAYOUT'],
 });
 
 for (const variant of variants) {
@@ -92,9 +90,9 @@ for (const variant of variants) {
 For agents and orchestration scripts that need direct MCP tool access:
 
 ```ts
-import { StitchToolClient } from "@google/stitch-sdk";
+import { StitchToolClient } from '@google/stitch-sdk';
 
-const client = new StitchToolClient({ apiKey: "your-api-key" });
+const client = new StitchToolClient({ apiKey: 'your-api-key' });
 
 // List available tools
 const { tools } = await client.listTools();
@@ -103,9 +101,9 @@ for (const tool of tools) {
 }
 
 // Call a tool directly — returns are now strongly typed!
-import { CreateProjectResponse } from "@google/stitch-sdk";
-const result = await client.callTool<CreateProjectResponse>("create_project", {
-  title: "Agent Project",
+import { CreateProjectResponse } from '@google/stitch-sdk';
+const result = await client.callTool<CreateProjectResponse>('create_project', {
+  title: 'Agent Project',
 });
 console.log(result.project?.projectId);
 
@@ -170,12 +168,12 @@ A generated UI screen. Provides access to HTML and screenshots.
 Low-level authenticated pipe to the Stitch MCP server. Use this when you need direct tool access (e.g., in an AI agent).
 
 ```ts
-import { StitchToolClient, GetScreenResponse } from "@google/stitch-sdk";
+import { StitchToolClient, GetScreenResponse } from '@google/stitch-sdk';
 
-const client = new StitchToolClient({ apiKey: "..." });
-const result = await client.callTool<GetScreenResponse>("get_screen", {
-  projectId: "...",
-  screenId: "...",
+const client = new StitchToolClient({ apiKey: '...' });
+const result = await client.callTool<GetScreenResponse>('get_screen', {
+  projectId: '...',
+  screenId: '...',
 });
 await client.close();
 ```
@@ -192,10 +190,10 @@ await client.close();
 An MCP proxy server that forwards requests to Stitch. Use this to expose Stitch tools through your own MCP server.
 
 ```ts
-import { StitchProxy } from "@google/stitch-sdk";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { StitchProxy } from '@google/stitch-sdk';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 
-const proxy = new StitchProxy({ apiKey: "..." });
+const proxy = new StitchProxy({ apiKey: '...' });
 const transport = new StdioServerTransport();
 await proxy.start(transport);
 ```
@@ -205,7 +203,7 @@ await proxy.start(transport);
 A pre-configured `Stitch` instance that reads `STITCH_API_KEY` from the environment. Lazily initialized on first use.
 
 ```ts
-import { stitch } from "@google/stitch-sdk";
+import { stitch } from '@google/stitch-sdk';
 
 // No setup needed — just use it
 const projects = await stitch.projects();
@@ -216,10 +214,10 @@ const projects = await stitch.projects();
 Static tool schemas with pre-parsed parameters. Available on `stitch.toolMap` or as a standalone export. No network call or API key needed.
 
 ```ts
-import { stitch } from "@google/stitch-sdk";
+import { stitch } from '@google/stitch-sdk';
 
 // Look up a tool
-const tool = stitch.toolMap.get("generate_screen_from_text");
+const tool = stitch.toolMap.get('generate_screen_from_text');
 if (tool) {
   // Pre-parsed params — no JSON Schema parsing needed
   const required = tool.params.filter((p) => p.required);
@@ -254,11 +252,11 @@ The raw `inputSchema` (`ToolInputSchema`) is also available on each entry. Stand
 ### Explicit Configuration
 
 ```ts
-import { Stitch, StitchToolClient } from "@google/stitch-sdk";
+import { Stitch, StitchToolClient } from '@google/stitch-sdk';
 
 const client = new StitchToolClient({
-  apiKey: "your-api-key",
-  baseUrl: "https://stitch.googleapis.com/mcp",
+  apiKey: 'your-api-key',
+  baseUrl: 'https://stitch.googleapis.com/mcp',
   timeout: 300_000,
 });
 
@@ -281,10 +279,10 @@ Authentication requires either `apiKey` or both `accessToken` and `projectId`.
 All domain class methods throw `StitchError` on failure:
 
 ```ts
-import { stitch, StitchError } from "@google/stitch-sdk";
+import { stitch, StitchError } from '@google/stitch-sdk';
 
 try {
-  const project = stitch.project("bad-id");
+  const project = stitch.project('bad-id');
   await project.screens();
 } catch (error) {
   if (error instanceof StitchError) {

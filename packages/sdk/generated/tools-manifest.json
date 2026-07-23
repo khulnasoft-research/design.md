@@ -192,11 +192,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -708,14 +704,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -984,13 +973,7 @@
         },
         "deviceType": {
           "description": "Optional. The device type of the project.",
-          "enum": [
-            "DEVICE_TYPE_UNSPECIFIED",
-            "MOBILE",
-            "DESKTOP",
-            "TABLET",
-            "AGNOSTIC"
-          ],
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
           "type": "string",
           "x-google-enum-descriptions": [
             "Unspecified device type.",
@@ -1278,11 +1261,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -1794,14 +1773,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -2070,13 +2042,7 @@
         },
         "deviceType": {
           "description": "Optional. The device type of the project.",
-          "enum": [
-            "DEVICE_TYPE_UNSPECIFIED",
-            "MOBILE",
-            "DESKTOP",
-            "TABLET",
-            "AGNOSTIC"
-          ],
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
           "type": "string",
           "x-google-enum-descriptions": [
             "Unspecified device type.",
@@ -2361,11 +2327,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -2877,14 +2839,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -2975,13 +2930,7 @@
             },
             "deviceType": {
               "description": "Optional. The device type of the project.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -3325,13 +3274,7 @@
           "properties": {
             "deviceType": {
               "description": "The device type of the screen.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -3540,13 +3483,7 @@
       "properties": {
         "deviceType": {
           "description": "The device type of the screen.",
-          "enum": [
-            "DEVICE_TYPE_UNSPECIFIED",
-            "MOBILE",
-            "DESKTOP",
-            "TABLET",
-            "AGNOSTIC"
-          ],
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
           "type": "string",
           "x-google-enum-descriptions": [
             "Unspecified device type.",
@@ -3602,13 +3539,7 @@
         },
         "deviceType": {
           "description": "The type of device that captured the screenshot, e.g., mobile or desktop.",
-          "enum": [
-            "DEVICE_TYPE_UNSPECIFIED",
-            "MOBILE",
-            "DESKTOP",
-            "TABLET",
-            "AGNOSTIC"
-          ],
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
           "type": "string",
           "x-google-enum-descriptions": [
             "Unspecified device type.",
@@ -3620,12 +3551,7 @@
         },
         "modelId": {
           "description": "Optional. The model to use for generation.",
-          "enum": [
-            "MODEL_ID_UNSPECIFIED",
-            "GEMINI_3_PRO",
-            "GEMINI_3_FLASH",
-            "GEMINI_3_1_PRO"
-          ],
+          "enum": ["MODEL_ID_UNSPECIFIED", "GEMINI_3_PRO", "GEMINI_3_FLASH", "GEMINI_3_1_PRO"],
           "type": "string",
           "x-google-enum-deprecated": [false, true, false, false],
           "x-google-enum-descriptions": [
@@ -3757,13 +3683,7 @@
           "properties": {
             "deviceType": {
               "description": "Optional. The device type of the design.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -3986,11 +3906,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -4502,14 +4418,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -4623,13 +4532,7 @@
             },
             "transition": {
               "description": "Optional. The transition animation to use when navigating to the target screen.",
-              "enum": [
-                "TRANSITION_TYPE_UNSPECIFIED",
-                "NONE",
-                "PUSH",
-                "PUSH_BACK",
-                "SLIDE_UP"
-              ],
+              "enum": ["TRANSITION_TYPE_UNSPECIFIED", "NONE", "PUSH", "PUSH_BACK", "SLIDE_UP"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified transition type, defaults to NONE.",
@@ -4764,13 +4667,7 @@
             },
             "deviceType": {
               "description": "Optional. The device type of the screen.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -4881,16 +4778,7 @@
                 "GEMINI_3_AGENT"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified agent type. The service will pick one.",
                 "Deprecated: Turbo agent is no longer supported.",
@@ -4953,12 +4841,7 @@
             },
             "status": {
               "description": "The status of the screen.",
-              "enum": [
-                "SCREEN_STATUS_UNSPECIFIED",
-                "IN_PROGRESS",
-                "COMPLETE",
-                "FAILED"
-              ],
+              "enum": ["SCREEN_STATUS_UNSPECIFIED", "IN_PROGRESS", "COMPLETE", "FAILED"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified screen status.",
@@ -5163,13 +5046,7 @@
       "properties": {
         "deviceType": {
           "description": "Optional. The type of device that captured the screenshot, e.g., mobile or desktop.",
-          "enum": [
-            "DEVICE_TYPE_UNSPECIFIED",
-            "MOBILE",
-            "DESKTOP",
-            "TABLET",
-            "AGNOSTIC"
-          ],
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
           "type": "string",
           "x-google-enum-descriptions": [
             "Unspecified device type.",
@@ -5181,12 +5058,7 @@
         },
         "modelId": {
           "description": "Optional. The model to use for generation.",
-          "enum": [
-            "MODEL_ID_UNSPECIFIED",
-            "GEMINI_3_PRO",
-            "GEMINI_3_FLASH",
-            "GEMINI_3_1_PRO"
-          ],
+          "enum": ["MODEL_ID_UNSPECIFIED", "GEMINI_3_PRO", "GEMINI_3_FLASH", "GEMINI_3_1_PRO"],
           "type": "string",
           "x-google-enum-deprecated": [false, true, false, false],
           "x-google-enum-descriptions": [
@@ -5325,13 +5197,7 @@
           "properties": {
             "deviceType": {
               "description": "Optional. The device type of the design.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -5554,11 +5420,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -6070,14 +5932,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -6191,13 +6046,7 @@
             },
             "transition": {
               "description": "Optional. The transition animation to use when navigating to the target screen.",
-              "enum": [
-                "TRANSITION_TYPE_UNSPECIFIED",
-                "NONE",
-                "PUSH",
-                "PUSH_BACK",
-                "SLIDE_UP"
-              ],
+              "enum": ["TRANSITION_TYPE_UNSPECIFIED", "NONE", "PUSH", "PUSH_BACK", "SLIDE_UP"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified transition type, defaults to NONE.",
@@ -6332,13 +6181,7 @@
             },
             "deviceType": {
               "description": "Optional. The device type of the screen.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -6449,16 +6292,7 @@
                 "GEMINI_3_AGENT"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified agent type. The service will pick one.",
                 "Deprecated: Turbo agent is no longer supported.",
@@ -6521,12 +6355,7 @@
             },
             "status": {
               "description": "The status of the screen.",
-              "enum": [
-                "SCREEN_STATUS_UNSPECIFIED",
-                "IN_PROGRESS",
-                "COMPLETE",
-                "FAILED"
-              ],
+              "enum": ["SCREEN_STATUS_UNSPECIFIED", "IN_PROGRESS", "COMPLETE", "FAILED"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified screen status.",
@@ -6756,12 +6585,7 @@
             },
             "creativeRange": {
               "description": "Optional. Creative range for variations. Default: EXPLORE",
-              "enum": [
-                "CREATIVE_RANGE_UNSPECIFIED",
-                "REFINE",
-                "EXPLORE",
-                "REIMAGINE"
-              ],
+              "enum": ["CREATIVE_RANGE_UNSPECIFIED", "REFINE", "EXPLORE", "REIMAGINE"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified creative range.",
@@ -6783,13 +6607,7 @@
       "properties": {
         "deviceType": {
           "description": "Optional. The type of device that captured the screenshot, e.g., mobile or desktop.",
-          "enum": [
-            "DEVICE_TYPE_UNSPECIFIED",
-            "MOBILE",
-            "DESKTOP",
-            "TABLET",
-            "AGNOSTIC"
-          ],
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
           "type": "string",
           "x-google-enum-descriptions": [
             "Unspecified device type.",
@@ -6801,12 +6619,7 @@
         },
         "modelId": {
           "description": "Optional. The model to use for generation.",
-          "enum": [
-            "MODEL_ID_UNSPECIFIED",
-            "GEMINI_3_PRO",
-            "GEMINI_3_FLASH",
-            "GEMINI_3_1_PRO"
-          ],
+          "enum": ["MODEL_ID_UNSPECIFIED", "GEMINI_3_PRO", "GEMINI_3_FLASH", "GEMINI_3_1_PRO"],
           "type": "string",
           "x-google-enum-deprecated": [false, true, false, false],
           "x-google-enum-descriptions": [
@@ -6836,12 +6649,7 @@
           "description": "Required. The variant options for generation, including the number of variants, creative range, and aspects to focus on."
         }
       },
-      "required": [
-        "projectId",
-        "selectedScreenIds",
-        "prompt",
-        "variantOptions"
-      ],
+      "required": ["projectId", "selectedScreenIds", "prompt", "variantOptions"],
       "type": "object"
     },
     "name": "generate_variants",
@@ -6954,13 +6762,7 @@
           "properties": {
             "deviceType": {
               "description": "Optional. The device type of the design.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -7183,11 +6985,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -7699,14 +7497,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -7820,13 +7611,7 @@
             },
             "transition": {
               "description": "Optional. The transition animation to use when navigating to the target screen.",
-              "enum": [
-                "TRANSITION_TYPE_UNSPECIFIED",
-                "NONE",
-                "PUSH",
-                "PUSH_BACK",
-                "SLIDE_UP"
-              ],
+              "enum": ["TRANSITION_TYPE_UNSPECIFIED", "NONE", "PUSH", "PUSH_BACK", "SLIDE_UP"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified transition type, defaults to NONE.",
@@ -7961,13 +7746,7 @@
             },
             "deviceType": {
               "description": "Optional. The device type of the screen.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -8078,16 +7857,7 @@
                 "GEMINI_3_AGENT"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified agent type. The service will pick one.",
                 "Deprecated: Turbo agent is no longer supported.",
@@ -8150,12 +7920,7 @@
             },
             "status": {
               "description": "The status of the screen.",
-              "enum": [
-                "SCREEN_STATUS_UNSPECIFIED",
-                "IN_PROGRESS",
-                "COMPLETE",
-                "FAILED"
-              ],
+              "enum": ["SCREEN_STATUS_UNSPECIFIED", "IN_PROGRESS", "COMPLETE", "FAILED"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified screen status.",
@@ -8687,11 +8452,7 @@
               "description": "Required. Specifies the mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. Specifies the variant of the dynamic color system.",
@@ -9032,14 +8793,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -9064,13 +8818,7 @@
               "type": "object"
             }
           },
-          "required": [
-            "colorMode",
-            "headlineFont",
-            "bodyFont",
-            "roundness",
-            "customColor"
-          ],
+          "required": ["colorMode", "headlineFont", "bodyFont", "roundness", "customColor"],
           "type": "object"
         },
         "Typography": {
@@ -9311,11 +9059,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -9827,14 +9571,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -9954,13 +9691,7 @@
       "properties": {
         "deviceType": {
           "description": "Optional. The device type of the screen.",
-          "enum": [
-            "DEVICE_TYPE_UNSPECIFIED",
-            "MOBILE",
-            "DESKTOP",
-            "TABLET",
-            "AGNOSTIC"
-          ],
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
           "type": "string",
           "x-google-enum-descriptions": [
             "Unspecified device type.",
@@ -10164,11 +9895,7 @@
               "description": "Required. Specifies the mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. Specifies the variant of the dynamic color system.",
@@ -10509,14 +10236,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -10541,13 +10261,7 @@
               "type": "object"
             }
           },
-          "required": [
-            "colorMode",
-            "headlineFont",
-            "bodyFont",
-            "roundness",
-            "customColor"
-          ],
+          "required": ["colorMode", "headlineFont", "bodyFont", "roundness", "customColor"],
           "type": "object"
         },
         "Typography": {
@@ -10793,11 +10507,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -11309,14 +11019,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -11644,11 +11347,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -12160,14 +11859,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -12402,13 +12094,7 @@
           "properties": {
             "deviceType": {
               "description": "Optional. The device type of the design.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -12631,11 +12317,7 @@
               "description": "Required. The mode of appearance of the design.",
               "enum": ["COLOR_MODE_UNSPECIFIED", "LIGHT", "DARK"],
               "type": "string",
-              "x-google-enum-descriptions": [
-                "Unspecified color mode.",
-                "Light mode.",
-                "Dark mode."
-              ]
+              "x-google-enum-descriptions": ["Unspecified color mode.", "Light mode.", "Dark mode."]
             },
             "colorVariant": {
               "description": "Optional. The variant of the dynamic color system.",
@@ -13147,14 +12829,7 @@
                 "ROUND_FULL"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified roundness.",
                 "Round 2. Unused.",
@@ -13268,13 +12943,7 @@
             },
             "transition": {
               "description": "Optional. The transition animation to use when navigating to the target screen.",
-              "enum": [
-                "TRANSITION_TYPE_UNSPECIFIED",
-                "NONE",
-                "PUSH",
-                "PUSH_BACK",
-                "SLIDE_UP"
-              ],
+              "enum": ["TRANSITION_TYPE_UNSPECIFIED", "NONE", "PUSH", "PUSH_BACK", "SLIDE_UP"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified transition type, defaults to NONE.",
@@ -13409,13 +13078,7 @@
             },
             "deviceType": {
               "description": "Optional. The device type of the screen.",
-              "enum": [
-                "DEVICE_TYPE_UNSPECIFIED",
-                "MOBILE",
-                "DESKTOP",
-                "TABLET",
-                "AGNOSTIC"
-              ],
+              "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified device type.",
@@ -13526,16 +13189,7 @@
                 "GEMINI_3_AGENT"
               ],
               "type": "string",
-              "x-google-enum-deprecated": [
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
-              ],
+              "x-google-enum-deprecated": [false, true, false, false, false, false, false, false],
               "x-google-enum-descriptions": [
                 "Unspecified agent type. The service will pick one.",
                 "Deprecated: Turbo agent is no longer supported.",
@@ -13598,12 +13252,7 @@
             },
             "status": {
               "description": "The status of the screen.",
-              "enum": [
-                "SCREEN_STATUS_UNSPECIFIED",
-                "IN_PROGRESS",
-                "COMPLETE",
-                "FAILED"
-              ],
+              "enum": ["SCREEN_STATUS_UNSPECIFIED", "IN_PROGRESS", "COMPLETE", "FAILED"],
               "type": "string",
               "x-google-enum-descriptions": [
                 "Unspecified screen status.",

@@ -53,10 +53,7 @@ export type {
   AuditLogQuery,
   AuditReport,
 } from '@scalify/enterprise-controls/audit';
-export {
-  InMemoryAuditLogStore,
-  DefaultAuditLogger,
-} from '@scalify/enterprise-controls/audit';
+export { InMemoryAuditLogStore, DefaultAuditLogger } from '@scalify/enterprise-controls/audit';
 
 export type {
   PolicyEngine,
@@ -64,10 +61,7 @@ export type {
   Policy,
   PolicyViolation,
 } from '@scalify/enterprise-controls/policy';
-export {
-  STANDARD_POLICIES,
-  DefaultPolicyEngine,
-} from '@scalify/enterprise-controls/policy';
+export { STANDARD_POLICIES, DefaultPolicyEngine } from '@scalify/enterprise-controls/policy';
 
 export type {
   ApprovalManager,
@@ -86,7 +80,4 @@ export type {
   VersionDiff,
   ChangeEntry,
 } from '@scalify/enterprise-controls/versioning';
-export {
-  VersionComparator,
-  DefaultVersionManager,
-} from '@scalify/enterprise-controls/versioning';
+export { VersionComparator, DefaultVersionManager } from '@scalify/enterprise-controls/versioning';

@@ -3,7 +3,12 @@
  * Handles all design.md file operations and state management
  */
 
-import type { DesignSystem, LintReport, ExportResult, DesignDiffReport } from '@scalify/design-core';
+import type {
+  DesignSystem,
+  LintReport,
+  ExportResult,
+  DesignDiffReport,
+} from '@scalify/design-core';
 
 export class DesignService {
   private designSystem: DesignSystem | null = null;

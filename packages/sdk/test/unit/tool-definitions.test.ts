@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, it, expect } from "vitest";
-import {
-  toolDefinitions,
-  type ToolDefinition,
-} from "../../generated/src/tool-definitions.js";
+import { describe, it, expect } from 'vitest';
+import { toolDefinitions, type ToolDefinition } from '../../generated/src/tool-definitions.js';
 
 /**
  * TDD Cycle 4: Generated Tool Definitions Shape
@@ -25,50 +22,50 @@ import {
  * matches expected tool names, and each definition has the required fields.
  * These tests guard against pipeline regressions.
  */
-describe("Generated toolDefinitions", () => {
-  it("is a non-empty array", () => {
+describe('Generated toolDefinitions', () => {
+  it('is a non-empty array', () => {
     expect(Array.isArray(toolDefinitions)).toBe(true);
     expect(toolDefinitions.length).toBeGreaterThan(0);
   });
 
-  it("contains all expected MCP tools", () => {
+  it('contains all expected MCP tools', () => {
     const names = toolDefinitions.map((t) => t.name);
-    expect(names).toContain("create_project");
-    expect(names).toContain("get_project");
-    expect(names).toContain("list_projects");
-    expect(names).toContain("list_screens");
-    expect(names).toContain("get_screen");
-    expect(names).toContain("generate_screen_from_text");
-    expect(names).toContain("edit_screens");
-    expect(names).toContain("generate_variants");
-    expect(names).toContain("create_design_system");
-    expect(names).toContain("list_design_systems");
-    expect(names).toContain("update_design_system");
-    expect(names).toContain("apply_design_system");
+    expect(names).toContain('create_project');
+    expect(names).toContain('get_project');
+    expect(names).toContain('list_projects');
+    expect(names).toContain('list_screens');
+    expect(names).toContain('get_screen');
+    expect(names).toContain('generate_screen_from_text');
+    expect(names).toContain('edit_screens');
+    expect(names).toContain('generate_variants');
+    expect(names).toContain('create_design_system');
+    expect(names).toContain('list_design_systems');
+    expect(names).toContain('update_design_system');
+    expect(names).toContain('apply_design_system');
     expect(names).toHaveLength(14);
   });
 
-  it("each definition has name, description, and inputSchema", () => {
+  it('each definition has name, description, and inputSchema', () => {
     for (const def of toolDefinitions) {
-      expect(typeof def.name).toBe("string");
+      expect(typeof def.name).toBe('string');
       expect(def.name.length).toBeGreaterThan(0);
 
-      expect(typeof def.description).toBe("string");
+      expect(typeof def.description).toBe('string');
       expect(def.description.length).toBeGreaterThan(0);
 
-      expect(typeof def.inputSchema).toBe("object");
+      expect(typeof def.inputSchema).toBe('object');
       expect(def.inputSchema).not.toBeNull();
     }
   });
 
-  it("inputSchema is valid JSON Schema with type:object", () => {
+  it('inputSchema is valid JSON Schema with type:object', () => {
     for (const def of toolDefinitions) {
-      expect(def.inputSchema).toHaveProperty("type", "object");
-      expect(def.inputSchema).toHaveProperty("properties");
+      expect(def.inputSchema).toHaveProperty('type', 'object');
+      expect(def.inputSchema).toHaveProperty('properties');
     }
   });
 
-  it("ToolDefinition type matches the shape", () => {
+  it('ToolDefinition type matches the shape', () => {
     // TypeScript structural check — if this compiles, the type is correct
     const def: ToolDefinition = toolDefinitions[0];
     const _name: string = def.name;

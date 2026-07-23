@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import swc from "@swc/core";
+import swc from '@swc/core';
 
 const HEX_COLOR_REGEX = /#[0-9A-Fa-f]{6}/g;
 
@@ -33,12 +33,10 @@ export interface ValidationResult {
  * - No hardcoded hex color values in className attributes
  * - Has a default export
  */
-export async function validateComponent(
-  code: string,
-): Promise<ValidationResult> {
+export async function validateComponent(code: string): Promise<ValidationResult> {
   let ast: swc.Module;
   try {
-    ast = await swc.parse(code, { syntax: "typescript", tsx: true });
+    ast = await swc.parse(code, { syntax: 'typescript', tsx: true });
   } catch (err: any) {
     return {
       valid: false,
@@ -54,30 +52,24 @@ export async function validateComponent(
   const hardcodedHexValues: string[] = [];
 
   const walk = (node: any) => {
-    if (!node || typeof node !== "object") return;
+    if (!node || typeof node !== 'object') return;
 
     // Check for *Props interface
-    if (
-      node.type === "TsInterfaceDeclaration" &&
-      node.id?.value?.endsWith("Props")
-    ) {
+    if (node.type === 'TsInterfaceDeclaration' && node.id?.value?.endsWith('Props')) {
       hasPropsInterface = true;
     }
 
     // Check for hardcoded hex in className
-    if (node.type === "JSXAttribute" && node.name?.value === "className") {
+    if (node.type === 'JSXAttribute' && node.name?.value === 'className') {
       const value = node.value;
-      if (
-        value?.type === "StringLiteral" &&
-        HEX_COLOR_REGEX.test(value.value)
-      ) {
+      if (value?.type === 'StringLiteral' && HEX_COLOR_REGEX.test(value.value)) {
         const matches = value.value.match(HEX_COLOR_REGEX);
         if (matches) hardcodedHexValues.push(...matches);
       }
       // Also check template literals
-      if (value?.type === "JSXExpressionContainer") {
+      if (value?.type === 'JSXExpressionContainer') {
         const expr = value.expression;
-        if (expr?.type === "TemplateLiteral") {
+        if (expr?.type === 'TemplateLiteral') {
           for (const quasi of expr.quasis || []) {
             if (quasi.raw && HEX_COLOR_REGEX.test(quasi.raw)) {
               const matches = quasi.raw.match(HEX_COLOR_REGEX);
@@ -89,10 +81,7 @@ export async function validateComponent(
     }
 
     // Check for default export
-    if (
-      node.type === "ExportDefaultExpression" ||
-      node.type === "ExportDefaultDeclaration"
-    ) {
+    if (node.type === 'ExportDefaultExpression' || node.type === 'ExportDefaultDeclaration') {
       hasDefaultExport = true;
     }
 
@@ -101,7 +90,7 @@ export async function validateComponent(
       const child = node[key];
       if (Array.isArray(child)) {
         child.forEach(walk);
-      } else if (child && typeof child === "object") {
+      } else if (child && typeof child === 'object') {
         walk(child);
       }
     }
@@ -109,8 +98,7 @@ export async function validateComponent(
 
   walk(ast);
 
-  const valid =
-    hasPropsInterface && hardcodedHexValues.length === 0 && hasDefaultExport;
+  const valid = hasPropsInterface && hardcodedHexValues.length === 0 && hasDefaultExport;
 
   return {
     valid,

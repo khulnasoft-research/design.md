@@ -26,7 +26,10 @@ export const MERGE_DEFINITION: ToolDefinition = {
 export const handleMergeDesignTokens: ToolHandler = async (id, args) => {
   const { paths, strategy } = args as { paths: string[]; strategy?: 'override' | 'combine' };
   const mergeStrategy = strategy || 'override';
-  const reports: Array<{ path: string; summary: { errors: number; warnings: number; infos: number } }> = [];
+  const reports: Array<{
+    path: string;
+    summary: { errors: number; warnings: number; infos: number };
+  }> = [];
   const merged = {
     colors: new Map(),
     typography: new Map(),
@@ -49,9 +52,7 @@ export const handleMergeDesignTokens: ToolHandler = async (id, args) => {
   }
 
   return {
-    merged: Object.fromEntries(
-      Object.entries(merged).map(([k, v]) => [k, Object.fromEntries(v)])
-    ),
+    merged: Object.fromEntries(Object.entries(merged).map(([k, v]) => [k, Object.fromEntries(v)])),
     reports,
   };
 };

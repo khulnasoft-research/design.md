@@ -12,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Stitch } from "../generated/src/stitch.js";
-import { StitchToolClient } from "./client.js";
-import { DEFAULT_STITCH_API_URL } from "./constants.js";
-import { toolMap, type ToolInfo } from "./tool-map.js";
+import { Stitch } from '../generated/src/stitch.js';
+import { StitchToolClient } from './client.js';
+import { DEFAULT_STITCH_API_URL } from './constants.js';
+import { toolMap, type ToolInfo } from './tool-map.js';
 
 /** Lazily-initialized default client */
 let _client: StitchToolClient | null = null;
 let _clientApiKey: string | undefined;
 
 /** Get or create the shared StitchToolClient instance. */
-export function getOrCreateClient(config?: {
-  apiKey?: string;
-}): StitchToolClient {
+export function getOrCreateClient(config?: { apiKey?: string }): StitchToolClient {
   const apiKey = config?.apiKey;
 
   // Invalidate cache when an explicit apiKey differs from the cached one
@@ -55,7 +53,7 @@ function getStitchInstance(): Stitch {
 }
 
 /** Methods that delegate to StitchToolClient instead of Stitch domain class. */
-const CLIENT_METHODS = new Set(["listTools", "callTool", "close"]);
+const CLIENT_METHODS = new Set(['listTools', 'callTool', 'close']);
 
 /**
  * Default Stitch instance using environment variables.
@@ -76,19 +74,19 @@ const CLIENT_METHODS = new Set(["listTools", "callTool", "close"]);
  */
 export const stitch = new Proxy<
   Stitch &
-    Pick<StitchToolClient, "listTools" | "callTool" | "close"> & {
+    Pick<StitchToolClient, 'listTools' | 'callTool' | 'close'> & {
       toolMap: ReadonlyMap<string, ToolInfo>;
     }
 >({} as any, {
   get(_target, prop: string | symbol) {
     // Static properties — no auth or lazy init needed
-    if (prop === "toolMap") return toolMap;
+    if (prop === 'toolMap') return toolMap;
 
     // Client methods → delegate to StitchToolClient
-    if (typeof prop === "string" && CLIENT_METHODS.has(prop)) {
+    if (typeof prop === 'string' && CLIENT_METHODS.has(prop)) {
       const client = getOrCreateClient();
       const value = client[prop as keyof StitchToolClient];
-      if (typeof value === "function") {
+      if (typeof value === 'function') {
         return value.bind(client);
       }
       return value;
@@ -96,7 +94,7 @@ export const stitch = new Proxy<
     // Domain methods → delegate to Stitch instance
     const instance = getStitchInstance();
     const value = instance[prop as keyof Stitch];
-    if (typeof value === "function") {
+    if (typeof value === 'function') {
       return value.bind(instance);
     }
     return value;

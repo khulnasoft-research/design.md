@@ -4,8 +4,7 @@ import type { ToolDefinition, ToolHandler } from '../types.js';
 
 export const EXPORT_DEFINITION: ToolDefinition = {
   name: 'export_design_md',
-  description:
-    'Export DESIGN.md tokens to Tailwind v3 JSON, Tailwind v4 CSS, or W3C DTCG format.',
+  description: 'Export DESIGN.md tokens to Tailwind v3 JSON, Tailwind v4 CSS, or W3C DTCG format.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -28,8 +27,7 @@ export const handleExportDesignMd: ToolHandler = async (id, args) => {
   const fmt = format as string;
 
   if (fmt === 'css-tailwind') {
-    const { TailwindV4EmitterHandler, serializeTailwindV4 } =
-      await import('@scalify/cli/linter');
+    const { TailwindV4EmitterHandler, serializeTailwindV4 } = await import('@scalify/cli/linter');
     const handler = new TailwindV4EmitterHandler();
     const result = handler.execute(report.designSystem);
     if (!result.success) throw new Error(result.error.message);

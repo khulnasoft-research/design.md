@@ -6,8 +6,8 @@ Source: tools-manifest.json (sha256:d831990b27e9...)
         domain-map.json     (sha256:715639788724...)
 Generated: 2026-06-01T04:11:36.685Z
  */
-import { type StitchToolClient } from "../../src/client.js";
-import { StitchError } from "../../src/spec/errors.js";
+import { type StitchToolClient } from '../../src/client.js';
+import { StitchError } from '../../src/spec/errors.js';
 import {
   ComponentTokens,
   DesignTheme,
@@ -37,12 +37,9 @@ import {
   SessionOutputComponent,
   VariantOptions,
   SelectedScreenInstance,
-} from "./types.generated.js";
-import {
-  UpdateDesignSystemResponse,
-  ApplyDesignSystemResponse,
-} from "./responses.generated.js";
-import { Screen } from "./screen.js";
+} from './types.generated.js';
+import { UpdateDesignSystemResponse, ApplyDesignSystemResponse } from './responses.generated.js';
+import { Screen } from './screen.js';
 
 /** Represents a visual theme or branding applied to projects and screens. */
 export class DesignSystem {
@@ -52,9 +49,9 @@ export class DesignSystem {
 
   constructor(
     private client: StitchToolClient,
-    data: any,
+    data: any
   ) {
-    this.data = typeof data === "object" ? data : undefined;
+    this.data = typeof data === 'object' ? data : undefined;
   }
 
   /** Convenience alias for assetId */
@@ -68,19 +65,15 @@ export class DesignSystem {
    */
   async update(designSystem: DesignSystemInput): Promise<DesignSystem> {
     try {
-      const raw = await this.client.callTool<UpdateDesignSystemResponse>(
-        "update_design_system",
-        {
-          name: `assets/${this.assetId}`,
-          projectId: this.projectId,
-          designSystem,
-        },
-      );
-      return this.client.entities.resolve(
-        DesignSystem,
-        ["projectId", "assetId"],
-        { ...raw, projectId: this.projectId },
-      );
+      const raw = await this.client.callTool<UpdateDesignSystemResponse>('update_design_system', {
+        name: `assets/${this.assetId}`,
+        projectId: this.projectId,
+        designSystem,
+      });
+      return this.client.entities.resolve(DesignSystem, ['projectId', 'assetId'], {
+        ...raw,
+        projectId: this.projectId,
+      });
     } catch (error) {
       throw StitchError.fromUnknown(error);
     }
@@ -90,27 +83,19 @@ export class DesignSystem {
    * Applies a design system to a list of screens. Use this tool when the user wants to update one or more screens to match the style of a design system.
    * Tool: apply_design_system
    */
-  async apply(
-    selectedScreenInstances: SelectedScreenInstance[],
-  ): Promise<Screen[]> {
+  async apply(selectedScreenInstances: SelectedScreenInstance[]): Promise<Screen[]> {
     try {
-      const raw = await this.client.callTool<ApplyDesignSystemResponse>(
-        "apply_design_system",
-        {
-          assetId: this.assetId,
-          projectId: this.projectId,
-          selectedScreenInstances,
-        },
-      );
-      return (
-        (raw.outputComponents || []).flatMap(
-          (a: any) => a?.design?.screens || [],
-        ) || []
-      ).map((item) =>
-        this.client.entities.resolve(Screen, ["projectId", "screenId"], {
-          ...item,
-          projectId: this.projectId,
-        }),
+      const raw = await this.client.callTool<ApplyDesignSystemResponse>('apply_design_system', {
+        assetId: this.assetId,
+        projectId: this.projectId,
+        selectedScreenInstances,
+      });
+      return ((raw.outputComponents || []).flatMap((a: any) => a?.design?.screens || []) || []).map(
+        (item) =>
+          this.client.entities.resolve(Screen, ['projectId', 'screenId'], {
+            ...item,
+            projectId: this.projectId,
+          })
       );
     } catch (error) {
       throw StitchError.fromUnknown(error);

@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, it, expect } from "vitest";
-import { repairSchema, repairToolSchemas } from "../../src/schema-repair.js";
-import type { Tool } from "@modelcontextprotocol/sdk/types.js";
+import { describe, it, expect } from 'vitest';
+import { repairSchema, repairToolSchemas } from '../../src/schema-repair.js';
+import type { Tool } from '@modelcontextprotocol/sdk/types.js';
 
-describe("repairSchema", () => {
-  it("should inject ScreenInstance $def when referenced but missing", () => {
+describe('repairSchema', () => {
+  it('should inject ScreenInstance $def when referenced but missing', () => {
     const schema: Record<string, any> = {
-      type: "object",
+      type: 'object',
       properties: {
         screens: {
-          type: "array",
-          items: { $ref: "#/$defs/ScreenInstance" },
+          type: 'array',
+          items: { $ref: '#/$defs/ScreenInstance' },
         },
       },
     };
@@ -32,33 +32,33 @@ describe("repairSchema", () => {
 
     expect(schema.$defs).toBeDefined();
     expect(schema.$defs.ScreenInstance).toBeDefined();
-    expect(schema.$defs.ScreenInstance.type).toBe("object");
+    expect(schema.$defs.ScreenInstance.type).toBe('object');
     expect(schema.$defs.ScreenInstance.properties.id).toEqual({
-      type: "string",
+      type: 'string',
     });
   });
 
-  it("should inject File $def when referenced but missing", () => {
+  it('should inject File $def when referenced but missing', () => {
     const schema: Record<string, any> = {
-      type: "object",
+      type: 'object',
       properties: {
-        attachment: { $ref: "#/$defs/File" },
+        attachment: { $ref: '#/$defs/File' },
       },
     };
 
     repairSchema(schema);
 
     expect(schema.$defs.File).toBeDefined();
-    expect(schema.$defs.File.properties.mimeType).toEqual({ type: "string" });
+    expect(schema.$defs.File.properties.mimeType).toEqual({ type: 'string' });
   });
 
-  it("should inject SelectedScreenInstance $def when referenced but missing", () => {
+  it('should inject SelectedScreenInstance $def when referenced but missing', () => {
     const schema: Record<string, any> = {
-      type: "object",
+      type: 'object',
       properties: {
         selected: {
-          type: "array",
-          items: { $ref: "#/$defs/SelectedScreenInstance" },
+          type: 'array',
+          items: { $ref: '#/$defs/SelectedScreenInstance' },
         },
       },
     };
@@ -67,22 +67,22 @@ describe("repairSchema", () => {
 
     expect(schema.$defs.SelectedScreenInstance).toBeDefined();
     expect(schema.$defs.SelectedScreenInstance.properties.screenId).toEqual({
-      type: "string",
+      type: 'string',
     });
   });
 
-  it("should NOT overwrite existing $defs", () => {
+  it('should NOT overwrite existing $defs', () => {
     const customDef = {
-      type: "object",
-      properties: { customField: { type: "string" } },
+      type: 'object',
+      properties: { customField: { type: 'string' } },
     };
     const schema: Record<string, any> = {
-      type: "object",
+      type: 'object',
       $defs: { ScreenInstance: customDef },
       properties: {
         screens: {
-          type: "array",
-          items: { $ref: "#/$defs/ScreenInstance" },
+          type: 'array',
+          items: { $ref: '#/$defs/ScreenInstance' },
         },
       },
     };
@@ -93,11 +93,11 @@ describe("repairSchema", () => {
     expect(schema.$defs.ScreenInstance).toBe(customDef);
   });
 
-  it("should handle schemas with no $refs gracefully", () => {
+  it('should handle schemas with no $refs gracefully', () => {
     const schema: Record<string, any> = {
-      type: "object",
+      type: 'object',
       properties: {
-        name: { type: "string" },
+        name: { type: 'string' },
       },
     };
 
@@ -107,11 +107,11 @@ describe("repairSchema", () => {
     expect(schema.$defs).toBeUndefined();
   });
 
-  it("should handle unknown $ref targets gracefully", () => {
+  it('should handle unknown $ref targets gracefully', () => {
     const schema: Record<string, any> = {
-      type: "object",
+      type: 'object',
       properties: {
-        widget: { $ref: "#/$defs/UnknownType" },
+        widget: { $ref: '#/$defs/UnknownType' },
       },
     };
 
@@ -122,19 +122,19 @@ describe("repairSchema", () => {
     expect(schema.$defs.UnknownType).toBeUndefined();
   });
 
-  it("should handle deeply nested $refs", () => {
+  it('should handle deeply nested $refs', () => {
     const schema: Record<string, any> = {
-      type: "object",
+      type: 'object',
       properties: {
         nested: {
-          type: "object",
+          type: 'object',
           properties: {
             deep: {
-              type: "object",
+              type: 'object',
               properties: {
                 screens: {
-                  type: "array",
-                  items: { $ref: "#/$defs/ScreenInstance" },
+                  type: 'array',
+                  items: { $ref: '#/$defs/ScreenInstance' },
                 },
               },
             },
@@ -148,15 +148,15 @@ describe("repairSchema", () => {
     expect(schema.$defs.ScreenInstance).toBeDefined();
   });
 
-  it("should handle multiple missing $refs in one schema", () => {
+  it('should handle multiple missing $refs in one schema', () => {
     const schema: Record<string, any> = {
-      type: "object",
+      type: 'object',
       properties: {
         screens: {
-          type: "array",
-          items: { $ref: "#/$defs/ScreenInstance" },
+          type: 'array',
+          items: { $ref: '#/$defs/ScreenInstance' },
         },
-        attachment: { $ref: "#/$defs/File" },
+        attachment: { $ref: '#/$defs/File' },
       },
     };
 
@@ -166,24 +166,24 @@ describe("repairSchema", () => {
     expect(schema.$defs.File).toBeDefined();
   });
 
-  it("should handle null/undefined input gracefully", () => {
+  it('should handle null/undefined input gracefully', () => {
     expect(repairSchema(null as any)).toBeNull();
     expect(repairSchema(undefined as any)).toBeUndefined();
   });
 });
 
-describe("repairToolSchemas", () => {
-  it("should repair inputSchema of each tool", () => {
+describe('repairToolSchemas', () => {
+  it('should repair inputSchema of each tool', () => {
     const tools: Tool[] = [
       {
-        name: "edit_screens",
-        description: "Edit screens",
+        name: 'edit_screens',
+        description: 'Edit screens',
         inputSchema: {
-          type: "object" as const,
+          type: 'object' as const,
           properties: {
             screens: {
-              type: "array",
-              items: { $ref: "#/$defs/ScreenInstance" },
+              type: 'array',
+              items: { $ref: '#/$defs/ScreenInstance' },
             },
           },
         },
@@ -196,18 +196,18 @@ describe("repairToolSchemas", () => {
     expect(schema.$defs.ScreenInstance).toBeDefined();
   });
 
-  it("should repair outputSchema of each tool", () => {
+  it('should repair outputSchema of each tool', () => {
     const tools: any[] = [
       {
-        name: "list_screens",
-        description: "List screens",
-        inputSchema: { type: "object", properties: {} },
+        name: 'list_screens',
+        description: 'List screens',
+        inputSchema: { type: 'object', properties: {} },
         outputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
             screens: {
-              type: "array",
-              items: { $ref: "#/$defs/ScreenInstance" },
+              type: 'array',
+              items: { $ref: '#/$defs/ScreenInstance' },
             },
           },
         },
@@ -219,12 +219,12 @@ describe("repairToolSchemas", () => {
     expect(tools[0].outputSchema.$defs.ScreenInstance).toBeDefined();
   });
 
-  it("should handle tools with no schemas gracefully", () => {
+  it('should handle tools with no schemas gracefully', () => {
     const tools: Tool[] = [
       {
-        name: "simple_tool",
-        description: "No schema",
-        inputSchema: { type: "object" as const },
+        name: 'simple_tool',
+        description: 'No schema',
+        inputSchema: { type: 'object' as const },
       },
     ];
 
@@ -232,7 +232,7 @@ describe("repairToolSchemas", () => {
     expect(() => repairToolSchemas(tools)).not.toThrow();
   });
 
-  it("should handle empty tools array", () => {
+  it('should handle empty tools array', () => {
     expect(() => repairToolSchemas([])).not.toThrow();
   });
 });

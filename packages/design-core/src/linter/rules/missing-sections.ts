@@ -4,8 +4,16 @@ import type { RuleDescriptor, RuleFinding } from './types.js';
 export function missingSections(state: DesignSystemState): RuleFinding[] {
   const findings: RuleFinding[] = [];
   const sections = [
-    { map: state.spacing, name: 'spacing', fallback: 'Layout spacing will fall back to agent defaults.' },
-    { map: state.rounded, name: 'rounded', fallback: 'Corner rounding will fall back to agent defaults.' },
+    {
+      map: state.spacing,
+      name: 'spacing',
+      fallback: 'Layout spacing will fall back to agent defaults.',
+    },
+    {
+      map: state.rounded,
+      name: 'rounded',
+      fallback: 'Corner rounding will fall back to agent defaults.',
+    },
   ];
 
   for (const { map, name, fallback } of sections) {

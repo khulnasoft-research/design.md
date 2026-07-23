@@ -1,6 +1,6 @@
 /**
  * Audit Logging System
- * 
+ *
  * Records all significant actions in the system for compliance and debugging.
  * Maintains immutable audit trail with full context.
  */
@@ -192,10 +192,7 @@ export class InMemoryAuditLogStore implements AuditLogStore {
     }
 
     // Sort by timestamp descending
-    results.sort(
-      (a, b) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-    );
+    results.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
     // Apply pagination
     const offset = params.offset || 0;
@@ -234,9 +231,7 @@ export class DefaultAuditLogger implements AuditLogger {
     this.store = store;
   }
 
-  async logSuccess(
-    entry: Omit<AuditLogEntry, 'id' | 'timestamp' | 'outcome'>
-  ): Promise<void> {
+  async logSuccess(entry: Omit<AuditLogEntry, 'id' | 'timestamp' | 'outcome'>): Promise<void> {
     await this.store.log({
       ...entry,
       outcome: 'success',
@@ -283,9 +278,8 @@ export class DefaultAuditLogger implements AuditLogger {
     const groupKey = params.groupBy || 'action';
 
     for (const log of logs) {
-      const key = groupKey === 'action' ? log.action : 
-                  groupKey === 'user' ? log.userId : 
-                  log.resource;
+      const key =
+        groupKey === 'action' ? log.action : groupKey === 'user' ? log.userId : log.resource;
       breakdown[key] = (breakdown[key] || 0) + 1;
     }
 

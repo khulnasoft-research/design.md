@@ -60,7 +60,7 @@ export function extractIntentions(prompt: string): string[] {
   ];
 
   const lowerPrompt = prompt.toLowerCase();
-  return keywords.filter(kw => lowerPrompt.includes(kw));
+  return keywords.filter((kw) => lowerPrompt.includes(kw));
 }
 
 /**
@@ -70,8 +70,7 @@ export function extractConstraints(prompt: string): string[] {
   const constraints: string[] = [];
 
   if (/wcag\s+aaa/i.test(prompt)) constraints.push('WCAG AAA');
-  if (/wcag\s+aa/i.test(prompt) && !constraints.includes('WCAG AAA'))
-    constraints.push('WCAG AA');
+  if (/wcag\s+aa/i.test(prompt) && !constraints.includes('WCAG AAA')) constraints.push('WCAG AA');
 
   if (/dark\s+mode/i.test(prompt)) constraints.push('Dark mode');
   if (/light\s+mode/i.test(prompt)) constraints.push('Light mode');
