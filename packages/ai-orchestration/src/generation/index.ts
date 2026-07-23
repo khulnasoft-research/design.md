@@ -116,86 +116,76 @@ const DESIGN_SYSTEM_SCHEMA = jsonSchema<{
   spacing: Record<string, { value: number; unit: string }>;
   components: Record<string, { properties: Record<string, string> }>;
 }>({
-  name: 'DesignSystem',
-  description:
-    'A complete design system with tokens for colors, typography, spacing, and components',
-  schema: {
-    type: 'object',
-    properties: {
-      name: { type: 'string', description: 'Name of the design system' },
-      description: { type: 'string', description: 'Description of the design system' },
-      colors: {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    description: { type: 'string' },
+    colors: {
+      type: 'object',
+      additionalProperties: {
         type: 'object',
-        description: 'Color tokens as hex values with RGB components',
-        additionalProperties: {
-          type: 'object',
-          properties: {
-            hex: { type: 'string', description: 'Hex color value, e.g. #0070f3' },
-            r: { type: 'number', description: 'Red channel 0-255' },
-            g: { type: 'number', description: 'Green channel 0-255' },
-            b: { type: 'number', description: 'Blue channel 0-255' },
+        properties: {
+          hex: { type: 'string' },
+          r: { type: 'number' },
+          g: { type: 'number' },
+          b: { type: 'number' },
+        },
+        required: ['hex', 'r', 'g', 'b'],
+      },
+    },
+    typography: {
+      type: 'object',
+      additionalProperties: {
+        type: 'object',
+        properties: {
+          fontFamily: { type: 'string' },
+          fontSize: {
+            type: 'object',
+            properties: { value: { type: 'number' }, unit: { type: 'string' } },
           },
-          required: ['hex', 'r', 'g', 'b'],
-        },
-      },
-      typography: {
-        type: 'object',
-        description: 'Typography tokens with font properties',
-        additionalProperties: {
-          type: 'object',
-          properties: {
-            fontFamily: { type: 'string', description: 'Font family name' },
-            fontSize: {
-              type: 'object',
-              properties: { value: { type: 'number' }, unit: { type: 'string' } },
-            },
-            fontWeight: { type: 'number', description: 'Font weight 100-900' },
-            lineHeight: {
-              type: 'object',
-              properties: { value: { type: 'number' }, unit: { type: 'string' } },
-            },
-            letterSpacing: {
-              type: 'object',
-              properties: { value: { type: 'number' }, unit: { type: 'string' } },
-            },
+          fontWeight: { type: 'number' },
+          lineHeight: {
+            type: 'object',
+            properties: { value: { type: 'number' }, unit: { type: 'string' } },
           },
-        },
-      },
-      rounded: {
-        type: 'object',
-        description: 'Border radius tokens',
-        additionalProperties: {
-          type: 'object',
-          properties: { value: { type: 'number' }, unit: { type: 'string' } },
-          required: ['value', 'unit'],
-        },
-      },
-      spacing: {
-        type: 'object',
-        description: 'Spacing scale tokens',
-        additionalProperties: {
-          type: 'object',
-          properties: { value: { type: 'number' }, unit: { type: 'string' } },
-          required: ['value', 'unit'],
-        },
-      },
-      components: {
-        type: 'object',
-        description: 'Component definitions with their properties',
-        additionalProperties: {
-          type: 'object',
-          properties: {
-            properties: {
-              type: 'object',
-              additionalProperties: { type: 'string' },
-            },
+          letterSpacing: {
+            type: 'object',
+            properties: { value: { type: 'number' }, unit: { type: 'string' } },
           },
-          required: ['properties'],
         },
       },
     },
-    required: ['name', 'description', 'colors', 'typography', 'rounded', 'spacing'],
+    rounded: {
+      type: 'object',
+      additionalProperties: {
+        type: 'object',
+        properties: { value: { type: 'number' }, unit: { type: 'string' } },
+        required: ['value', 'unit'],
+      },
+    },
+    spacing: {
+      type: 'object',
+      additionalProperties: {
+        type: 'object',
+        properties: { value: { type: 'number' }, unit: { type: 'string' } },
+        required: ['value', 'unit'],
+      },
+    },
+    components: {
+      type: 'object',
+      additionalProperties: {
+        type: 'object',
+        properties: {
+          properties: {
+            type: 'object',
+            additionalProperties: { type: 'string' },
+          },
+        },
+        required: ['properties'],
+      },
+    },
   },
+  required: ['name', 'description', 'colors', 'typography', 'rounded', 'spacing', 'components'],
 });
 
 // ── System prompt ──────────────────────────────────────────────────────────

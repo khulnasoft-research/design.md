@@ -90,73 +90,69 @@ const REFINED_DESIGN_SCHEMA = jsonSchema<{
   spacing: Record<string, { value: number; unit: string }>;
   components: Record<string, { properties: Record<string, string> }>;
 }>({
-  name: 'RefinedDesignSystem',
-  description: 'A refined design system with updated tokens based on user feedback',
-  schema: {
-    type: 'object',
-    properties: {
-      colors: {
+  type: 'object',
+  properties: {
+    colors: {
+      type: 'object',
+      additionalProperties: {
         type: 'object',
-        additionalProperties: {
-          type: 'object',
-          properties: {
-            hex: { type: 'string' },
-            r: { type: 'number' },
-            g: { type: 'number' },
-            b: { type: 'number' },
+        properties: {
+          hex: { type: 'string' },
+          r: { type: 'number' },
+          g: { type: 'number' },
+          b: { type: 'number' },
+        },
+        required: ['hex', 'r', 'g', 'b'],
+      },
+    },
+    typography: {
+      type: 'object',
+      additionalProperties: {
+        type: 'object',
+        properties: {
+          fontFamily: { type: 'string' },
+          fontSize: {
+            type: 'object',
+            properties: { value: { type: 'number' }, unit: { type: 'string' } },
           },
-          required: ['hex', 'r', 'g', 'b'],
-        },
-      },
-      typography: {
-        type: 'object',
-        additionalProperties: {
-          type: 'object',
-          properties: {
-            fontFamily: { type: 'string' },
-            fontSize: {
-              type: 'object',
-              properties: { value: { type: 'number' }, unit: { type: 'string' } },
-            },
-            fontWeight: { type: 'number' },
-            lineHeight: {
-              type: 'object',
-              properties: { value: { type: 'number' }, unit: { type: 'string' } },
-            },
-            letterSpacing: {
-              type: 'object',
-              properties: { value: { type: 'number' }, unit: { type: 'string' } },
-            },
+          fontWeight: { type: 'number' },
+          lineHeight: {
+            type: 'object',
+            properties: { value: { type: 'number' }, unit: { type: 'string' } },
           },
-        },
-      },
-      rounded: {
-        type: 'object',
-        additionalProperties: {
-          type: 'object',
-          properties: { value: { type: 'number' }, unit: { type: 'string' } },
-          required: ['value', 'unit'],
-        },
-      },
-      spacing: {
-        type: 'object',
-        additionalProperties: {
-          type: 'object',
-          properties: { value: { type: 'number' }, unit: { type: 'string' } },
-          required: ['value', 'unit'],
-        },
-      },
-      components: {
-        type: 'object',
-        additionalProperties: {
-          type: 'object',
-          properties: { properties: { type: 'object', additionalProperties: { type: 'string' } } },
-          required: ['properties'],
+          letterSpacing: {
+            type: 'object',
+            properties: { value: { type: 'number' }, unit: { type: 'string' } },
+          },
         },
       },
     },
-    required: ['colors', 'typography', 'rounded', 'spacing'],
+    rounded: {
+      type: 'object',
+      additionalProperties: {
+        type: 'object',
+        properties: { value: { type: 'number' }, unit: { type: 'string' } },
+        required: ['value', 'unit'],
+      },
+    },
+    spacing: {
+      type: 'object',
+      additionalProperties: {
+        type: 'object',
+        properties: { value: { type: 'number' }, unit: { type: 'string' } },
+        required: ['value', 'unit'],
+      },
+    },
+    components: {
+      type: 'object',
+      additionalProperties: {
+        type: 'object',
+        properties: { properties: { type: 'object', additionalProperties: { type: 'string' } } },
+        required: ['properties'],
+      },
+    },
   },
+  required: ['colors', 'typography', 'rounded', 'spacing', 'components'],
 });
 
 // ── Helpers ────────────────────────────────────────────────────────────────
