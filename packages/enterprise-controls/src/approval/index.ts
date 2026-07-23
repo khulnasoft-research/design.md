@@ -161,7 +161,7 @@ export class InMemoryApprovalWorkflowStore implements ApprovalWorkflowStore {
   private defaultWorkflows: Map<string, string> = new Map();
 
   async createWorkflow(workflow: Omit<ApprovalWorkflow, 'id'>): Promise<ApprovalWorkflow> {
-    const id = `workflow_${Date.now()}`;
+    const id = `workflow_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newWorkflow: ApprovalWorkflow = { ...workflow, id };
     this.workflows.set(id, newWorkflow);
 
@@ -206,7 +206,7 @@ export class InMemoryApprovalWorkflowStore implements ApprovalWorkflowStore {
   }
 
   async createApprovalRequest(request: Omit<ApprovalRequest, 'id'>): Promise<ApprovalRequest> {
-    const id = `approval_${Date.now()}`;
+    const id = `approval_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newRequest: ApprovalRequest = { ...request, id };
     this.approvalRequests.set(id, newRequest);
     return newRequest;

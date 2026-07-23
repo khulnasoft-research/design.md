@@ -233,7 +233,7 @@ export class DefaultPolicyEngine implements PolicyEngine {
         violations.push({
           policyId: policy.id,
           policyName: policy.name,
-          severity: 'warning',
+          severity: policy.severity,
           message: `Color palette exceeds limit (${colorCount} > ${maxColors})`,
           affectedItems: Array.from(designSystem.colors.keys()),
         });
@@ -257,7 +257,7 @@ export class DefaultPolicyEngine implements PolicyEngine {
         violations.push({
           policyId: policy.id,
           policyName: policy.name,
-          severity: 'warning',
+          severity: policy.severity,
           message: `Typography scales exceed limit (${typographyCount} > ${maxScales})`,
           affectedItems: Array.from(designSystem.typography.keys()),
         });
@@ -278,7 +278,7 @@ export class DefaultPolicyEngine implements PolicyEngine {
         violations.push({
           policyId: policy.id,
           policyName: policy.name,
-          severity: 'info',
+          severity: policy.severity,
           message: `Spacing tokens exceed recommended limit (${spacingCount} > ${maxScales})`,
           affectedItems: Array.from(designSystem.spacing.keys()),
         });
@@ -301,7 +301,7 @@ export class DefaultPolicyEngine implements PolicyEngine {
         violations.push({
           policyId: policy.id,
           policyName: policy.name,
-          severity: 'error',
+          severity: policy.severity,
           message: `Missing required components: ${missing.join(', ')}`,
           affectedItems: missing,
         });
@@ -316,16 +316,14 @@ export class DefaultPolicyEngine implements PolicyEngine {
     const pattern = policy.config.pattern as string;
     const regex = new RegExp(pattern);
 
-    let nonCompliantTokens: string[] = [];
+    const nonCompliantTokens: string[] = [];
 
-    // Check colors
     for (const [name] of designSystem.colors) {
       if (!regex.test(name)) {
         nonCompliantTokens.push(`color:${name}`);
       }
     }
 
-    // Check typography
     for (const [name] of designSystem.typography) {
       if (!regex.test(name)) {
         nonCompliantTokens.push(`typography:${name}`);
@@ -336,7 +334,7 @@ export class DefaultPolicyEngine implements PolicyEngine {
       violations.push({
         policyId: policy.id,
         policyName: policy.name,
-        severity: 'warning',
+        severity: policy.severity,
         message: `Tokens do not follow naming convention "${pattern}"`,
         affectedItems: nonCompliantTokens,
       });

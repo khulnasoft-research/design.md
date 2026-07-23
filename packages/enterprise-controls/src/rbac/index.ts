@@ -273,7 +273,7 @@ export const SYSTEM_PERMISSIONS = {
  * Default role-to-permission mappings
  */
 export const DEFAULT_ROLE_PERMISSIONS: Record<string, readonly string[]> = {
-  admin: Object.keys(SYSTEM_PERMISSIONS),
+  admin: Object.values(SYSTEM_PERMISSIONS).map((p) => p.id),
   designer_lead: [
     'prompt_create',
     'design_system_create',
@@ -315,11 +315,11 @@ export class DefaultRBACManager implements RBACManager {
   }
 
   private initializeDefaults() {
-    // Initialize system permissions to system roles
+    const allPermissions: Permission[] = Object.values(SYSTEM_PERMISSIONS);
     for (const [roleId, permissionIds] of Object.entries(DEFAULT_ROLE_PERMISSIONS)) {
-      const permissions = permissionIds.map(
-        (id) => SYSTEM_PERMISSIONS[id as keyof typeof SYSTEM_PERMISSIONS]
-      );
+      const permissions = permissionIds
+        .map((id) => allPermissions.find((p) => p.id === id))
+        .filter((p): p is Permission => p !== undefined);
       this.rolePermissions.set(roleId, permissions);
     }
   }
@@ -414,7 +414,7 @@ export class DefaultRBACManager implements RBACManager {
   }
 
   async createRole(role: Omit<Role, 'id' | 'isSystemRole'>): Promise<Role> {
-    const id = `custom_${Date.now()}`;
+    const id = `custom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newRole: Role = {
       ...role,
       id,
