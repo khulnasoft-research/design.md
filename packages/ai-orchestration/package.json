@@ -1,0 +1,51 @@
+{
+  "name": "@scalify/ai-orchestration",
+  "version": "1.0.0",
+  "description": "AI-powered prompt analysis and design-system generation",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./analyzer": {
+      "types": "./dist/analyzer/index.d.ts",
+      "import": "./dist/analyzer/index.js"
+    },
+    "./generator": {
+      "types": "./dist/generator/index.d.ts",
+      "import": "./dist/generator/index.js"
+    },
+    "./refiner": {
+      "types": "./dist/refiner/index.d.ts",
+      "import": "./dist/refiner/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "keywords": [
+    "design-system",
+    "ai",
+    "prompt-analysis",
+    "generation"
+  ],
+  "dependencies": {
+    "@scalify/design-core": "workspace:*",
+    "@scalify/orchestration": "workspace:*",
+    "ai": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  }
+}
