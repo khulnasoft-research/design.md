@@ -39,7 +39,7 @@
     "generation"
   ],
   "dependencies": {
-    "@scalify/design-core": "workspace:*",
+    "@scalify/design-core": "*",
     "ai": "latest"
   },
   "devDependencies": {
