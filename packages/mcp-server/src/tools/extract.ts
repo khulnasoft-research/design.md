@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { lint } from '@google/design.md/linter';
+import { lint } from '@scalify/cli/linter';
 import type { ToolDefinition, ToolHandler } from '../types.js';
 
 export const EXTRACT_DEFINITION: ToolDefinition = {

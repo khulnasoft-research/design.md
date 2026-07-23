@@ -37,8 +37,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@scalify/design-core": "workspace:*",
-    "@scalify/orchestration": "workspace:*"
+    "@scalify/design-core": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.3.3"

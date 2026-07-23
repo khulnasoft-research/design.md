@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { z } from "zod";
-import type { StitchToolClientSpec } from "./client.js";
 
 // ── Input ──────────────────────────────────────────────────────────────────────
 

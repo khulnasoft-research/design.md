@@ -51,7 +51,8 @@
     "prompt-to-design"
   ],
   "dependencies": {
-    "@scalify/design-core": "workspace:*"
+    "@scalify/design-core": "workspace:*",
+    "@scalify/enterprise-controls": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",

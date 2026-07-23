@@ -1,5 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import { lint } from '@google/design.md/linter';
+import { lint } from '@scalify/cli/linter';
 import { serializeFrontmatter } from '@scalify/design-core';
 import type { ToolDefinition, ToolHandler } from '../types.js';
 

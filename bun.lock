@@ -76,6 +76,17 @@
         "vitest": "^1.0.0",
       },
     },
+    "packages/enterprise-controls": {
+      "name": "@scalify/enterprise-controls",
+      "version": "0.1.0",
+      "dependencies": {
+        "@scalify/design-core": "workspace:*",
+        "@scalify/orchestration": "workspace:*",
+      },
+      "devDependencies": {
+        "typescript": "^5.3.3",
+      },
+    },
     "packages/mcp-server": {
       "name": "@scalify/mcp-server",
       "version": "0.1.0",
@@ -98,6 +109,7 @@
       "version": "1.0.0",
       "dependencies": {
         "@scalify/design-core": "workspace:*",
+        "@scalify/enterprise-controls": "workspace:*",
       },
       "devDependencies": {
         "@types/node": "^25.6.0",
@@ -526,6 +538,8 @@
     "@scalify/cli": ["@scalify/cli@workspace:packages/cli"],
 
     "@scalify/design-core": ["@scalify/design-core@workspace:packages/design-core"],
+
+    "@scalify/enterprise-controls": ["@scalify/enterprise-controls@workspace:packages/enterprise-controls"],
 
     "@scalify/mcp-server": ["@scalify/mcp-server@workspace:packages/mcp-server"],
 
@@ -1966,6 +1980,8 @@
     "@scalify/design-core/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "@scalify/design-core/zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
+
+    "@scalify/enterprise-controls/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "@scalify/mcp-server/@types/node": ["@types/node@20.19.39", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-orrrD74MBUyK8jOAD/r0+lfa1I2MO6I+vAkmAWzMYbCcgrN4lCrmK52gRFQq/JRxfYPfonkr4b0jcY7Olqdqbw=="],
 

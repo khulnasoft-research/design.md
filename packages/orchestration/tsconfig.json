@@ -20,7 +20,9 @@
     "sourceMap": true,
     "paths": {
       "@scalify/design-core": ["../design-core/dist/index.d.ts"],
-      "@scalify/design-core/*": ["../design-core/dist/*.d.ts"]
+      "@scalify/design-core/*": ["../design-core/dist/*.d.ts"],
+      "@scalify/enterprise-controls": ["../enterprise-controls/dist/index.d.ts"],
+      "@scalify/enterprise-controls/*": ["../enterprise-controls/dist/*.d.ts"]
     }
   },
   "include": ["src/**/*.ts"],
