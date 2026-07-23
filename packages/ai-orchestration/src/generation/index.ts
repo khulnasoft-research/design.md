@@ -1,8 +1,17 @@
 import type { LanguageModel } from 'ai';
 import { generateObject, jsonSchema } from 'ai';
-import type { PromptRequest, DesignSystemDraft } from '@scalify/design-core';
+import type {
+  PromptRequest,
+  DesignSystemDraft,
+  DesignSystemState,
+  ResolvedColor,
+  ResolvedDimension,
+  ResolvedTypography,
+  ResolvedValue,
+  ComponentDef,
+} from '@scalify/design-core';
 import type { PromptAnalysis } from '../analyzer/index.js';
-import { generateId } from './utils.js';
+import { generateId } from '../utils.js';
 
 /**
  * Configuration for AI generation
@@ -108,7 +117,8 @@ const DESIGN_SYSTEM_SCHEMA = jsonSchema<{
   components: Record<string, { properties: Record<string, string> }>;
 }>({
   name: 'DesignSystem',
-  description: 'A complete design system with tokens for colors, typography, spacing, and components',
+  description:
+    'A complete design system with tokens for colors, typography, spacing, and components',
   schema: {
     type: 'object',
     properties: {
@@ -292,17 +302,8 @@ function convertJsonToDesignState(raw: {
   rounded: Record<string, { value: number; unit: string }>;
   spacing: Record<string, { value: number; unit: string }>;
   components: Record<string, { properties: Record<string, string> }>;
-}): {
-  name: string;
-  description: string;
-  colors: Map<string, { type: 'color'; hex: string; r: number; g: number; b: number; a: number; luminance: number }>;
-  typography: Map<string, { type: 'typography'; fontFamily?: string; fontSize?: { value: number; unit: string }; fontWeight?: number; lineHeight?: { value: number; unit: string }; letterSpacing?: { value: number; unit: string } }>;
-  rounded: Map<string, { type: 'dimension'; value: number; unit: string }>;
-  spacing: Map<string, { type: 'dimension'; value: number; unit: string }>;
-  components: Map<string, { properties: Map<string, string>; unresolvedRefs: string[] }>;
-  symbolTable: Map<string, string>;
-} {
-  const colors = new Map<string, { type: 'color'; hex: string; r: number; g: number; b: number; a: number; luminance: number }>();
+}): DesignSystemState {
+  const colors = new Map<string, ResolvedColor>();
   for (const [name, c] of Object.entries(raw.colors)) {
     const rgb = c.r !== undefined ? c : hexToRgb(c.hex);
     colors.set(name, {
@@ -316,34 +317,38 @@ function convertJsonToDesignState(raw: {
     });
   }
 
-  const typography = new Map<string, { type: 'typography'; fontFamily?: string; fontSize?: { value: number; unit: string }; fontWeight?: number; lineHeight?: { value: number; unit: string }; letterSpacing?: { value: number; unit: string } }>();
+  const typography = new Map<string, ResolvedTypography>();
   for (const [name, t] of Object.entries(raw.typography)) {
     typography.set(name, {
       type: 'typography',
       fontFamily: t.fontFamily,
-      fontSize: t.fontSize,
+      fontSize: t.fontSize
+        ? { type: 'dimension', value: t.fontSize.value, unit: t.fontSize.unit }
+        : undefined,
       fontWeight: t.fontWeight,
-      lineHeight: t.lineHeight,
-      letterSpacing: t.letterSpacing,
+      lineHeight: t.lineHeight
+        ? { type: 'dimension', value: t.lineHeight.value, unit: t.lineHeight.unit }
+        : undefined,
+      letterSpacing: t.letterSpacing
+        ? { type: 'dimension', value: t.letterSpacing.value, unit: t.letterSpacing.unit }
+        : undefined,
     });
   }
 
-  const rounded = new Map<string, { type: 'dimension'; value: number; unit: string }>();
+  const rounded = new Map<string, ResolvedDimension>();
   for (const [name, d] of Object.entries(raw.rounded)) {
     rounded.set(name, { type: 'dimension', value: d.value, unit: d.unit });
   }
 
-  const spacing = new Map<string, { type: 'dimension'; value: number; unit: string }>();
+  const spacing = new Map<string, ResolvedDimension>();
   for (const [name, d] of Object.entries(raw.spacing)) {
     spacing.set(name, { type: 'dimension', value: d.value, unit: d.unit });
   }
 
-  const components = new Map<string, { properties: Map<string, string>; unresolvedRefs: string[] }>();
+  const components = new Map<string, ComponentDef>();
   for (const [name, comp] of Object.entries(raw.components)) {
-    const props = new Map<string, string>();
-    for (const [k, v] of Object.entries(comp.properties)) {
-      props.set(k, v);
-    }
+    const props = new Map<string, ResolvedValue>();
+    for (const [k, v] of Object.entries(comp.properties)) props.set(k, v);
     components.set(name, { properties: props, unresolvedRefs: [] });
   }
 
@@ -365,13 +370,11 @@ export class DefaultAIGenerationService implements AIGenerationService {
   private model: LanguageModel;
   private systemPrompt: string;
   private temperature: number;
-  private maxTokens: number;
 
   constructor(config: AIGenerationConfig) {
     this.model = config.model;
     this.systemPrompt = config.systemPrompt || buildSystemPrompt();
     this.temperature = config.temperature ?? 0.7;
-    this.maxTokens = config.maxTokens ?? 4000;
   }
 
   async generate(request: GenerationRequest): Promise<GenerationResult> {
@@ -385,7 +388,8 @@ export class DefaultAIGenerationService implements AIGenerationService {
         model: this.model,
         schema: DESIGN_SYSTEM_SCHEMA,
         schemaName: 'DesignSystem',
-        schemaDescription: 'A complete design system with color, typography, spacing, and component tokens',
+        schemaDescription:
+          'A complete design system with color, typography, spacing, and component tokens',
         system: this.systemPrompt,
         prompt: userPrompt,
         temperature: this.temperature,
@@ -399,10 +403,7 @@ export class DefaultAIGenerationService implements AIGenerationService {
         tenantId: request.originalPrompt.tenantId,
         version: '1.0.0-draft',
         createdAt: new Date().toISOString(),
-        designSystem: {
-          ...designState,
-          symbolTable: new Map(),
-        },
+        designSystem: designState,
         validationReport: {
           findings: [],
           summary: { errors: 0, warnings: 0, infos: 0 },
@@ -410,24 +411,26 @@ export class DefaultAIGenerationService implements AIGenerationService {
           wcagCompliance: { aa: true, aaa: false },
         },
         generationMetadata: {
-          modelUsed: this.model.modelId,
-          tokensUsed: (usage.promptTokens ?? 0) + (usage.completionTokens ?? 0),
+          modelUsed: typeof this.model === 'string' ? this.model : this.model.modelId,
+          tokensUsed: (usage.inputTokens ?? 0) + (usage.outputTokens ?? 0),
           promptHash: `hash_${Date.now()}`,
           generationTime: Date.now() - startTime,
         },
       };
 
-      notes.push(`Generated ${designState.colors.size} colors, ${designState.typography.size} typography tokens, ${designState.spacing.size} spacing tokens`);
+      notes.push(
+        `Generated ${designState.colors.size} colors, ${designState.typography.size} typography tokens, ${designState.spacing.size} spacing tokens`
+      );
 
       return {
         draft,
         metadata: {
-          model: this.model.modelId,
+          model: typeof this.model === 'string' ? this.model : this.model.modelId,
           generatedAt: new Date().toISOString(),
           tokensUsed: {
-            input: usage.promptTokens ?? 0,
-            output: usage.completionTokens ?? 0,
-            total: (usage.promptTokens ?? 0) + (usage.completionTokens ?? 0),
+            input: usage.inputTokens ?? 0,
+            output: usage.outputTokens ?? 0,
+            total: (usage.inputTokens ?? 0) + (usage.outputTokens ?? 0),
           },
           duration: Date.now() - startTime,
           notes,
@@ -446,8 +449,6 @@ export class DefaultAIGenerationService implements AIGenerationService {
   ): Promise<GenerationResult> {
     const startTime = Date.now();
 
-    // For streaming, we use generateObject (no streaming variant for object generation)
-    // and simulate chunk delivery
     onChunk('Starting design system generation...\n');
 
     const result = await this.generate(request);

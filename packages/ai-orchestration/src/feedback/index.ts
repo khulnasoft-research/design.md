@@ -1,6 +1,14 @@
 import type { LanguageModel } from 'ai';
 import { generateObject, jsonSchema } from 'ai';
 import type { DesignSystemDraft, IterationFeedback, IterationResult } from '@scalify/design-core';
+import type {
+  ResolvedColor,
+  ResolvedDimension,
+  ResolvedTypography,
+  ResolvedValue,
+  ComponentDef,
+  DesignSystemState,
+} from '@scalify/design-core';
 
 /**
  * Feedback processing request
@@ -12,7 +20,7 @@ export interface FeedbackProcessingRequest {
   /** User feedback */
   feedback: IterationFeedback;
 
-  /** Language model to use for refinement */
+  /** Model to use for refinement */
   model: string;
 
   /** Temperature for generation */
@@ -106,10 +114,19 @@ const REFINED_DESIGN_SCHEMA = jsonSchema<{
           type: 'object',
           properties: {
             fontFamily: { type: 'string' },
-            fontSize: { type: 'object', properties: { value: { type: 'number' }, unit: { type: 'string' } } },
+            fontSize: {
+              type: 'object',
+              properties: { value: { type: 'number' }, unit: { type: 'string' } },
+            },
             fontWeight: { type: 'number' },
-            lineHeight: { type: 'object', properties: { value: { type: 'number' }, unit: { type: 'string' } } },
-            letterSpacing: { type: 'object', properties: { value: { type: 'number' }, unit: { type: 'string' } } },
+            lineHeight: {
+              type: 'object',
+              properties: { value: { type: 'number' }, unit: { type: 'string' } },
+            },
+            letterSpacing: {
+              type: 'object',
+              properties: { value: { type: 'number' }, unit: { type: 'string' } },
+            },
           },
         },
       },
@@ -161,7 +178,7 @@ function relativeLuminance(r: number, g: number, b: number): number {
   return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
 }
 
-function serializeDesignSystemToJson(ds: DesignSystemDraft['designSystem']): string {
+function serializeDesignSystemToJson(ds: DesignSystemState): string {
   const obj: Record<string, unknown> = {};
 
   if (ds.name) obj.name = ds.name;
@@ -194,10 +211,7 @@ function serializeDesignSystemToJson(ds: DesignSystemDraft['designSystem']): str
   return JSON.stringify(obj, null, 2);
 }
 
-function buildFeedbackPrompt(
-  currentDesignSystem: string,
-  feedback: IterationFeedback
-): string {
+function buildFeedbackPrompt(currentDesignSystem: string, feedback: IterationFeedback): string {
   const parts: string[] = [];
 
   parts.push('You are refining an existing design system based on user feedback.');
@@ -216,16 +230,19 @@ function buildFeedbackPrompt(
 
   if (feedback.proposedChanges) {
     if (feedback.proposedChanges.colors) {
-      parts.push(`Explicit color changes requested: ${JSON.stringify(feedback.proposedChanges.colors)}`);
+      parts.push(
+        `Explicit color changes requested: ${JSON.stringify(feedback.proposedChanges.colors)}`
+      );
     }
     if (feedback.proposedChanges.typography) {
-      parts.push(`Explicit typography changes requested: ${JSON.stringify(feedback.proposedChanges.typography)}`);
-    }
-    if (feedback.proposedChanges.spacing) {
-      parts.push(`Explicit spacing changes requested: ${JSON.stringify(feedback.proposedChanges.spacing)}`);
+      parts.push(
+        `Explicit typography changes requested: ${JSON.stringify(feedback.proposedChanges.typography)}`
+      );
     }
     if (feedback.proposedChanges.components) {
-      parts.push(`Explicit component changes requested: ${JSON.stringify(feedback.proposedChanges.components)}`);
+      parts.push(
+        `Explicit component changes requested: ${JSON.stringify(feedback.proposedChanges.components)}`
+      );
     }
   }
 
@@ -238,6 +255,100 @@ function buildFeedbackPrompt(
   parts.push('- Return the complete updated design system as JSON');
 
   return parts.join('\n');
+}
+
+// ── Type helpers for JSON → DesignSystemState conversion ───────────────────
+
+type ResolvedDimensionType = { type: 'dimension'; value: number; unit: string };
+type ResolvedTypographyType = {
+  type: 'typography';
+  fontFamily?: string;
+  fontSize?: ResolvedDimensionType;
+  fontWeight?: number;
+  lineHeight?: ResolvedDimensionType;
+  letterSpacing?: ResolvedDimensionType;
+};
+
+function convertRefinedToDesignState(
+  raw: {
+    colors: Record<string, { hex: string; r: number; g: number; b: number }>;
+    typography: Record<
+      string,
+      {
+        fontFamily?: string;
+        fontSize?: { value: number; unit: string };
+        fontWeight?: number;
+        lineHeight?: { value: number; unit: string };
+        letterSpacing?: { value: number; unit: string };
+      }
+    >;
+    rounded: Record<string, { value: number; unit: string }>;
+    spacing: Record<string, { value: number; unit: string }>;
+    components: Record<string, { properties: Record<string, string> }>;
+  },
+  ds: DesignSystemState
+): DesignSystemState {
+  const colors = new Map<string, ResolvedColor>();
+  for (const [name, c] of Object.entries(raw.colors)) {
+    const rgb = c.r !== undefined ? c : hexToRgb(c.hex);
+    colors.set(name, {
+      type: 'color',
+      hex: c.hex,
+      r: rgb.r,
+      g: rgb.g,
+      b: rgb.b,
+      a: 1,
+      luminance: relativeLuminance(rgb.r, rgb.g, rgb.b),
+    });
+  }
+
+  const typography = new Map<string, ResolvedTypography>();
+  for (const [name, t] of Object.entries(raw.typography)) {
+    const entry: ResolvedTypographyType = {
+      type: 'typography',
+      fontFamily: t.fontFamily,
+      fontSize: t.fontSize
+        ? { type: 'dimension', value: t.fontSize.value, unit: t.fontSize.unit }
+        : undefined,
+      fontWeight: t.fontWeight,
+      lineHeight: t.lineHeight
+        ? { type: 'dimension', value: t.lineHeight.value, unit: t.lineHeight.unit }
+        : undefined,
+      letterSpacing: t.letterSpacing
+        ? { type: 'dimension', value: t.letterSpacing.value, unit: t.letterSpacing.unit }
+        : undefined,
+    };
+    typography.set(name, entry as unknown as ResolvedTypography);
+  }
+
+  const rounded = new Map<string, ResolvedDimension>();
+  for (const [name, d] of Object.entries(raw.rounded)) {
+    rounded.set(name, { type: 'dimension', value: d.value, unit: d.unit });
+  }
+
+  const spacing = new Map<string, ResolvedDimension>();
+  for (const [name, d] of Object.entries(raw.spacing)) {
+    spacing.set(name, { type: 'dimension', value: d.value, unit: d.unit });
+  }
+
+  const components = new Map<string, ComponentDef>();
+  for (const [name, comp] of Object.entries(raw.components)) {
+    const props = new Map<string, ResolvedValue>();
+    for (const [k, v] of Object.entries(comp.properties)) props.set(k, v);
+    components.set(name, { properties: props, unresolvedRefs: [] });
+  }
+
+  return {
+    name: ds.name,
+    description: ds.description,
+    colors,
+    typography,
+    rounded,
+    spacing,
+    components,
+    symbolTable: ds.symbolTable,
+    sections: ds.sections,
+  };
 }
 
 // ── DefaultFeedbackProcessor ───────────────────────────────────────────────
@@ -266,8 +377,9 @@ export class DefaultFeedbackProcessor implements FeedbackProcessor {
       try {
         return await this.processWithLLM(request, languageModel, startTime, notes, changes);
       } catch (error) {
-        notes.push(`LLM refinement failed, falling back to pattern matching: ${error instanceof Error ? error.message : String(error)}`);
-        // Fall through to pattern matching
+        notes.push(
+          `LLM refinement failed, falling back to pattern matching: ${error instanceof Error ? error.message : String(error)}`
+        );
       }
     }
 
@@ -276,7 +388,7 @@ export class DefaultFeedbackProcessor implements FeedbackProcessor {
       return this.processWithPatterns(request, startTime, notes, changes);
     }
 
-    // No processing available
+    // No processing available — return unchanged
     const updatedDraft = this.cloneDraft(request.draft);
     return this.buildResult(updatedDraft, request, startTime, notes, changes);
   }
@@ -302,87 +414,40 @@ export class DefaultFeedbackProcessor implements FeedbackProcessor {
       schema: REFINED_DESIGN_SCHEMA,
       schemaName: 'RefinedDesignSystem',
       schemaDescription: 'Refined design system tokens based on user feedback',
-      system: 'You are a design system expert. Refine the given design system based on user feedback. Apply changes precisely while maintaining visual cohesion.',
+      system:
+        'You are a design system expert. Refine the given design system based on user feedback. Apply changes precisely while maintaining visual cohesion.',
       prompt,
       temperature: request.temperature ?? 0.5,
     });
 
-    // Convert the refined JSON back to DesignSystemState
-    const updatedDraft = this.cloneDraft(request.draft);
-
-    // Count changes before applying
+    // Count changes
     for (const name of Object.keys(object.colors)) {
-      if (updatedDraft.designSystem.colors.has(name)) {
-        changes.colorsModified++;
-      }
+      if (request.draft.designSystem.colors.has(name)) changes.colorsModified++;
     }
     for (const name of Object.keys(object.typography)) {
-      if (updatedDraft.designSystem.typography.has(name)) {
-        changes.typographyModified++;
-      }
+      if (request.draft.designSystem.typography.has(name)) changes.typographyModified++;
     }
     for (const name of Object.keys(object.spacing)) {
-      if (updatedDraft.designSystem.spacing.has(name)) {
-        changes.spacingModified++;
-      }
+      if (request.draft.designSystem.spacing.has(name)) changes.spacingModified++;
     }
     for (const name of Object.keys(object.components)) {
-      if (updatedDraft.designSystem.components.has(name)) {
+      if (request.draft.designSystem.components.has(name)) {
         changes.componentsModified++;
       } else {
         changes.componentsAdded++;
       }
     }
 
-    // Apply refined colors
-    updatedDraft.designSystem.colors.clear();
-    for (const [name, c] of Object.entries(object.colors)) {
-      const rgb = c.r !== undefined ? c : hexToRgb(c.hex);
-      updatedDraft.designSystem.colors.set(name, {
-        type: 'color',
-        hex: c.hex,
-        r: rgb.r,
-        g: rgb.g,
-        b: rgb.b,
-        a: 1,
-        luminance: relativeLuminance(rgb.r, rgb.g, rgb.b),
-      });
-    }
+    const updatedDesignState = convertRefinedToDesignState(object, request.draft.designSystem);
 
-    // Apply refined typography
-    updatedDraft.designSystem.typography.clear();
-    for (const [name, t] of Object.entries(object.typography)) {
-      updatedDraft.designSystem.typography.set(name, {
-        type: 'typography',
-        fontFamily: t.fontFamily,
-        fontSize: t.fontSize,
-        fontWeight: t.fontWeight,
-        lineHeight: t.lineHeight,
-        letterSpacing: t.letterSpacing,
-      });
-    }
+    const updatedDraft: DesignSystemDraft = {
+      ...request.draft,
+      designSystem: updatedDesignState,
+    };
 
-    // Apply refined rounded
-    updatedDraft.designSystem.rounded.clear();
-    for (const [name, d] of Object.entries(object.rounded)) {
-      updatedDraft.designSystem.rounded.set(name, { type: 'dimension', value: d.value, unit: d.unit });
-    }
-
-    // Apply refined spacing
-    updatedDraft.designSystem.spacing.clear();
-    for (const [name, d] of Object.entries(object.spacing)) {
-      updatedDraft.designSystem.spacing.set(name, { type: 'dimension', value: d.value, unit: d.unit });
-    }
-
-    // Apply refined components
-    updatedDraft.designSystem.components.clear();
-    for (const [name, comp] of Object.entries(object.components)) {
-      const props = new Map<string, string>();
-      for (const [k, v] of Object.entries(comp.properties)) props.set(k, v);
-      updatedDraft.designSystem.components.set(name, { properties: props, unresolvedRefs: [] });
-    }
-
-    notes.push(`LLM refinement complete: ${(usage.promptTokens ?? 0) + (usage.completionTokens ?? 0)} tokens used`);
+    notes.push(
+      `LLM refinement complete: ${(usage.inputTokens ?? 0) + (usage.outputTokens ?? 0)} tokens used`
+    );
 
     return this.buildResult(updatedDraft, request, startTime, notes, changes);
   }
@@ -430,13 +495,6 @@ export class DefaultFeedbackProcessor implements FeedbackProcessor {
         }
       }
 
-      if (proposed.spacing) {
-        for (const [key, val] of Object.entries(proposed.spacing)) {
-          updatedDraft.designSystem.spacing.set(key, val as { type: 'dimension'; value: number; unit: string });
-          changes.spacingModified++;
-        }
-      }
-
       if (proposed.components) {
         for (const [key, val] of Object.entries(proposed.components)) {
           if (updatedDraft.designSystem.components.has(key)) {
@@ -455,11 +513,15 @@ export class DefaultFeedbackProcessor implements FeedbackProcessor {
     // Pattern-match on feedback message
     if (request.feedback.feedback.message) {
       const message = request.feedback.feedback.message.toLowerCase();
-      if (message.includes('darker')) changes.colorsModified++;
-      if (message.includes('lighter')) changes.colorsModified++;
-      if (message.includes('larger') || message.includes('bigger')) changes.typographyModified++;
-      if (message.includes('smaller')) changes.typographyModified++;
-      if (message.includes('spacing') || message.includes('margin') || message.includes('padding')) {
+      if (message.includes('darker') || message.includes('lighter')) changes.colorsModified++;
+      if (message.includes('larger') || message.includes('bigger') || message.includes('smaller')) {
+        changes.typographyModified++;
+      }
+      if (
+        message.includes('spacing') ||
+        message.includes('margin') ||
+        message.includes('padding')
+      ) {
         changes.spacingModified++;
       }
     }
