@@ -51,7 +51,7 @@
     "build": "tsc && cp src/spec-config.yaml dist/spec-config.yaml",
     "dev": "tsc --watch",
     "type-check": "tsc --noEmit",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "keywords": [
     "design-system",

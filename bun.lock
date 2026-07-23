@@ -80,10 +80,11 @@
       "name": "@scalify/enterprise-controls",
       "version": "0.1.0",
       "dependencies": {
-        "@scalify/design-core": "workspace:*",
+        "@scalify/design-core": "*",
       },
       "devDependencies": {
         "typescript": "^5.3.3",
+        "vitest": "^1.0.0",
       },
     },
     "packages/mcp-server": {
