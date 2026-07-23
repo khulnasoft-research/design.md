@@ -19,6 +19,9 @@ export type {
 } from './feedback/index.js';
 export { DefaultFeedbackProcessor, createFeedbackProcessor } from './feedback/index.js';
 
+// Utilities
+export { generateId } from './utils.js';
+
 // Re-export workflow types from design-core
 export type {
   PromptRequest,
