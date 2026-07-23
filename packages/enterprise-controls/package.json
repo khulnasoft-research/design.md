@@ -1,0 +1,56 @@
+{
+  "name": "@scalify/enterprise-controls",
+  "version": "0.1.0",
+  "description": "Enterprise governance, RBAC, audit logging, and policy controls for design.md platform",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./rbac": {
+      "types": "./dist/rbac/index.d.ts",
+      "import": "./dist/rbac/index.js"
+    },
+    "./policy": {
+      "types": "./dist/policy/index.d.ts",
+      "import": "./dist/policy/index.js"
+    },
+    "./audit": {
+      "types": "./dist/audit/index.d.ts",
+      "import": "./dist/audit/index.js"
+    },
+    "./approval": {
+      "types": "./dist/approval/index.d.ts",
+      "import": "./dist/approval/index.js"
+    },
+    "./versioning": {
+      "types": "./dist/versioning/index.d.ts",
+      "import": "./dist/versioning/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@scalify/design-core": "workspace:*",
+    "@scalify/orchestration": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "design-system",
+    "rbac",
+    "audit",
+    "governance",
+    "approval",
+    "policy"
+  ],
+  "author": "Scalify Team",
+  "license": "MIT"
+}
