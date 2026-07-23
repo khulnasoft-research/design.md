@@ -14,13 +14,13 @@
       "types": "./dist/analyzer/index.d.ts",
       "import": "./dist/analyzer/index.js"
     },
-    "./generator": {
-      "types": "./dist/generator/index.d.ts",
-      "import": "./dist/generator/index.js"
+    "./generation": {
+      "types": "./dist/generation/index.d.ts",
+      "import": "./dist/generation/index.js"
     },
-    "./refiner": {
-      "types": "./dist/refiner/index.d.ts",
-      "import": "./dist/refiner/index.js"
+    "./feedback": {
+      "types": "./dist/feedback/index.d.ts",
+      "import": "./dist/feedback/index.js"
     }
   },
   "files": [
