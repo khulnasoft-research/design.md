@@ -1,30 +1,4 @@
 {
-  "buildCommand": "turbo build",
-  "devCommand": "turbo dev",
-  "installCommand": "bun install",
-  "framework": "nextjs",
-  "regions": ["iad1", "sfo1"],
-  "env": {
-    "TURBO_TEAM": "@vercel",
-    "TURBO_REMOTE_ONLY": "true"
-  },
-  "functions": {
-    "api/**": {
-      "maxDuration": 60,
-      "memory": 1024
-    }
-  },
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/playground",
-      "permanent": false
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
-    }
-  ]
+  "rootDirectory": "packages/playground",
+  "installCommand": "bun install"
 }
