@@ -1,11 +1,13 @@
 /**
  * Orchestration Service
  *
- * Coordinates the workflow from prompt intake through design-system generation,
- * iteration, approval, and export. Acts as the central hub for all workflow operations.
+ * Coordinates the full workflow from prompt intake through AI-powered
+ * design-system generation, iteration, approval, and export.
  *
- * Integrates enterprise controls: RBAC, audit logging, policy enforcement,
- * approval routing, and versioning — all optional for backwards compatibility.
+ * Integrates:
+ * - AI orchestration (prompt analysis + draft generation + feedback processing)
+ * - Enterprise controls (RBAC, audit, policy, approval, versioning)
+ * - Real export pipeline (Tailwind v3/v4, DTCG, CSS)
  */
 
 import type {
@@ -24,6 +26,13 @@ import type { WorkflowStore } from '../storage/index.js';
 import type { ValidationService } from '../validation/index.js';
 import { generateId } from '../utils.js';
 
+import type { AIGenerationService, GenerationRequest } from '@scalify/ai-orchestration/generation';
+import type {
+  FeedbackProcessor,
+  FeedbackProcessingRequest,
+} from '@scalify/ai-orchestration/feedback';
+import { analyzePrompt } from '@scalify/ai-orchestration/analyzer';
+
 import type {
   RBACManager,
   UserWithRoles,
@@ -37,6 +46,11 @@ import type { VersionManager } from '@scalify/enterprise-controls/versioning';
 export interface OrchestrationServiceOptions {
   store: WorkflowStore;
   validation: ValidationService;
+
+  /** AI generation service for draft creation */
+  aiGeneration?: AIGenerationService;
+  /** Feedback processor for draft refinement */
+  feedbackProcessor?: FeedbackProcessor;
 
   /** Role-based access control manager */
   rbac?: RBACManager;
@@ -53,6 +67,8 @@ export interface OrchestrationServiceOptions {
 export class OrchestrationService {
   private store: WorkflowStore;
   private validation: ValidationService;
+  private aiGeneration?: AIGenerationService;
+  private feedbackProcessor?: FeedbackProcessor;
   private rbac?: RBACManager;
   private auditLogger?: AuditLogger;
   private policyEngine?: PolicyEngine;
@@ -62,6 +78,8 @@ export class OrchestrationService {
   constructor(options: OrchestrationServiceOptions) {
     this.store = options.store;
     this.validation = options.validation;
+    this.aiGeneration = options.aiGeneration;
+    this.feedbackProcessor = options.feedbackProcessor;
     this.rbac = options.rbac;
     this.auditLogger = options.auditLogger;
     this.policyEngine = options.policyEngine;
@@ -125,8 +143,10 @@ export class OrchestrationService {
   // ── Workflow Methods ──────────────────────────────────────────────────────
 
   /**
-   * Submit a design prompt and initiate draft generation.
-   * Returns immediately with a queued status; actual generation happens asynchronously.
+   * Submit a design prompt and automatically generate a draft.
+   *
+   * Full pipeline: analyze prompt → generate design system → validate → store draft.
+   * When aiGeneration is not configured, returns queued status for async processing.
    */
   async submitPrompt(request: PromptRequest, user?: UserWithRoles): Promise<PromptAcknowledgment> {
     const startTime = Date.now();
@@ -147,6 +167,91 @@ export class OrchestrationService {
       createdAt: new Date().toISOString(),
     });
 
+    // If AI generation is available, run the full pipeline synchronously
+    if (this.aiGeneration) {
+      try {
+        // Step 1: Analyze the prompt
+        const analysis = await analyzePrompt(request);
+
+        // Step 2: Generate a design system draft
+        const generationRequest: GenerationRequest = {
+          analyzedPrompt: analysis,
+          originalPrompt: request,
+          config: {
+            model: 'default',
+            temperature: 0.7,
+            maxTokens: 4000,
+          },
+        };
+
+        const result = await this.aiGeneration.generate(generationRequest);
+
+        // Step 3: Validate the generated draft
+        const validationReport = await this.validation.validate(result.draft.designSystem);
+
+        // Step 4: Store the draft
+        const draft: DesignSystemDraft = {
+          ...result.draft,
+          id: generateId(),
+          promptId,
+          tenantId: request.tenantId,
+          validationReport,
+        };
+
+        await this.store.saveDraft(draft);
+
+        // Audit: log successful generation
+        await this.logAudit({
+          tenantId: request.tenantId,
+          userId: user?.userId || request.metadata?.createdBy || 'system',
+          action: 'prompt.generate',
+          resource: 'prompt',
+          resourceId: promptId,
+          outcome: 'success',
+          changes: {
+            after: {
+              draftId: draft.id,
+              model: result.metadata.model,
+              duration: result.metadata.duration,
+            },
+          },
+          duration: Date.now() - startTime,
+        });
+
+        return {
+          promptId,
+          timestamp: new Date().toISOString(),
+          tenantId: request.tenantId,
+          status: 'draft_ready',
+          message: 'Draft generated and ready for review.',
+          estimatedDraftCompletionTime: Date.now() - startTime,
+        };
+      } catch (error) {
+        // Audit: log generation failure
+        await this.logAudit({
+          tenantId: request.tenantId,
+          userId: user?.userId || request.metadata?.createdBy || 'system',
+          action: 'prompt.generate',
+          resource: 'prompt',
+          resourceId: promptId,
+          outcome: 'failure',
+          failureReason: error instanceof Error ? error.message : String(error),
+          changes: {},
+          duration: Date.now() - startTime,
+        });
+
+        return {
+          promptId,
+          timestamp: new Date().toISOString(),
+          tenantId: request.tenantId,
+          status: 'error',
+          message: `Draft generation failed: ${error instanceof Error ? error.message : String(error)}`,
+          estimatedDraftCompletionTime: 0,
+        };
+      }
+    }
+
+    // No AI generation configured — return queued status
     const ack: PromptAcknowledgment = {
       promptId,
       timestamp: new Date().toISOString(),
@@ -156,7 +261,6 @@ export class OrchestrationService {
       estimatedDraftCompletionTime: 120000,
     };
 
-    // Audit: log prompt submission
     await this.logAudit({
       tenantId: request.tenantId,
       userId: user?.userId || request.metadata?.createdBy || 'system',
@@ -179,7 +283,6 @@ export class OrchestrationService {
     tenantId: string,
     user?: UserWithRoles
   ): Promise<PromptAcknowledgment> {
-    // RBAC: check prompt:read permission
     if (user) {
       await this.enforcePermission(user, 'prompt', 'read', {
         resourceId: promptId,
@@ -191,7 +294,6 @@ export class OrchestrationService {
       throw new Error(`Prompt not found: ${promptId}`);
     }
 
-    // Check if a draft exists for this prompt
     const draft = await this.store.getDraftByPromptId(promptId);
 
     return {
@@ -211,7 +313,6 @@ export class OrchestrationService {
     tenantId: string,
     user?: UserWithRoles
   ): Promise<DesignSystemDraft> {
-    // RBAC: check design_system:read permission
     if (user) {
       await this.enforcePermission(user, 'design_system', 'read', {
         resourceId: draftId,
@@ -237,6 +338,9 @@ export class OrchestrationService {
 
   /**
    * Submit feedback to refine, regenerate, or reject a draft.
+   *
+   * When feedbackProcessor is configured, applies intelligent refinement
+   * to the design system. Otherwise, records the feedback as an iteration.
    */
   async submitFeedback(
     feedback: IterationFeedback,
@@ -244,33 +348,73 @@ export class OrchestrationService {
   ): Promise<IterationResult> {
     const startTime = Date.now();
 
-    // RBAC: check design_system:update permission
     if (user) {
       await this.enforcePermission(user, 'design_system', 'update', {
         resourceId: feedback.draftId,
       });
     }
 
-    // Retrieve the current draft
     const draft = await this.getDraft(feedback.draftId, feedback.tenantId);
-
-    // Store the feedback as an iteration record
     const iterationNumber = await this.store.getNextIterationNumber(feedback.draftId);
-
-    // Build iteration history
     const history = await this.store.getIterations(feedback.draftId);
 
+    let updatedDesignSystem = draft.designSystem;
+    let changesSummary = {
+      changedTokens: [] as string[],
+      addedTokens: [] as string[],
+      removedTokens: [] as string[],
+      affectedComponents: [] as string[],
+    };
+
+    // If feedback processor is available, apply intelligent refinement
+    if (this.feedbackProcessor) {
+      try {
+        const processorRequest: FeedbackProcessingRequest = {
+          draft,
+          feedback,
+          model: 'default',
+        };
+
+        const result = await this.feedbackProcessor.processFeedback(processorRequest);
+        updatedDesignSystem = result.updatedDraft.designSystem;
+
+        // Build changes summary from processor metadata
+        const c = result.metadata.changes;
+        if (c.colorsModified > 0) changesSummary.changedTokens.push(`colors(${c.colorsModified})`);
+        if (c.typographyModified > 0)
+          changesSummary.changedTokens.push(`typography(${c.typographyModified})`);
+        if (c.spacingModified > 0)
+          changesSummary.changedTokens.push(`spacing(${c.spacingModified})`);
+        if (c.componentsAdded > 0)
+          changesSummary.addedTokens.push(`components(${c.componentsAdded})`);
+        if (c.componentsModified > 0)
+          changesSummary.changedTokens.push(`components(${c.componentsModified})`);
+      } catch {
+        // Fall through to basic iteration recording
+      }
+    }
+
+    // Re-validate after feedback
+    const validationReport = await this.validation.validate(updatedDesignSystem);
+
+    // Update the draft with the refined design system
+    const updatedDraft: DesignSystemDraft = {
+      ...draft,
+      designSystem: updatedDesignSystem,
+      validationReport,
+    };
+    await this.store.updateDraft(updatedDraft);
+
+    // Store the iteration record
     const iterationRecord = {
       iterationNumber,
       feedback,
-      designSystem: draft.designSystem,
-      validationReport: draft.validationReport,
+      designSystem: updatedDesignSystem,
+      validationReport,
       timestamp: new Date().toISOString(),
     };
-
     await this.store.saveIteration(feedback.draftId, iterationRecord);
 
-    // Audit: log feedback submission
     await this.logAudit({
       tenantId: feedback.tenantId,
       userId: user?.userId || 'system',
@@ -282,6 +426,7 @@ export class OrchestrationService {
         after: {
           feedbackType: feedback.feedback.type,
           message: feedback.feedback.message,
+          iterationNumber,
         },
       },
       duration: Date.now() - startTime,
@@ -292,14 +437,9 @@ export class OrchestrationService {
       iterationNumber,
       tenantId: feedback.tenantId,
       createdAt: new Date().toISOString(),
-      designSystem: draft.designSystem,
-      changesSummary: {
-        changedTokens: [],
-        addedTokens: [],
-        removedTokens: [],
-        affectedComponents: [],
-      },
-      validationReport: draft.validationReport,
+      designSystem: updatedDesignSystem,
+      changesSummary,
+      validationReport,
       iterationHistory: [...history, iterationRecord],
     };
   }
@@ -314,9 +454,9 @@ export class OrchestrationService {
   /**
    * Submit an approval or rejection for a draft.
    *
-   * When enterprise approval manager is configured, routes through the
-   * multi-step approval workflow. When policy engine is configured,
-   * enforces organizational policies before approval.
+   * Validates the draft, enforces policies, and records the approval.
+   * When approvalManager is configured, delegates to enterprise workflow.
+   * When versionManager is configured, auto-versions on approval.
    */
   async submitApproval(
     request: ApprovalRequest,
@@ -324,7 +464,6 @@ export class OrchestrationService {
   ): Promise<ApprovalConfirmation> {
     const startTime = Date.now();
 
-    // RBAC: check approval_request:create or approval_request:approve permission
     if (user) {
       const permission =
         request.action === 'reject' ? 'approval_request_reject' : 'approval_request_approve';
@@ -333,13 +472,11 @@ export class OrchestrationService {
       });
     }
 
-    // Retrieve the draft
     const draft = await this.getDraft(request.draftId, request.tenantId);
 
     // Validate the draft before approval
     const validationReport = await this.validation.validate(draft.designSystem);
 
-    // Block approval if validation has errors
     if (validationReport.summary.errors > 0) {
       const errorFindings = validationReport.findings
         .filter((f) => f.severity === 'error')
@@ -359,7 +496,7 @@ export class OrchestrationService {
       throw new Error(`Design system has validation errors: ${errorFindings}`);
     }
 
-    // Policy enforcement: run policy checks before approval
+    // Policy enforcement
     if (this.policyEngine) {
       const policyResult = await this.policyEngine.enforce(draft.designSystem);
       if (!policyResult.compliant) {
@@ -383,10 +520,8 @@ export class OrchestrationService {
       }
     }
 
-    // Create a design system ID (replaces draft ID)
     const designSystemId = generateId();
 
-    // Build approval record
     const approvalRecord = {
       user: request.metadata?.approvedBy || user?.userId || 'system',
       action: request.action,
@@ -394,9 +529,7 @@ export class OrchestrationService {
       notes: request.approverNotes,
     };
 
-    // If rejecting, don't save approval
     if (request.action === 'reject') {
-      // Audit: log rejection
       await this.logAudit({
         tenantId: request.tenantId,
         userId: user?.userId || 'system',
@@ -421,9 +554,8 @@ export class OrchestrationService {
       };
     }
 
-    // Enterprise approval recording: delegate to approval manager if available
+    // Enterprise approval recording
     if (this.approvalManager) {
-      // Record the approval decision in the enterprise workflow system
       const enterpriseRequest = await this.approvalManager.submitForApproval(
         designSystemId,
         request.tenantId,
@@ -447,7 +579,7 @@ export class OrchestrationService {
       });
     }
 
-    // Save approval (simple flow)
+    // Save approval
     await this.store.saveApproval(
       {
         designSystemId,
@@ -476,7 +608,6 @@ export class OrchestrationService {
       );
     }
 
-    // Audit: log approval
     await this.logAudit({
       tenantId: request.tenantId,
       userId: user?.userId || 'system',
@@ -510,6 +641,9 @@ export class OrchestrationService {
 
   /**
    * Export a published design system to a target format.
+   *
+   * Uses the CLI linter emitters to produce real Tailwind v3/v4,
+   * DTCG, or CSS output from the design system tokens.
    */
   async exportDesignSystem(
     request: ExportRequest,
@@ -517,22 +651,95 @@ export class OrchestrationService {
   ): Promise<WorkflowExportResult> {
     const startTime = Date.now();
 
-    // RBAC: check design_system:export permission
     if (user) {
       await this.enforcePermission(user, 'design_system', 'export', {
         resourceId: request.designSystemId,
       });
     }
 
-    // Retrieve the design system
     const approval = await this.store.getApproval(request.designSystemId, request.tenantId);
     if (!approval) {
       throw new Error(`Design system not found: ${request.designSystemId}`);
     }
 
-    const exportId = generateId();
+    const draft = await this.store.getDraft(approval.draftId, request.tenantId);
+    if (!draft) {
+      throw new Error(`Draft not found: ${approval.draftId}`);
+    }
 
-    // Audit: log export
+    const exportId = generateId();
+    const designSystem = draft.designSystem;
+
+    // Generate real export content using CLI linter emitters
+    let content: string;
+
+    switch (request.format) {
+      case 'tailwind-v4': {
+        const { TailwindV4EmitterHandler, serializeTailwindV4 } =
+          await import('@scalify/cli/linter');
+        const handler = new TailwindV4EmitterHandler();
+        const result = handler.execute(designSystem);
+        if (!result.success) {
+          throw new Error(result.error.message);
+        }
+        content = serializeTailwindV4(result.data.theme);
+        break;
+      }
+
+      case 'tailwind-v3': {
+        const { TailwindEmitterHandler } = await import('@scalify/cli/linter');
+        const handler = new TailwindEmitterHandler();
+        const result = handler.execute(designSystem);
+        if (!result.success) {
+          throw new Error(result.error.message);
+        }
+        content = JSON.stringify(result.data, null, 2);
+        break;
+      }
+
+      case 'dtcg': {
+        const { DtcgEmitterHandler } = await import('@scalify/cli/linter');
+        const handler = new DtcgEmitterHandler();
+        const result = handler.execute(designSystem);
+        if (!result.success) {
+          throw new Error(result.error.message);
+        }
+        content = JSON.stringify(result.data, null, 2);
+        break;
+      }
+
+      case 'css': {
+        // Generate CSS custom properties from design tokens
+        const lines: string[] = [':root {'];
+
+        for (const [name, color] of designSystem.colors) {
+          lines.push(`  --color-${name}: ${color.hex};`);
+        }
+
+        for (const [name, typo] of designSystem.typography) {
+          const props = Object.entries(typo)
+            .filter(([k]) => k !== 'type')
+            .map(([k, v]) => `  --typography-${name}-${k}: ${v};`);
+          lines.push(...props);
+        }
+
+        for (const [name, dim] of designSystem.rounded) {
+          lines.push(`  --rounded-${name}: ${dim.value}${dim.unit};`);
+        }
+
+        for (const [name, dim] of designSystem.spacing) {
+          lines.push(`  --spacing-${name}: ${dim.value}${dim.unit};`);
+        }
+
+        lines.push('}');
+        content = lines.join('\n');
+        break;
+      }
+
+      default:
+        throw new Error(`Unsupported export format: ${request.format}`);
+    }
+
     await this.logAudit({
       tenantId: request.tenantId,
       userId: user?.userId || request.metadata?.exportedBy || 'system',
@@ -540,7 +747,7 @@ export class OrchestrationService {
       resource: 'design_system',
       resourceId: request.designSystemId,
       outcome: 'success',
-      changes: { after: { format: request.format, exportId } },
+      changes: { after: { format: request.format, exportId, contentLength: content.length } },
       duration: Date.now() - startTime,
     });
 
@@ -549,10 +756,10 @@ export class OrchestrationService {
       exportId,
       format: request.format,
       timestamp: new Date().toISOString(),
-      content: '/* Export content would be generated by design-core export module */',
+      content,
       auditTrail: {
-        promptId: '',
-        iterationCount: 0,
+        promptId: draft.promptId,
+        iterationCount: (await this.store.getIterations(approval.draftId)).length,
         approvalChain: approval.approvalChain?.map((r) => r.user) || [],
         exportedAt: new Date().toISOString(),
         exportedBy: user?.userId || request.metadata?.exportedBy || 'system',
@@ -600,7 +807,6 @@ export class OrchestrationService {
 
   /**
    * Enforce organizational policies on a design system.
-   * Returns policy violations without modifying state.
    */
   async enforcePolicies(
     designSystemId: string,

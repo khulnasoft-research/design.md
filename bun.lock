@@ -21,7 +21,6 @@
       "version": "1.0.0",
       "dependencies": {
         "@scalify/design-core": "workspace:*",
-        "@scalify/orchestration": "workspace:*",
         "ai": "latest",
       },
       "devDependencies": {
@@ -108,6 +107,8 @@
       "name": "@scalify/orchestration",
       "version": "1.0.0",
       "dependencies": {
+        "@scalify/ai-orchestration": "workspace:*",
+        "@scalify/cli": "workspace:*",
         "@scalify/design-core": "workspace:*",
         "@scalify/enterprise-controls": "workspace:*",
       },

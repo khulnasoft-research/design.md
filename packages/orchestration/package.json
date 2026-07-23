@@ -52,7 +52,9 @@
   ],
   "dependencies": {
     "@scalify/design-core": "workspace:*",
-    "@scalify/enterprise-controls": "workspace:*"
+    "@scalify/enterprise-controls": "workspace:*",
+    "@scalify/ai-orchestration": "workspace:*",
+    "@scalify/cli": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",

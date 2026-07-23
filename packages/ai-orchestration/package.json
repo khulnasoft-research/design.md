@@ -40,7 +40,6 @@
   ],
   "dependencies": {
     "@scalify/design-core": "workspace:*",
-    "@scalify/orchestration": "workspace:*",
     "ai": "latest"
   },
   "devDependencies": {

@@ -33,6 +33,19 @@ export type {
   PublishedDesignSystem,
 } from '@scalify/design-core';
 
+// Re-export AI orchestration for convenience
+export type {
+  AIGenerationService,
+  GenerationRequest,
+  GenerationResult,
+} from '@scalify/ai-orchestration/generation';
+export type {
+  FeedbackProcessor,
+  FeedbackProcessingRequest,
+  FeedbackProcessingResult,
+} from '@scalify/ai-orchestration/feedback';
+export { analyzePrompt } from '@scalify/ai-orchestration/analyzer';
+
 // Re-export enterprise controls for convenience
 export type {
   RBACManager,
