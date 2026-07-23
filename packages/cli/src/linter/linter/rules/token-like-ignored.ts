@@ -29,7 +29,13 @@ const CSS_DIMENSION_RE = /^-?\d*\.?\d+[a-zA-Z%]+$/;
  * Typography-flavored property names that strongly suggest this map holds
  * design tokens rather than arbitrary metadata.
  */
-const TYPOGRAPHY_PROPS = new Set(['fontFamily', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing']);
+const TYPOGRAPHY_PROPS = new Set([
+  'fontFamily',
+  'fontSize',
+  'fontWeight',
+  'lineHeight',
+  'letterSpacing',
+]);
 
 /**
  * Determine whether a plain object looks like a design-token map.

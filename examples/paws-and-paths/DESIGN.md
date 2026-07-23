@@ -1,96 +1,96 @@
 ---
 name: Paws & Paths
 colors:
-  surface: "#f9f9ff"
-  surface-dim: "#d3daea"
-  surface-bright: "#f9f9ff"
-  surface-container-lowest: "#ffffff"
-  surface-container-low: "#f0f3ff"
-  surface-container: "#e7eefe"
-  surface-container-high: "#e2e8f8"
-  surface-container-highest: "#dce2f3"
-  on-surface: "#151c27"
-  on-surface-variant: "#534434"
-  inverse-surface: "#2a313d"
-  inverse-on-surface: "#ebf1ff"
-  outline: "#867461"
-  outline-variant: "#d8c3ad"
-  surface-tint: "#855300"
-  primary: "#855300"
-  on-primary: "#ffffff"
-  primary-container: "#f59e0b"
-  on-primary-container: "#613b00"
-  inverse-primary: "#ffb95f"
-  secondary: "#0058be"
-  on-secondary: "#ffffff"
-  secondary-container: "#2170e4"
-  on-secondary-container: "#fefcff"
-  tertiary: "#00658b"
-  on-tertiary: "#ffffff"
-  tertiary-container: "#1abdff"
-  on-tertiary-container: "#004966"
-  error: "#ba1a1a"
-  on-error: "#ffffff"
-  error-container: "#ffdad6"
-  on-error-container: "#93000a"
-  primary-fixed: "#ffddb8"
-  primary-fixed-dim: "#ffb95f"
-  on-primary-fixed: "#2a1700"
-  on-primary-fixed-variant: "#653e00"
-  secondary-fixed: "#d8e2ff"
-  secondary-fixed-dim: "#adc6ff"
-  on-secondary-fixed: "#001a42"
-  on-secondary-fixed-variant: "#004395"
-  tertiary-fixed: "#c5e7ff"
-  tertiary-fixed-dim: "#7fd0ff"
-  on-tertiary-fixed: "#001e2d"
-  on-tertiary-fixed-variant: "#004c6a"
-  background: "#f9f9ff"
-  on-background: "#151c27"
-  surface-variant: "#dce2f3"
+  surface: '#f9f9ff'
+  surface-dim: '#d3daea'
+  surface-bright: '#f9f9ff'
+  surface-container-lowest: '#ffffff'
+  surface-container-low: '#f0f3ff'
+  surface-container: '#e7eefe'
+  surface-container-high: '#e2e8f8'
+  surface-container-highest: '#dce2f3'
+  on-surface: '#151c27'
+  on-surface-variant: '#534434'
+  inverse-surface: '#2a313d'
+  inverse-on-surface: '#ebf1ff'
+  outline: '#867461'
+  outline-variant: '#d8c3ad'
+  surface-tint: '#855300'
+  primary: '#855300'
+  on-primary: '#ffffff'
+  primary-container: '#f59e0b'
+  on-primary-container: '#613b00'
+  inverse-primary: '#ffb95f'
+  secondary: '#0058be'
+  on-secondary: '#ffffff'
+  secondary-container: '#2170e4'
+  on-secondary-container: '#fefcff'
+  tertiary: '#00658b'
+  on-tertiary: '#ffffff'
+  tertiary-container: '#1abdff'
+  on-tertiary-container: '#004966'
+  error: '#ba1a1a'
+  on-error: '#ffffff'
+  error-container: '#ffdad6'
+  on-error-container: '#93000a'
+  primary-fixed: '#ffddb8'
+  primary-fixed-dim: '#ffb95f'
+  on-primary-fixed: '#2a1700'
+  on-primary-fixed-variant: '#653e00'
+  secondary-fixed: '#d8e2ff'
+  secondary-fixed-dim: '#adc6ff'
+  on-secondary-fixed: '#001a42'
+  on-secondary-fixed-variant: '#004395'
+  tertiary-fixed: '#c5e7ff'
+  tertiary-fixed-dim: '#7fd0ff'
+  on-tertiary-fixed: '#001e2d'
+  on-tertiary-fixed-variant: '#004c6a'
+  background: '#f9f9ff'
+  on-background: '#151c27'
+  surface-variant: '#dce2f3'
 typography:
   display:
     fontFamily: Plus Jakarta Sans
     fontSize: 44px
-    fontWeight: "800"
+    fontWeight: '800'
     lineHeight: 52px
     letterSpacing: -0.02em
   headline-lg:
     fontFamily: Plus Jakarta Sans
     fontSize: 32px
-    fontWeight: "700"
+    fontWeight: '700'
     lineHeight: 40px
     letterSpacing: -0.01em
   headline-md:
     fontFamily: Plus Jakarta Sans
     fontSize: 24px
-    fontWeight: "700"
+    fontWeight: '700'
     lineHeight: 32px
   title-lg:
     fontFamily: Plus Jakarta Sans
     fontSize: 20px
-    fontWeight: "600"
+    fontWeight: '600'
     lineHeight: 28px
   body-lg:
     fontFamily: Plus Jakarta Sans
     fontSize: 18px
-    fontWeight: "400"
+    fontWeight: '400'
     lineHeight: 28px
   body-md:
     fontFamily: Plus Jakarta Sans
     fontSize: 16px
-    fontWeight: "400"
+    fontWeight: '400'
     lineHeight: 24px
   label-md:
     fontFamily: Plus Jakarta Sans
     fontSize: 14px
-    fontWeight: "600"
+    fontWeight: '600'
     lineHeight: 20px
     letterSpacing: 0.01em
   label-sm:
     fontFamily: Plus Jakarta Sans
     fontSize: 12px
-    fontWeight: "500"
+    fontWeight: '500'
     lineHeight: 16px
 rounded:
   sm: 0.25rem
@@ -110,50 +110,50 @@ spacing:
   margin: 24px
 components:
   button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.label-md}"
-    rounded: "{rounded.lg}"
-    padding: "{spacing.md}"
+    backgroundColor: '{colors.primary}'
+    textColor: '{colors.on-primary}'
+    typography: '{typography.label-md}'
+    rounded: '{rounded.lg}'
+    padding: '{spacing.md}'
   button-primary-hover:
-    backgroundColor: "{colors.primary-container}"
-    textColor: "{colors.on-primary-container}"
+    backgroundColor: '{colors.primary-container}'
+    textColor: '{colors.on-primary-container}'
   button-secondary:
-    backgroundColor: "{colors.secondary}"
-    textColor: "{colors.on-secondary}"
-    typography: "{typography.label-md}"
-    rounded: "{rounded.lg}"
-    padding: "{spacing.md}"
+    backgroundColor: '{colors.secondary}'
+    textColor: '{colors.on-secondary}'
+    typography: '{typography.label-md}'
+    rounded: '{rounded.lg}'
+    padding: '{spacing.md}'
   button-secondary-hover:
-    backgroundColor: "{colors.secondary-container}"
-    textColor: "{colors.on-secondary-container}"
+    backgroundColor: '{colors.secondary-container}'
+    textColor: '{colors.on-secondary-container}'
   card-profile:
-    backgroundColor: "{colors.surface-container-lowest}"
-    rounded: "{rounded.xl}"
-    padding: "{spacing.md}"
+    backgroundColor: '{colors.surface-container-lowest}'
+    rounded: '{rounded.xl}'
+    padding: '{spacing.md}'
   card-walk-stat:
-    backgroundColor: "{colors.secondary-container}"
-    textColor: "{colors.on-secondary-container}"
-    rounded: "{rounded.md}"
-    padding: "{spacing.sm}"
+    backgroundColor: '{colors.secondary-container}'
+    textColor: '{colors.on-secondary-container}'
+    rounded: '{rounded.md}'
+    padding: '{spacing.sm}'
   input-field:
-    backgroundColor: "{colors.surface-container-low}"
-    textColor: "{colors.on-surface}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.DEFAULT}"
-    padding: "{spacing.sm}"
+    backgroundColor: '{colors.surface-container-low}'
+    textColor: '{colors.on-surface}'
+    typography: '{typography.body-md}'
+    rounded: '{rounded.DEFAULT}'
+    padding: '{spacing.sm}'
   list-item-walker:
     backgroundColor: transparent
-    padding: "{spacing.sm}"
-    rounded: "{rounded.md}"
+    padding: '{spacing.sm}'
+    rounded: '{rounded.md}'
   list-item-walker-hover:
-    backgroundColor: "{colors.surface-container-high}"
+    backgroundColor: '{colors.surface-container-high}'
   badge-status:
-    backgroundColor: "{colors.tertiary-container}"
-    textColor: "{colors.on-tertiary-container}"
-    typography: "{typography.label-sm}"
-    rounded: "{rounded.full}"
-    padding: "{spacing.xs}"
+    backgroundColor: '{colors.tertiary-container}'
+    textColor: '{colors.on-tertiary-container}'
+    typography: '{typography.label-sm}'
+    rounded: '{rounded.full}'
+    padding: '{spacing.xs}'
 ---
 
 ## Brand & Style

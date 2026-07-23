@@ -68,7 +68,7 @@ export const SCHEMA_KEYS = [
   'components',
 ] as const;
 
-export type SchemaKey = typeof SCHEMA_KEYS[number];
+export type SchemaKey = (typeof SCHEMA_KEYS)[number];
 
 // ── RESULT ─────────────────────────────────────────────────────────
 export type ParserResult =

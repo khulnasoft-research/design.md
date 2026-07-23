@@ -12,8 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { DtcgEmitterSpec, DtcgEmitterResult, DtcgTokenFile, DtcgToken, DtcgGroup, DtcgColorValue, DtcgDimensionValue, DtcgTypographyValue } from './spec.js';
-import type { DesignSystemState, ResolvedColor, ResolvedDimension, ResolvedTypography } from '../model/spec.js';
+import type {
+  DtcgEmitterSpec,
+  DtcgEmitterResult,
+  DtcgTokenFile,
+  DtcgToken,
+  DtcgGroup,
+  DtcgColorValue,
+  DtcgDimensionValue,
+  DtcgTypographyValue,
+} from './spec.js';
+import type {
+  DesignSystemState,
+  ResolvedColor,
+  ResolvedDimension,
+  ResolvedTypography,
+} from '../model/spec.js';
 
 const DTCG_SCHEMA_URL = 'https://www.designtokens.org/schemas/2025.10/format.json';
 
@@ -60,11 +74,7 @@ export class DtcgEmitterHandler implements DtcgEmitterSpec {
   private colorToValue(color: ResolvedColor): DtcgColorValue {
     return {
       colorSpace: 'srgb',
-      components: [
-        this.round(color.r / 255),
-        this.round(color.g / 255),
-        this.round(color.b / 255),
-      ],
+      components: [this.round(color.r / 255), this.round(color.g / 255), this.round(color.b / 255)],
       hex: color.hex.toLowerCase(),
     };
   }

@@ -13,7 +13,13 @@
 // limitations under the License.
 
 import YAML from 'yaml';
-import type { ParserSpec, ParserInput, ParserResult, ParsedDesignSystem, SourceLocation } from './spec.js';
+import type {
+  ParserSpec,
+  ParserInput,
+  ParserResult,
+  ParsedDesignSystem,
+  SourceLocation,
+} from './spec.js';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkFrontmatter from 'remark-frontmatter';
@@ -29,9 +35,7 @@ export class ParserHandler implements ParserSpec {
   execute(input: ParserInput): ParserResult {
     try {
       const { content } = input;
-      const processor = unified()
-        .use(remarkParse)
-        .use(remarkFrontmatter, ['yaml']);
+      const processor = unified().use(remarkParse).use(remarkFrontmatter, ['yaml']);
 
       const ast = processor.parse(content) as Root;
       const blocks: Array<{ yaml: string; block: 'frontmatter' | number; startLine: number }> = [];
@@ -45,7 +49,7 @@ export class ParserHandler implements ParserSpec {
           blocks.push({
             yaml: yamlNode.value,
             block: 'frontmatter',
-            startLine: node.position?.start.line ?? 1
+            startLine: node.position?.start.line ?? 1,
           });
         }
 
@@ -55,7 +59,7 @@ export class ParserHandler implements ParserSpec {
             blocks.push({
               yaml: codeNode.value,
               block: blockIndex,
-              startLine: node.position?.start.line ?? 1
+              startLine: node.position?.start.line ?? 1,
             });
             blockIndex++;
           }
@@ -76,7 +80,7 @@ export class ParserHandler implements ParserSpec {
       // Slice content into sections
       const contentLines = content.split('\n');
       const documentSections: Array<{ heading: string; content: string }> = [];
-      
+
       const firstHeading = headingsWithLines[0];
       if (firstHeading) {
         // Prelude (content before first H2)
@@ -84,28 +88,28 @@ export class ParserHandler implements ParserSpec {
         if (firstHeadingLine > 1) {
           documentSections.push({
             heading: '',
-            content: contentLines.slice(0, firstHeadingLine - 1).join('\n')
+            content: contentLines.slice(0, firstHeadingLine - 1).join('\n'),
           });
         }
 
         for (let i = 0; i < headingsWithLines.length; i++) {
           const current = headingsWithLines[i];
           if (!current) continue;
-          
+
           const next = headingsWithLines[i + 1];
           const startIdx = current.line - 1;
           const endIdx = next ? next.line - 1 : contentLines.length;
-          
+
           documentSections.push({
             heading: current.text,
-            content: contentLines.slice(startIdx, endIdx).join('\n')
+            content: contentLines.slice(startIdx, endIdx).join('\n'),
           });
         }
       } else {
         // No H2 headings found, entire file is one section
         documentSections.push({
           heading: '',
-          content: content
+          content: content,
         });
       }
 
@@ -114,7 +118,8 @@ export class ParserHandler implements ParserSpec {
           success: false,
           error: {
             code: 'NO_YAML_FOUND',
-            message: 'No YAML content found. Expected frontmatter (---) or fenced yaml code blocks.',
+            message:
+              'No YAML content found. Expected frontmatter (---) or fenced yaml code blocks.',
             recoverable: true,
           },
         };
@@ -137,7 +142,11 @@ export class ParserHandler implements ParserSpec {
    * Merge multiple code blocks into a single ParsedDesignSystem.
    * Detects duplicate top-level sections across blocks.
    */
-  private mergeCodeBlocks(blocks: Array<{ yaml: string; block: 'frontmatter' | number; startLine: number }>, sections: string[], documentSections: Array<{ heading: string; content: string }>): ParserResult {
+  private mergeCodeBlocks(
+    blocks: Array<{ yaml: string; block: 'frontmatter' | number; startLine: number }>,
+    sections: string[],
+    documentSections: Array<{ heading: string; content: string }>
+  ): ParserResult {
     const merged: Record<string, unknown> = {};
     const sourceMap = new Map<string, SourceLocation>();
     const seenSections = new Map<string, 'frontmatter' | number>();
@@ -162,8 +171,10 @@ export class ParserHandler implements ParserSpec {
       for (const key of Object.keys(parsed)) {
         const previousBlock = seenSections.get(key);
         if (previousBlock !== undefined) {
-          const prevDesc = previousBlock === 'frontmatter' ? 'frontmatter' : `code block ${previousBlock + 1}`;
-          const currDesc = block.block === 'frontmatter' ? 'frontmatter' : `code block ${block.block + 1}`;
+          const prevDesc =
+            previousBlock === 'frontmatter' ? 'frontmatter' : `code block ${previousBlock + 1}`;
+          const currDesc =
+            block.block === 'frontmatter' ? 'frontmatter' : `code block ${block.block + 1}`;
           return {
             success: false,
             error: {
@@ -189,7 +200,12 @@ export class ParserHandler implements ParserSpec {
   /**
    * Map a raw parsed object to the ParsedDesignSystem interface.
    */
-  private toDesignSystem(raw: Record<string, unknown>, sourceMap: Map<string, SourceLocation>, sections: string[], documentSections: Array<{ heading: string; content: string }>): ParsedDesignSystem {
+  private toDesignSystem(
+    raw: Record<string, unknown>,
+    sourceMap: Map<string, SourceLocation>,
+    sections: string[],
+    documentSections: Array<{ heading: string; content: string }>
+  ): ParsedDesignSystem {
     return {
       version: typeof raw['version'] === 'string' ? raw['version'] : undefined,
       name: typeof raw['name'] === 'string' ? raw['name'] : undefined,
@@ -208,7 +224,7 @@ export class ParserHandler implements ParserSpec {
 
   private extractHeadingText(children: PhrasingContent[]): string {
     return children
-      .map(c => 'value' in c ? c.value : '')
+      .map((c) => ('value' in c ? c.value : ''))
       .join('')
       .trim();
   }

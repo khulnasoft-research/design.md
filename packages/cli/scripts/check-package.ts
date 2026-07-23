@@ -60,13 +60,19 @@ function readPkg(): Record<string, unknown> {
   return JSON.parse(readFileSync(PKG_PATH, 'utf-8'));
 }
 
-function exec(cmd: string, opts?: { cwd?: string }): { ok: boolean; stdout: string; stderr: string } {
+function exec(
+  cmd: string,
+  opts?: { cwd?: string }
+): { ok: boolean; stdout: string; stderr: string } {
   try {
     const stdout = execSync(cmd, {
       cwd: opts?.cwd ?? ROOT,
       encoding: 'utf-8',
       stdio: ['pipe', 'pipe', 'pipe'],
-      env: { ...process.env, PATH: `${process.env.HOME}/.bun/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${process.env.PATH ?? ''}` },
+      env: {
+        ...process.env,
+        PATH: `${process.env.HOME}/.bun/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${process.env.PATH ?? ''}`,
+      },
     });
     return { ok: true, stdout, stderr: '' };
   } catch (e: unknown) {
@@ -84,43 +90,48 @@ function phase1_config() {
 
   // 1. files field exists
   const files = pkg.files as string[] | undefined;
-  check('#1  `files` field exists', Array.isArray(files) && files.length > 0,
-    'Add a "files" array to package.json to control what ships');
+  check(
+    '#1  `files` field exists',
+    Array.isArray(files) && files.length > 0,
+    'Add a "files" array to package.json to control what ships'
+  );
 
   // 2. exports structure
   const exports = pkg.exports as Record<string, Record<string, string>> | undefined;
-  check('#2  `exports["."]` defined', !!exports?.['.'],
-    'Missing exports["."] in package.json');
+  check('#2  `exports["."]` defined', !!exports?.['.'], 'Missing exports["."] in package.json');
 
   if (exports?.['.']) {
-    check('#3  `exports["."].types` field exists', !!exports['.'].types,
-      'Missing types condition in exports["."]');
+    check(
+      '#3  `exports["."].types` field exists',
+      !!exports['.'].types,
+      'Missing types condition in exports["."]'
+    );
   } else {
     fail('#3  `exports["."].types` field exists', 'Skipped — no exports');
   }
 
   // 4. main field
   const main = pkg.main as string | undefined;
-  check('#4  `main` field exists', !!main,
-    'Missing "main" field in package.json');
+  check('#4  `main` field exists', !!main, 'Missing "main" field in package.json');
 
   // 5. types field
   const types = pkg.types as string | undefined;
-  check('#5  `types` field exists', !!types,
-    'Missing "types" field in package.json');
+  check('#5  `types` field exists', !!types, 'Missing "types" field in package.json');
 
   // 5c. bin map exposes a Windows-friendly alias (no dot in the name).
   // The `design.md` bin file is unrunnable on Windows because the `.md`
   // suffix collides with the Markdown file association, so PowerShell
   // opens the shim in the user's Markdown editor instead of executing it.
   // A dot-free alias such as `designmd` lets the npm CMD/PowerShell shims
-  // resolve cleanly via PATHEXT. See https://github.com/google-labs-code/design.md/issues/54.
+  // resolve cleanly via PATHEXT. See https://github.com/khulnasoft/scalify/issues/54.
   const bin = pkg.bin as Record<string, string> | string | undefined;
   const binEntries = typeof bin === 'object' && bin !== null ? Object.keys(bin) : [];
   const hasDotFreeAlias = binEntries.some((name) => !name.includes('.'));
-  check('#5c bin map exposes a Windows-friendly alias (no dot in the name)',
+  check(
+    '#5c bin map exposes a Windows-friendly alias (no dot in the name)',
     hasDotFreeAlias,
-    `bin entries: ${binEntries.join(', ') || '(none)'} — add an alias without a dot for Windows compatibility`);
+    `bin entries: ${binEntries.join(', ') || '(none)'} — add an alias without a dot for Windows compatibility`
+  );
 }
 
 function phase1_paths() {
@@ -132,19 +143,23 @@ function phase1_paths() {
   if (exports?.['.']) {
     const importPath = join(ROOT, exports['.'].import);
     const typesPath = join(ROOT, exports['.'].types);
-    check('#2b `exports["."].import` resolves', existsSync(importPath),
-      `Missing: ${exports['.'].import}`);
-    check('#3b `exports["."].types` resolves', existsSync(typesPath),
-      `Missing: ${exports['.'].types}`);
+    check(
+      '#2b `exports["."].import` resolves',
+      existsSync(importPath),
+      `Missing: ${exports['.'].import}`
+    );
+    check(
+      '#3b `exports["."].types` resolves',
+      existsSync(typesPath),
+      `Missing: ${exports['.'].types}`
+    );
   }
 
   const main = pkg.main as string | undefined;
-  check('#4b `main` resolves', !!main && existsSync(join(ROOT, main)),
-    `Missing: ${main}`);
+  check('#4b `main` resolves', !!main && existsSync(join(ROOT, main)), `Missing: ${main}`);
 
   const types = pkg.types as string | undefined;
-  check('#5b `types` resolves', !!types && existsSync(join(ROOT, types)),
-    `Missing: ${types}`);
+  check('#5b `types` resolves', !!types && existsSync(join(ROOT, types)), `Missing: ${types}`);
 }
 
 // ── Phase 2: Clean build ───────────────────────────────────────────
@@ -172,14 +187,16 @@ function phase2() {
   // 8. No test files in dist
   const testGlob = new Glob('**/*.test.*');
   const testFiles = Array.from(testGlob.scanSync({ cwd: distPath, absolute: false }));
-  check('#8  No test files in dist', testFiles.length === 0,
-    `Found: ${testFiles.join(', ')}`);
+  check('#8  No test files in dist', testFiles.length === 0, `Found: ${testFiles.join(', ')}`);
 
   // 9. No fixture files in dist
   const fixtureGlob = new Glob('**/fixtures/**');
   const fixtureFiles = Array.from(fixtureGlob.scanSync({ cwd: distPath, absolute: false }));
-  check('#9  No fixture files in dist', fixtureFiles.length === 0,
-    `Found: ${fixtureFiles.join(', ')}`);
+  check(
+    '#9  No fixture files in dist',
+    fixtureFiles.length === 0,
+    `Found: ${fixtureFiles.join(', ')}`
+  );
 }
 
 // ── Phase 3: Pack audit ────────────────────────────────────────────
@@ -205,8 +222,11 @@ function phase3() {
     }
   }
 
-  check('#10 `npm pack --dry-run` succeeds', pack.ok && fileList.length > 0,
-    'npm pack failed or returned empty file list');
+  check(
+    '#10 `npm pack --dry-run` succeeds',
+    pack.ok && fileList.length > 0,
+    'npm pack failed or returned empty file list'
+  );
 
   if (fileList.length === 0) {
     fail('#11 No source .ts files in tarball', 'Skipped — no file list');
@@ -221,29 +241,36 @@ function phase3() {
   const rawTs = fileList.filter(
     (f) => f.endsWith('.ts') && !f.endsWith('.d.ts') && !f.endsWith('.d.ts.map')
   );
-  check('#11 No source .ts files in tarball', rawTs.length === 0,
-    `Found: ${rawTs.join(', ')}`);
+  check('#11 No source .ts files in tarball', rawTs.length === 0, `Found: ${rawTs.join(', ')}`);
 
   // 12. No test files
   const testInPack = fileList.filter((f) => f.includes('.test.'));
-  check('#12 No test files in tarball', testInPack.length === 0,
-    `Found: ${testInPack.join(', ')}`);
+  check('#12 No test files in tarball', testInPack.length === 0, `Found: ${testInPack.join(', ')}`);
 
   // 13. No config files
   const configInPack = fileList.filter((f) => f.includes('tsconfig'));
-  check('#13 No config files in tarball', configInPack.length === 0,
-    `Found: ${configInPack.join(', ')}`);
+  check(
+    '#13 No config files in tarball',
+    configInPack.length === 0,
+    `Found: ${configInPack.join(', ')}`
+  );
 
   // 14. No fixtures
   const fixturesInPack = fileList.filter((f) => f.includes('fixtures'));
-  check('#14 No fixtures in tarball', fixturesInPack.length === 0,
-    `Found: ${fixturesInPack.join(', ')}`);
+  check(
+    '#14 No fixtures in tarball',
+    fixturesInPack.length === 0,
+    `Found: ${fixturesInPack.join(', ')}`
+  );
 
   // 15. Entry point present
   const hasIndex = fileList.some((f) => f.includes('dist/index.js'));
   const hasTypes = fileList.some((f) => f.includes('dist/index.d.ts'));
-  check('#15 Entry point present in tarball', hasIndex && hasTypes,
-    `index.js: ${hasIndex}, index.d.ts: ${hasTypes}`);
+  check(
+    '#15 Entry point present in tarball',
+    hasIndex && hasTypes,
+    `index.js: ${hasIndex}, index.d.ts: ${hasTypes}`
+  );
 }
 
 // ── Phase 4: Consumer smoke test ───────────────────────────────────
@@ -260,8 +287,8 @@ function phase4() {
   writeFileSync(
     smokeFile,
     `import { lint } from '${distIndex}';\n` +
-    `if (typeof lint !== 'function') { process.exit(1); }\n` +
-    `console.log('ok');\n`
+      `if (typeof lint !== 'function') { process.exit(1); }\n` +
+      `console.log('ok');\n`
   );
   const importCheck = exec(`node ${smokeFile}`);
   if (!importCheck.ok || !importCheck.stdout.trim().endsWith('ok')) {
@@ -269,34 +296,39 @@ function phase4() {
     console.error('STDOUT:', importCheck.stdout);
     console.error('STDERR:', importCheck.stderr);
   }
-  check('#16 Import resolution (ESM)', importCheck.ok && importCheck.stdout.trim().endsWith('ok'),
-    'Could not import lint() from dist/index.js');
+  check(
+    '#16 Import resolution (ESM)',
+    importCheck.ok && importCheck.stdout.trim().endsWith('ok'),
+    'Could not import lint() from dist/index.js'
+  );
 
   // 17. Type declarations exist and export lint
   const dtsContent = existsSync(distTypes) ? readFileSync(distTypes, 'utf-8') : '';
   const hasLintExport = dtsContent.includes('export') && dtsContent.includes('lint');
   const hasLintReportType = dtsContent.includes('LintReport');
-  check('#17 Type declarations valid',
+  check(
+    '#17 Type declarations valid',
     hasLintExport && hasLintReportType,
-    `index.d.ts missing lint export or LintReport type`);
+    `index.d.ts missing lint export or LintReport type`
+  );
 
   // 18. Runtime sanity
   const sanityFile = join(tmpDir, 'sanity.mjs');
   writeFileSync(
     sanityFile,
     `import { lint } from '${distIndex}';\n` +
-    `const result = lint('---\\nname: Test\\ncolors:\\n  primary: "#ff0000"\\n---');\n` +
-    `const keys = Object.keys(result);\n` +
-    `const expected = ['designSystem','findings','summary','tailwindConfig'];\n` +
-    `const hasAll = expected.every(k => keys.includes(k));\n` +
-    `if (!hasAll) {\n` +
-    `  console.error('Missing keys. Actual:', keys);\n` +
-    `  process.exit(1);\n` +
-    `}\n` +
-    `if (typeof result.designSystem !== 'object') { process.exit(1); }\n` +
-    `if (!Array.isArray(result.findings)) { process.exit(1); }\n` +
-    `if (typeof result.summary.errors !== 'number') { process.exit(1); }\n` +
-    `console.log('ok');\n`
+      `const result = lint('---\\nname: Test\\ncolors:\\n  primary: "#ff0000"\\n---');\n` +
+      `const keys = Object.keys(result);\n` +
+      `const expected = ['designSystem','findings','summary','tailwindConfig'];\n` +
+      `const hasAll = expected.every(k => keys.includes(k));\n` +
+      `if (!hasAll) {\n` +
+      `  console.error('Missing keys. Actual:', keys);\n` +
+      `  process.exit(1);\n` +
+      `}\n` +
+      `if (typeof result.designSystem !== 'object') { process.exit(1); }\n` +
+      `if (!Array.isArray(result.findings)) { process.exit(1); }\n` +
+      `if (typeof result.summary.errors !== 'number') { process.exit(1); }\n` +
+      `console.log('ok');\n`
   );
   const sanityCheck = exec(`node ${sanityFile}`);
   if (!sanityCheck.ok || !sanityCheck.stdout.trim().endsWith('ok')) {
@@ -304,19 +336,28 @@ function phase4() {
     console.error('STDOUT:', sanityCheck.stdout);
     console.error('STDERR:', sanityCheck.stderr);
   }
-  check('#18 Runtime sanity', sanityCheck.ok && sanityCheck.stdout.trim().endsWith('ok'),
-    'lint() did not return expected shape');
+  check(
+    '#18 Runtime sanity',
+    sanityCheck.ok && sanityCheck.stdout.trim().endsWith('ok'),
+    'lint() did not return expected shape'
+  );
 
   // 19. CLI entry point works
   const cliIndex = join(ROOT, 'dist', 'index.js');
   const cliCheck = exec(`node ${cliIndex} --help`);
-  check('#19 CLI entry point valid', cliCheck.ok && !cliCheck.stderr.includes('ENOENT'),
-    'CLI failed to run or reported missing files');
+  check(
+    '#19 CLI entry point valid',
+    cliCheck.ok && !cliCheck.stderr.includes('ENOENT'),
+    'CLI failed to run or reported missing files'
+  );
 
   // 20. CLI spec command works
   const specCheck = exec(`node ${cliIndex} spec`);
-  check('#20 CLI spec command valid', specCheck.ok && !specCheck.stderr.includes('Failed to load spec.md'),
-    'CLI spec command failed to load spec.md');
+  check(
+    '#20 CLI spec command valid',
+    specCheck.ok && !specCheck.stderr.includes('Failed to load spec.md'),
+    'CLI spec command failed to load spec.md'
+  );
 
   // Cleanup
   try {

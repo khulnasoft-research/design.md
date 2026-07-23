@@ -1,669 +1,1145 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Stitch - Design with AI. Generate production-ready UI screens from natural language prompts.">
-  <meta name="og:title" content="Stitch — Design with AI">
-  <meta name="og:description" content="Generate production-ready UI screens from natural language prompts. Describe what you want, and Stitch builds it.">
-  <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg">
-  <meta name="twitter:card" content="summary">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <title>Stitch — Design with AI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --surface: #0b1326;
-      --surface-dim: #0b1326;
-      --surface-bright: #31394d;
-      --surface-container-lowest: #060e20;
-      --surface-container-low: #131b2e;
-      --surface-container: #171f33;
-      --surface-container-high: #222a3d;
-      --surface-container-highest: #2d3449;
-      --on-surface: #dae2fd;
-      --on-surface-variant: #c4c7c8;
-      --primary: #ffffff;
-      --on-primary: #2f3131;
-      --primary-container: #e2e2e2;
-      --secondary: #adc9eb;
-      --on-secondary: #14324e;
-      --tertiary: #ffffff;
-      --error: #ffb4ab;
-      --outline: #8e9192;
-      --outline-variant: #444748;
-      --gradient-1: #6366f1;
-      --gradient-2: #8b5cf6;
-      --gradient-3: #a855f7;
-      --gradient-4: #d946ef;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: Inter, system-ui, sans-serif;
-      background: var(--surface);
-      color: var(--on-surface);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-    ::selection { background: rgba(99, 102, 241, 0.3); }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Stitch - Design with AI. Generate production-ready UI screens from natural language prompts."
+    />
+    <meta name="og:title" content="Stitch — Design with AI" />
+    <meta
+      name="og:description"
+      content="Generate production-ready UI screens from natural language prompts. Describe what you want, and Stitch builds it."
+    />
+    <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <title>Stitch — Design with AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #0b1326;
+        --surface-dim: #0b1326;
+        --surface-bright: #31394d;
+        --surface-container-lowest: #060e20;
+        --surface-container-low: #131b2e;
+        --surface-container: #171f33;
+        --surface-container-high: #222a3d;
+        --surface-container-highest: #2d3449;
+        --on-surface: #dae2fd;
+        --on-surface-variant: #c4c7c8;
+        --primary: #ffffff;
+        --on-primary: #2f3131;
+        --primary-container: #e2e2e2;
+        --secondary: #adc9eb;
+        --on-secondary: #14324e;
+        --tertiary: #ffffff;
+        --error: #ffb4ab;
+        --outline: #8e9192;
+        --outline-variant: #444748;
+        --gradient-1: #6366f1;
+        --gradient-2: #8b5cf6;
+        --gradient-3: #a855f7;
+        --gradient-4: #d946ef;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: Inter, system-ui, sans-serif;
+        background: var(--surface);
+        color: var(--on-surface);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      ::selection {
+        background: rgba(99, 102, 241, 0.3);
+      }
 
-    .bg-glow {
-      position: fixed;
-      top: -40vh;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120vw;
-      height: 80vh;
-      background: radial-gradient(ellipse at center, rgba(99,102,241,0.15) 0%, rgba(139,92,246,0.08) 30%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
+      .bg-glow {
+        position: fixed;
+        top: -40vh;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120vw;
+        height: 80vh;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(99, 102, 241, 0.15) 0%,
+          rgba(139, 92, 246, 0.08) 30%,
+          transparent 60%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
 
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 16px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: rgba(11, 19, 38, 0.6);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    nav .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 18px;
-      letter-spacing: -0.02em;
-    }
-    nav .logo svg { width: 28px; height: 28px; }
-    nav .links { display: flex; gap: 24px; align-items: center; }
-    nav .links a {
-      color: var(--on-surface-variant);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    nav .links a:hover { color: var(--on-surface); }
-    nav .btn-primary {
-      background: var(--primary);
-      color: var(--on-primary);
-      padding: 8px 20px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 13px;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
-    nav .btn-primary:hover { opacity: 0.85; }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background: rgba(11, 19, 38, 0.6);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      nav .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: -0.02em;
+      }
+      nav .logo svg {
+        width: 28px;
+        height: 28px;
+      }
+      nav .links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+      }
+      nav .links a {
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      nav .links a:hover {
+        color: var(--on-surface);
+      }
+      nav .btn-primary {
+        background: var(--primary);
+        color: var(--on-primary);
+        padding: 8px 20px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 13px;
+        text-decoration: none;
+        transition: opacity 0.2s;
+      }
+      nav .btn-primary:hover {
+        opacity: 0.85;
+      }
 
-    section { position: relative; z-index: 1; }
+      section {
+        position: relative;
+        z-index: 1;
+      }
 
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
-    }
-    .hero .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 16px;
-      border-radius: 999px;
-      background: rgba(99, 102, 241, 0.12);
-      border: 1px solid rgba(99, 102, 241, 0.2);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--secondary);
-      margin-bottom: 24px;
-    }
-    .hero h1 {
-      font-family: 'Plus Jakarta Sans', Inter, sans-serif;
-      font-size: clamp(42px, 8vw, 84px);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #ffffff 0%, var(--secondary) 50%, var(--gradient-3) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero p {
-      font-size: clamp(16px, 2vw, 20px);
-      color: var(--on-surface-variant);
-      max-width: 600px;
-      margin-bottom: 36px;
-      line-height: 1.7;
-    }
-    .hero .actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-    .hero .actions a {
-      padding: 14px 32px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 15px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .hero .actions .primary {
-      background: var(--primary);
-      color: var(--on-primary);
-    }
-    .hero .actions .primary:hover { opacity: 0.85; transform: translateY(-1px); }
-    .hero .actions .secondary {
-      background: rgba(255,255,255,0.06);
-      color: var(--on-surface);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .hero .actions .secondary:hover { background: rgba(255,255,255,0.1); }
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 120px 24px 80px;
+      }
+      .hero .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 16px;
+        border-radius: 999px;
+        background: rgba(99, 102, 241, 0.12);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--secondary);
+        margin-bottom: 24px;
+      }
+      .hero h1 {
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: clamp(42px, 8vw, 84px);
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+        margin-bottom: 20px;
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          var(--secondary) 50%,
+          var(--gradient-3) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero p {
+        font-size: clamp(16px, 2vw, 20px);
+        color: var(--on-surface-variant);
+        max-width: 600px;
+        margin-bottom: 36px;
+        line-height: 1.7;
+      }
+      .hero .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .hero .actions a {
+        padding: 14px 32px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .hero .actions .primary {
+        background: var(--primary);
+        color: var(--on-primary);
+      }
+      .hero .actions .primary:hover {
+        opacity: 0.85;
+        transform: translateY(-1px);
+      }
+      .hero .actions .secondary {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--on-surface);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .hero .actions .secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
 
-    .hero-terminal {
-      margin-top: 48px;
-      width: 100%;
-      max-width: 640px;
-      background: rgba(6, 14, 32, 0.8);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 20px 24px;
-      text-align: left;
-      backdrop-filter: blur(10px);
-    }
-    .hero-terminal .dots { display: flex; gap: 8px; margin-bottom: 16px; }
-    .hero-terminal .dots span {
-      width: 10px; height: 10px; border-radius: 50%;
-    }
-    .hero-terminal .dots span:nth-child(1) { background: #ff5f56; }
-    .hero-terminal .dots span:nth-child(2) { background: #ffbd2e; }
-    .hero-terminal .dots span:nth-child(3) { background: #27c93f; }
-    .hero-terminal code {
-      font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      font-size: 13px;
-      line-height: 1.8;
-      color: #c5c5c5;
-    }
-    .hero-terminal code .prompt { color: var(--gradient-3); }
-    .hero-terminal code .string { color: #a7d9a7; }
-    .hero-terminal code .comment { color: #6a6a6a; }
+      .hero-terminal {
+        margin-top: 48px;
+        width: 100%;
+        max-width: 640px;
+        background: rgba(6, 14, 32, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 20px 24px;
+        text-align: left;
+        backdrop-filter: blur(10px);
+      }
+      .hero-terminal .dots {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .hero-terminal .dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .hero-terminal .dots span:nth-child(1) {
+        background: #ff5f56;
+      }
+      .hero-terminal .dots span:nth-child(2) {
+        background: #ffbd2e;
+      }
+      .hero-terminal .dots span:nth-child(3) {
+        background: #27c93f;
+      }
+      .hero-terminal code {
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-size: 13px;
+        line-height: 1.8;
+        color: #c5c5c5;
+      }
+      .hero-terminal code .prompt {
+        color: var(--gradient-3);
+      }
+      .hero-terminal code .string {
+        color: #a7d9a7;
+      }
+      .hero-terminal code .comment {
+        color: #6a6a6a;
+      }
 
-    .section-label {
-      text-align: center;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--secondary);
-      margin-bottom: 8px;
-    }
-    .section-title {
-      text-align: center;
-      font-family: 'Plus Jakarta Sans', Inter, sans-serif;
-      font-size: clamp(28px, 4vw, 40px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-    }
-    .section-desc {
-      text-align: center;
-      color: var(--on-surface-variant);
-      max-width: 560px;
-      margin: 0 auto 48px;
-      font-size: 16px;
-    }
+      .section-label {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--secondary);
+        margin-bottom: 8px;
+      }
+      .section-title {
+        text-align: center;
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: clamp(28px, 4vw, 40px);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 16px;
+      }
+      .section-desc {
+        text-align: center;
+        color: var(--on-surface-variant);
+        max-width: 560px;
+        margin: 0 auto 48px;
+        font-size: 16px;
+      }
 
-    .features {
-      padding: 100px 24px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-    .feature-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 20px;
-      padding: 28px;
-      transition: all 0.25s;
-      backdrop-filter: blur(12px);
-    }
-    .feature-card:hover {
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(255,255,255,0.1);
-      transform: translateY(-2px);
-    }
-    .feature-card .icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-      font-size: 22px;
-    }
-    .feature-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-    .feature-card p { font-size: 14px; color: var(--on-surface-variant); line-height: 1.7; }
-    .feature-card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
-    .feature-card .tags span {
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 500;
-      background: rgba(255,255,255,0.06);
-      color: var(--on-surface-variant);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
+      .features {
+        padding: 100px 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+      }
+      .feature-card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 28px;
+        transition: all 0.25s;
+        backdrop-filter: blur(12px);
+      }
+      .feature-card:hover {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+      }
+      .feature-card .icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        font-size: 22px;
+      }
+      .feature-card h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .feature-card p {
+        font-size: 14px;
+        color: var(--on-surface-variant);
+        line-height: 1.7;
+      }
+      .feature-card .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 16px;
+      }
+      .feature-card .tags span {
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--on-surface-variant);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
 
-    .skills {
-      padding: 100px 24px;
-      background: rgba(255,255,255,0.02);
-      border-top: 1px solid rgba(255,255,255,0.04);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
-    .skills-inner { max-width: 1100px; margin: 0 auto; }
-    .skill-tabs {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-    .skill-tab {
-      padding: 8px 20px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: transparent;
-      color: var(--on-surface-variant);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .skill-tab:hover { border-color: rgba(255,255,255,0.15); color: var(--on-surface); }
-    .skill-tab.active { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.3); color: var(--secondary); }
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
-    .skill-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      padding: 20px;
-      transition: all 0.2s;
-    }
-    .skill-card:hover { background: rgba(255,255,255,0.06); }
-    .skill-card .name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-    .skill-card .desc { font-size: 13px; color: var(--on-surface-variant); line-height: 1.6; }
-    .skill-card .plugin-badge {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 2px 10px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      background: rgba(99,102,241,0.1);
-      color: var(--secondary);
-      border: 1px solid rgba(99,102,241,0.15);
-    }
+      .skills {
+        padding: 100px 24px;
+        background: rgba(255, 255, 255, 0.02);
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .skills-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .skill-tabs {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+      }
+      .skill-tab {
+        padding: 8px 20px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 500;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: transparent;
+        color: var(--on-surface-variant);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .skill-tab:hover {
+        border-color: rgba(255, 255, 255, 0.15);
+        color: var(--on-surface);
+      }
+      .skill-tab.active {
+        background: rgba(99, 102, 241, 0.15);
+        border-color: rgba(99, 102, 241, 0.3);
+        color: var(--secondary);
+      }
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+      }
+      .skill-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        padding: 20px;
+        transition: all 0.2s;
+      }
+      .skill-card:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .skill-card .name {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .skill-card .desc {
+        font-size: 13px;
+        color: var(--on-surface-variant);
+        line-height: 1.6;
+      }
+      .skill-card .plugin-badge {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        background: rgba(99, 102, 241, 0.1);
+        color: var(--secondary);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+      }
 
-    .sdk {
-      padding: 100px 24px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .sdk-cols {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
-    }
-    .sdk-entry {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      padding: 24px;
-    }
-    .sdk-entry h4 {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      color: var(--gradient-3);
-      margin-bottom: 8px;
-    }
-    .sdk-entry h4 .path { color: var(--on-surface-variant); font-weight: 400; }
-    .sdk-entry p { font-size: 14px; color: var(--on-surface-variant); line-height: 1.7; }
+      .sdk {
+        padding: 100px 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .sdk-cols {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 40px;
+      }
+      .sdk-entry {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        padding: 24px;
+      }
+      .sdk-entry h4 {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        color: var(--gradient-3);
+        margin-bottom: 8px;
+      }
+      .sdk-entry h4 .path {
+        color: var(--on-surface-variant);
+        font-weight: 400;
+      }
+      .sdk-entry p {
+        font-size: 14px;
+        color: var(--on-surface-variant);
+        line-height: 1.7;
+      }
 
-    .cta {
-      padding: 100px 24px;
-      text-align: center;
-      position: relative;
-    }
-    .cta::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(ellipse at center, rgba(99,102,241,0.08) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .cta-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 48px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 24px;
-      backdrop-filter: blur(20px);
-    }
-    .cta h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
-    .cta p { color: var(--on-surface-variant); margin-bottom: 28px; }
-    .cta .btn-cta {
-      display: inline-block;
-      padding: 14px 36px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-3));
-      color: #fff;
-      font-weight: 600;
-      font-size: 15px;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .cta .btn-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(99,102,241,0.3);
-    }
-    .cta .sub-links { margin-top: 20px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .cta .sub-links a { color: var(--on-surface-variant); font-size: 13px; text-decoration: none; transition: color 0.2s; }
-    .cta .sub-links a:hover { color: var(--on-surface); }
+      .cta {
+        padding: 100px 24px;
+        text-align: center;
+        position: relative;
+      }
+      .cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(99, 102, 241, 0.08) 0%,
+          transparent 60%
+        );
+        pointer-events: none;
+      }
+      .cta-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 48px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 24px;
+        backdrop-filter: blur(20px);
+      }
+      .cta h2 {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin-bottom: 12px;
+      }
+      .cta p {
+        color: var(--on-surface-variant);
+        margin-bottom: 28px;
+      }
+      .cta .btn-cta {
+        display: inline-block;
+        padding: 14px 36px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--gradient-1), var(--gradient-3));
+        color: #fff;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .cta .btn-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(99, 102, 241, 0.3);
+      }
+      .cta .sub-links {
+        margin-top: 20px;
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .cta .sub-links a {
+        color: var(--on-surface-variant);
+        font-size: 13px;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .cta .sub-links a:hover {
+        color: var(--on-surface);
+      }
 
-    footer {
-      padding: 32px 24px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--outline);
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-    footer a { color: var(--on-surface-variant); text-decoration: none; }
-    footer a:hover { color: var(--on-surface); }
+      footer {
+        padding: 32px 24px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--outline);
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      footer a {
+        color: var(--on-surface-variant);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--on-surface);
+      }
 
-    .hamburger { display: none; background: none; border: none; color: var(--on-surface); font-size: 26px; cursor: pointer; padding: 0 4px; line-height:1; }
-    .mobile-overlay { position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.6); z-index: 150; opacity:0; pointer-events:none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
-    .mobile-overlay.open { opacity:1; pointer-events:auto; }
-    .mobile-nav { position: fixed; top:0; right:-280px; width:260px; height:100vh; background: var(--surface-container); border-left: 1px solid var(--glass-border); z-index:200; transition: right 0.3s; padding: 20px; backdrop-filter: blur(20px); }
-    .mobile-nav.open { right:0; }
-    .mobile-nav-header { display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--glass-border); margin-bottom:8px; }
-    .mobile-nav .close-btn { background:none; border:none; color:var(--on-surface); font-size:20px; cursor:pointer; padding:4px; }
-    .mobile-nav-links { display:flex; flex-direction:column; gap:4px; }
-    .mobile-nav-links a { display:block; padding:10px 12px; border-radius:8px; color:var(--on-surface-variant); text-decoration:none; font-size:14px; font-weight:500; transition:all 0.15s; }
-    .mobile-nav-links a:hover { background:var(--glass-hover); color:var(--on-surface); }
-    @media (max-width: 640px) {
-      .hamburger { display: block; }
-      nav .links { display: none; }
-      .features-grid, .skills-grid, .sdk-cols { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 40px; }
-      .cta-inner { padding: 32px 20px; }
-    }
-  </style>
-</head>
-<body>
-<div class="bg-glow"></div>
+      .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 26px;
+        cursor: pointer;
+        padding: 0 4px;
+        line-height: 1;
+      }
+      .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 150;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        backdrop-filter: blur(4px);
+      }
+      .mobile-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -280px;
+        width: 260px;
+        height: 100vh;
+        background: var(--surface-container);
+        border-left: 1px solid var(--glass-border);
+        z-index: 200;
+        transition: right 0.3s;
+        padding: 20px;
+        backdrop-filter: blur(20px);
+      }
+      .mobile-nav.open {
+        right: 0;
+      }
+      .mobile-nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--glass-border);
+        margin-bottom: 8px;
+      }
+      .mobile-nav .close-btn {
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .mobile-nav-links a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.15s;
+      }
+      .mobile-nav-links a:hover {
+        background: var(--glass-hover);
+        color: var(--on-surface);
+      }
+      @media (max-width: 640px) {
+        .hamburger {
+          display: block;
+        }
+        nav .links {
+          display: none;
+        }
+        .features-grid,
+        .skills-grid,
+        .sdk-cols {
+          grid-template-columns: 1fr;
+        }
+        .hero h1 {
+          font-size: 40px;
+        }
+        .cta-inner {
+          padding: 32px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-glow"></div>
 
-<nav>
-  <div class="logo">
-    <svg viewBox="0 0 28 28" fill="none">
-      <rect width="28" height="28" rx="8" fill="url(#logo-grad)"/>
-      <path d="M8 14L12 10L16 14L20 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M8 18L12 14L16 18L20 14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
-      <defs><linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs>
-    </svg>
-    Stitch
-  </div>
-  <div class="links">
-    <a href="#features">Features</a>
-    <a href="#skills">Skills</a>
-    <a href="#sdk">SDK</a>
-    <a href="get-started.html">Get Started</a>
-    <a href="roundtrip.html">Roundtrip</a>
-    <a href="import.html">Import</a>
-    <a href="premium-design.html">Premium</a>
-    <a href="semantic-tokens.html">Semantic Tokens</a>
-    <a href="design-system.html">Design System</a>
-    <a href="https://github.com/google-labs-code/stitch-sdk" target="_blank">GitHub</a>
-    <a href="https://stitch.withgoogle.com" class="btn-primary" target="_blank">Open Stitch</a>
-  </div>
-  <button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
-  <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
-  <div class="mobile-nav" id="mobile-nav">
-    <div class="mobile-nav-header">
-      <span style="font-weight:700;">Menu</span>
-      <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
-    </div>
-    <div class="mobile-nav-links">
-      <a href="#features">Features</a>
-      <a href="#skills">Skills</a>
-      <a href="#sdk">SDK</a>
-      <a href="get-started.html">Get Started</a>
-      <a href="roundtrip.html">Roundtrip</a>
-      <a href="import.html">Import</a>
-      <a href="premium-design.html">Premium</a>
-      <a href="semantic-tokens.html">Semantic Tokens</a>
-      <a href="design-system.html">Design System</a>
-      <a href="https://github.com/google-labs-code/stitch-sdk" target="_blank">GitHub</a>
-      <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
-    </div>
-  </div>
-</nav>
+    <nav>
+      <div class="logo">
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="url(#logo-grad)" />
+          <path
+            d="M8 14L12 10L16 14L20 10"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8 18L12 14L16 18L20 14"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            opacity="0.5"
+          />
+          <defs>
+            <linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28">
+              <stop stop-color="#6366f1" />
+              <stop offset="1" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+        </svg>
+        Stitch
+      </div>
+      <div class="links">
+        <a href="#features">Features</a>
+        <a href="#skills">Skills</a>
+        <a href="#sdk">SDK</a>
+        <a href="get-started.html">Get Started</a>
+        <a href="roundtrip.html">Roundtrip</a>
+        <a href="import.html">Import</a>
+        <a href="premium-design.html">Premium</a>
+        <a href="semantic-tokens.html">Semantic Tokens</a>
+        <a href="design-system.html">Design System</a>
+        <a href="https://github.com/google-labs-code/stitch-sdk" target="_blank">GitHub</a>
+        <a href="https://stitch.withgoogle.com" class="btn-primary" target="_blank">Open Stitch</a>
+      </div>
+      <button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
+      <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
+      <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-header">
+          <span style="font-weight: 700">Menu</span>
+          <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
+        </div>
+        <div class="mobile-nav-links">
+          <a href="#features">Features</a>
+          <a href="#skills">Skills</a>
+          <a href="#sdk">SDK</a>
+          <a href="get-started.html">Get Started</a>
+          <a href="roundtrip.html">Roundtrip</a>
+          <a href="import.html">Import</a>
+          <a href="premium-design.html">Premium</a>
+          <a href="semantic-tokens.html">Semantic Tokens</a>
+          <a href="design-system.html">Design System</a>
+          <a href="https://github.com/google-labs-code/stitch-sdk" target="_blank">GitHub</a>
+          <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
+        </div>
+      </div>
+    </nav>
 
-<section class="hero">
-  <div class="badge"><span>✦</span> Google Labs — Beta</div>
-  <h1>Design with AI</h1>
-  <p>Generate production-ready UI screens for mobile and web from natural language prompts. Describe what you want, and Stitch builds it.</p>
-  <div class="actions">
-    <a href="https://stitch.withgoogle.com" class="primary" target="_blank">Try Stitch</a>
-    <a href="#features" class="secondary">Learn more</a>
-  </div>
-  <div class="hero-terminal">
-    <div class="dots"><span></span><span></span><span></span></div>
-    <code>
-      <span class="prompt">$</span> stitch generate "A dark-mode dashboard with real-time charts<br>
-      <span class="prompt">&nbsp;&nbsp;&nbsp;</span> and a sidebar navigation"<br>
-      <br>
-      <span class="comment"># → Screen generated in 2.3s</span><br>
-      <span class="comment"># → 3 variants available</span><br>
-      <span class="comment"># → Design system applied: Atmospheric Glass</span>
-    </code>
-  </div>
-</section>
+    <section class="hero">
+      <div class="badge"><span>✦</span> Google Labs — Beta</div>
+      <h1>Design with AI</h1>
+      <p>
+        Generate production-ready UI screens for mobile and web from natural language prompts.
+        Describe what you want, and Stitch builds it.
+      </p>
+      <div class="actions">
+        <a href="https://stitch.withgoogle.com" class="primary" target="_blank">Try Stitch</a>
+        <a href="#features" class="secondary">Learn more</a>
+      </div>
+      <div class="hero-terminal">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <code>
+          <span class="prompt">$</span> stitch generate "A dark-mode dashboard with real-time
+          charts<br />
+          <span class="prompt">&nbsp;&nbsp;&nbsp;</span> and a sidebar navigation"<br />
+          <br />
+          <span class="comment"># → Screen generated in 2.3s</span><br />
+          <span class="comment"># → 3 variants available</span><br />
+          <span class="comment"># → Design system applied: Atmospheric Glass</span>
+        </code>
+      </div>
+    </section>
 
-<section class="features" id="features">
-  <div class="section-label">Capabilities</div>
-  <h2 class="section-title">Generate, iterate, ship</h2>
-  <p class="section-desc">Stitch turns text prompts into polished UI screens. Powered by Gemini, built for product teams.</p>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="icon" style="background:rgba(99,102,241,0.15)">🎨</div>
-      <h3>Text-to-UI Generation</h3>
-      <p>Describe screens in natural language — Stitch generates complete HTML/CSS with proper layout, typography, and spacing.</p>
-      <div class="tags"><span>Gemini 2.5</span><span>Multi-model</span></div>
-    </div>
-    <div class="feature-card">
-      <div class="icon" style="background:rgba(139,92,246,0.15)">✏️</div>
-      <h3>Edit & Variants</h3>
-      <p>Refine existing screens with prompts like "Make it darker" or generate multiple visual variants to explore directions.</p>
-      <div class="tags"><span>Iterative</span><span>Creative range</span></div>
-    </div>
-    <div class="feature-card">
-      <div class="icon" style="background:rgba(168,85,247,0.15)">🎯</div>
-      <h3>Design Systems</h3>
-      <p>Create and apply DESIGN.md specs to enforce brand consistency across all generated screens automatically.</p>
-      <div class="tags"><span>DESIGN.md</span><span>Tokens</span></div>
-    </div>
-    <div class="feature-card">
-      <div class="icon" style="background:rgba(217,70,239,0.15)">🔌</div>
-      <h3>MCP Integration</h3>
-      <p>Connect Stitch to any MCP-compatible agent (Cursor, Claude Code, Codex) for AI-native design workflows.</p>
-      <div class="tags"><span>MCP</span><span>Agent-ready</span></div>
-    </div>
-    <div class="feature-card">
-      <div class="icon" style="background:rgba(99,102,241,0.15)">📱</div>
-      <h3>Mobile & Web</h3>
-      <p>Generate for phone, tablet, or desktop viewports. Responsive-ready output with platform-appropriate patterns.</p>
-      <div class="tags"><span>Responsive</span><span>Cross-platform</span></div>
-    </div>
-    <div class="feature-card">
-      <div class="icon" style="background:rgba(139,92,246,0.15)">📦</div>
-      <h3>Export & Download</h3>
-      <p>Download generated HTML, screenshots, and design assets. Integrate into your existing build pipeline via SDK or CLI.</p>
-      <div class="tags"><span>HTML</span><span>PNG</span><span>SDK</span></div>
-    </div>
-  </div>
-</section>
+    <section class="features" id="features">
+      <div class="section-label">Capabilities</div>
+      <h2 class="section-title">Generate, iterate, ship</h2>
+      <p class="section-desc">
+        Stitch turns text prompts into polished UI screens. Powered by Gemini, built for product
+        teams.
+      </p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon" style="background: rgba(99, 102, 241, 0.15)">🎨</div>
+          <h3>Text-to-UI Generation</h3>
+          <p>
+            Describe screens in natural language — Stitch generates complete HTML/CSS with proper
+            layout, typography, and spacing.
+          </p>
+          <div class="tags"><span>Gemini 2.5</span><span>Multi-model</span></div>
+        </div>
+        <div class="feature-card">
+          <div class="icon" style="background: rgba(139, 92, 246, 0.15)">✏️</div>
+          <h3>Edit & Variants</h3>
+          <p>
+            Refine existing screens with prompts like "Make it darker" or generate multiple visual
+            variants to explore directions.
+          </p>
+          <div class="tags"><span>Iterative</span><span>Creative range</span></div>
+        </div>
+        <div class="feature-card">
+          <div class="icon" style="background: rgba(168, 85, 247, 0.15)">🎯</div>
+          <h3>Design Systems</h3>
+          <p>
+            Create and apply DESIGN.md specs to enforce brand consistency across all generated
+            screens automatically.
+          </p>
+          <div class="tags"><span>DESIGN.md</span><span>Tokens</span></div>
+        </div>
+        <div class="feature-card">
+          <div class="icon" style="background: rgba(217, 70, 239, 0.15)">🔌</div>
+          <h3>MCP Integration</h3>
+          <p>
+            Connect Stitch to any MCP-compatible agent (Cursor, Claude Code, Codex) for AI-native
+            design workflows.
+          </p>
+          <div class="tags"><span>MCP</span><span>Agent-ready</span></div>
+        </div>
+        <div class="feature-card">
+          <div class="icon" style="background: rgba(99, 102, 241, 0.15)">📱</div>
+          <h3>Mobile & Web</h3>
+          <p>
+            Generate for phone, tablet, or desktop viewports. Responsive-ready output with
+            platform-appropriate patterns.
+          </p>
+          <div class="tags"><span>Responsive</span><span>Cross-platform</span></div>
+        </div>
+        <div class="feature-card">
+          <div class="icon" style="background: rgba(139, 92, 246, 0.15)">📦</div>
+          <h3>Export & Download</h3>
+          <p>
+            Download generated HTML, screenshots, and design assets. Integrate into your existing
+            build pipeline via SDK or CLI.
+          </p>
+          <div class="tags"><span>HTML</span><span>PNG</span><span>SDK</span></div>
+        </div>
+      </div>
+    </section>
 
-<section class="skills" id="skills">
-  <div class="skills-inner">
-    <div class="section-label">Ecosystem</div>
-    <h2 class="section-title">Agent Skills</h2>
-    <p class="section-desc">14 purpose-built skills extend Stitch into design, build, and utility workflows — installable via <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:4px;">npx skills add</code>.</p>
-    <div class="skill-tabs">
-      <button class="skill-tab active" data-tab="all">All</button>
-      <button class="skill-tab" data-tab="build">Build</button>
-      <button class="skill-tab" data-tab="design">Design</button>
-      <button class="skill-tab" data-tab="utilities">Utilities</button>
-    </div>
-    <div class="skills-grid" id="skills-grid"></div>
-  </div>
-</section>
+    <section class="skills" id="skills">
+      <div class="skills-inner">
+        <div class="section-label">Ecosystem</div>
+        <h2 class="section-title">Agent Skills</h2>
+        <p class="section-desc">
+          14 purpose-built skills extend Stitch into design, build, and utility workflows —
+          installable via
+          <code
+            style="
+              font-size: 13px;
+              background: rgba(255, 255, 255, 0.06);
+              padding: 2px 8px;
+              border-radius: 4px;
+            "
+            >npx skills add</code
+          >.
+        </p>
+        <div class="skill-tabs">
+          <button class="skill-tab active" data-tab="all">All</button>
+          <button class="skill-tab" data-tab="build">Build</button>
+          <button class="skill-tab" data-tab="design">Design</button>
+          <button class="skill-tab" data-tab="utilities">Utilities</button>
+        </div>
+        <div class="skills-grid" id="skills-grid"></div>
+      </div>
+    </section>
 
-<section class="models" id="models" style="padding: 80px 24px;max-width:1100px;margin:0 auto;">
-  <div class="section-label">Under the hood</div>
-  <h2 class="section-title">Language model integration</h2>
-  <p class="section-desc">Each skill is optimized for a specific model. Stitch routes prompts intelligently based on the task.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:32px;">
-    <div class="model-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
-      <div style="font-size:13px;font-weight:600;color:var(--gradient-violet);margin-bottom:4px;">Gemini 2.5 Pro</div>
-      <div style="font-size:11px;color:var(--on-surface-variant);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px;">Generation & editing</div>
-      <p style="font-size:14px;color:var(--on-surface-variant);line-height:1.7;">stitch::generate-design, stitch::manage-design-system, stitch-loop, enhance-prompt</p>
-    </div>
-    <div class="model-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
-      <div style="font-size:13px;font-weight:600;color:var(--gradient-violet);margin-bottom:4px;">Gemini 2.5 Flash</div>
-      <div style="font-size:11px;color:var(--on-surface-variant);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px;">Analysis & extraction</div>
-      <p style="font-size:14px;color:var(--on-surface-variant);line-height:1.7;">design-md, stitch::extract-design-md, stitch::extract-static-html, taste-design</p>
-    </div>
-    <div class="model-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;">
-      <div style="font-size:13px;font-weight:600;color:var(--gradient-violet);margin-bottom:4px;">Claude 3.5 Sonnet</div>
-      <div style="font-size:11px;color:var(--on-surface-variant);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px;">Code generation</div>
-      <p style="font-size:14px;color:var(--on-surface-variant);line-height:1.7;">stitch::react-components, stitch::react-native, shadcn-ui, stitch::code-to-design</p>
-    </div>
-  </div>
-</section>
+    <section
+      class="models"
+      id="models"
+      style="padding: 80px 24px; max-width: 1100px; margin: 0 auto"
+    >
+      <div class="section-label">Under the hood</div>
+      <h2 class="section-title">Language model integration</h2>
+      <p class="section-desc">
+        Each skill is optimized for a specific model. Stitch routes prompts intelligently based on
+        the task.
+      </p>
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 16px;
+          margin-top: 32px;
+        "
+      >
+        <div
+          class="model-card"
+          style="
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+          "
+        >
+          <div
+            style="
+              font-size: 13px;
+              font-weight: 600;
+              color: var(--gradient-violet);
+              margin-bottom: 4px;
+            "
+          >
+            Gemini 2.5 Pro
+          </div>
+          <div
+            style="
+              font-size: 11px;
+              color: var(--on-surface-variant);
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+              margin-bottom: 10px;
+            "
+          >
+            Generation & editing
+          </div>
+          <p style="font-size: 14px; color: var(--on-surface-variant); line-height: 1.7">
+            stitch::generate-design, stitch::manage-design-system, stitch-loop, enhance-prompt
+          </p>
+        </div>
+        <div
+          class="model-card"
+          style="
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+          "
+        >
+          <div
+            style="
+              font-size: 13px;
+              font-weight: 600;
+              color: var(--gradient-violet);
+              margin-bottom: 4px;
+            "
+          >
+            Gemini 2.5 Flash
+          </div>
+          <div
+            style="
+              font-size: 11px;
+              color: var(--on-surface-variant);
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+              margin-bottom: 10px;
+            "
+          >
+            Analysis & extraction
+          </div>
+          <p style="font-size: 14px; color: var(--on-surface-variant); line-height: 1.7">
+            design-md, stitch::extract-design-md, stitch::extract-static-html, taste-design
+          </p>
+        </div>
+        <div
+          class="model-card"
+          style="
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+          "
+        >
+          <div
+            style="
+              font-size: 13px;
+              font-weight: 600;
+              color: var(--gradient-violet);
+              margin-bottom: 4px;
+            "
+          >
+            Claude 3.5 Sonnet
+          </div>
+          <div
+            style="
+              font-size: 11px;
+              color: var(--on-surface-variant);
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+              margin-bottom: 10px;
+            "
+          >
+            Code generation
+          </div>
+          <p style="font-size: 14px; color: var(--on-surface-variant); line-height: 1.7">
+            stitch::react-components, stitch::react-native, shadcn-ui, stitch::code-to-design
+          </p>
+        </div>
+      </div>
+    </section>
 
-<section class="sdk" id="sdk">
-  <div class="section-label">Developers</div>
-  <h2 class="section-title">@google/stitch-sdk</h2>
-  <p class="section-desc">A type-safe TypeScript SDK for integrating Stitch programmatically. Works with Vercel AI SDK, Google ADK, or standalone MCP.</p>
-  <div class="sdk-cols">
-    <div class="sdk-entry">
-      <h4>stitch<span class="path">/ai</span></h4>
-      <p>Vercel AI SDK adapter. Returns <code style="font-size:12px">Record&lt;string, Tool&gt;</code> — drop into any <code style="font-size:12px">generateText</code> or <code style="font-size:12px">streamText</code> call.</p>
-    </div>
-    <div class="sdk-entry">
-      <h4>stitch<span class="path">/adk</span></h4>
-      <p>Google ADK adapter. Returns <code style="font-size:12px">FunctionTool[]</code> with auto-cleaned schemas for Gemini compatibility.</p>
-    </div>
-    <div class="sdk-entry">
-      <h4>stitch</h4>
-      <p>Core SDK with domain classes: <code style="font-size:12px">Stitch</code>, <code style="font-size:12px">Project</code>, <code style="font-size:12px">Screen</code>, <code style="font-size:12px">DesignSystem</code>. Includes MCP proxy server.</p>
-    </div>
-  </div>
-</section>
+    <section class="sdk" id="sdk">
+      <div class="section-label">Developers</div>
+      <h2 class="section-title">@google/stitch-sdk</h2>
+      <p class="section-desc">
+        A type-safe TypeScript SDK for integrating Stitch programmatically. Works with Vercel AI
+        SDK, Google ADK, or standalone MCP.
+      </p>
+      <div class="sdk-cols">
+        <div class="sdk-entry">
+          <h4>stitch<span class="path">/ai</span></h4>
+          <p>
+            Vercel AI SDK adapter. Returns
+            <code style="font-size: 12px">Record&lt;string, Tool&gt;</code> — drop into any
+            <code style="font-size: 12px">generateText</code> or
+            <code style="font-size: 12px">streamText</code> call.
+          </p>
+        </div>
+        <div class="sdk-entry">
+          <h4>stitch<span class="path">/adk</span></h4>
+          <p>
+            Google ADK adapter. Returns <code style="font-size: 12px">FunctionTool[]</code> with
+            auto-cleaned schemas for Gemini compatibility.
+          </p>
+        </div>
+        <div class="sdk-entry">
+          <h4>stitch</h4>
+          <p>
+            Core SDK with domain classes: <code style="font-size: 12px">Stitch</code>,
+            <code style="font-size: 12px">Project</code>,
+            <code style="font-size: 12px">Screen</code>,
+            <code style="font-size: 12px">DesignSystem</code>. Includes MCP proxy server.
+          </p>
+        </div>
+      </div>
+    </section>
 
-<section class="cta">
-  <div class="cta-inner">
-    <h2>Start designing with AI</h2>
-    <p>Try Stitch today — no setup required. Generate your first screen in seconds.</p>
-    <a href="https://stitch.withgoogle.com" class="btn-cta" target="_blank">Open Stitch →</a>
-    <div class="sub-links">
-      <a href="https://github.com/google-labs-code/stitch-sdk" target="_blank">SDK on GitHub</a>
-      <a href="https://github.com/google-labs-code/stitch-skills" target="_blank">Skills on GitHub</a>
-      <a href="import.html">Import from codebase</a>
-      <a href="premium-design.html">Premium Design System</a>
-      <a href="https://github.com/google-labs-code/jules-awesome-list" target="_blank">Jules Prompts</a>
-    </div>
-  </div>
-</section>
+    <section class="cta">
+      <div class="cta-inner">
+        <h2>Start designing with AI</h2>
+        <p>Try Stitch today — no setup required. Generate your first screen in seconds.</p>
+        <a href="https://stitch.withgoogle.com" class="btn-cta" target="_blank">Open Stitch →</a>
+        <div class="sub-links">
+          <a href="https://github.com/google-labs-code/stitch-sdk" target="_blank">SDK on GitHub</a>
+          <a href="https://github.com/google-labs-code/stitch-skills" target="_blank"
+            >Skills on GitHub</a
+          >
+          <a href="import.html">Import from codebase</a>
+          <a href="premium-design.html">Premium Design System</a>
+          <a href="https://github.com/google-labs-code/jules-awesome-list" target="_blank"
+            >Jules Prompts</a
+          >
+        </div>
+      </div>
+    </section>
 
-<footer>
-  Built by <a href="https://github.com/google-labs-code">Google Labs</a> &middot; Licensed under Apache 2.0
-</footer>
+    <footer>
+      Built by <a href="https://github.com/google-labs-code">Google Labs</a> &middot; Licensed under
+      Apache 2.0
+    </footer>
 
-<script>
-const skills = [
-  { name: 'stitch::react-components', desc: 'Convert Stitch designs to production-ready React/Vite component systems with AST validation.', plugin: 'build', tag: 'React' },
-  { name: 'stitch::react-native', desc: 'Convert Stitch HTML designs to React Native components with StyleSheet theming.', plugin: 'build', tag: 'React Native' },
-  { name: 'remotion', desc: 'Generate walkthrough videos from Stitch app designs using Remotion.', plugin: 'build', tag: 'Video' },
-  { name: 'shadcn-ui', desc: 'Expert guidance for discovering, installing, and customizing shadcn/ui components.', plugin: 'build', tag: 'shadcn' },
-  { name: 'stitch::code-to-design', desc: 'Orchestrate the full pipeline of converting frontend code into a Stitch Design.', plugin: 'design', tag: 'Pipeline' },
-  { name: 'stitch::generate-design', desc: 'Create new screens from text or images, edit existing screens, generate variants.', plugin: 'design', tag: 'Generation' },
-  { name: 'stitch::manage-design-system', desc: 'Upload DESIGN.md, create/update design systems, apply themes to screens.', plugin: 'design', tag: 'Tokens' },
-  { name: 'stitch::extract-design-md', desc: 'Reverse-engineer DESIGN.md directly from source code — no build needed.', plugin: 'design', tag: 'Reverse' },
-  { name: 'stitch::extract-static-html', desc: 'Capture self-contained HTML from running web apps by inlining CSS and images.', plugin: 'design', tag: 'Snapshot' },
-  { name: 'stitch::upload-to-stitch', desc: 'Upload local assets to Stitch via Python script — bypasses MCP token limits.', plugin: 'design', tag: 'Upload' },
-  { name: 'design-md', desc: 'Analyze Stitch screens and synthesize a semantic DESIGN.md — the source of truth for design language.', plugin: 'utilities', tag: 'Core' },
-  { name: 'enhance-prompt', desc: 'Transform vague UI ideas into polished, Stitch-optimized prompts.', plugin: 'utilities', tag: 'Prompts' },
-  { name: 'stitch-loop', desc: 'Autonomous multi-page website generation with baton-passing loop pattern.', plugin: 'utilities', tag: 'Automation' },
-  { name: 'taste-design', desc: 'Premium DESIGN.md generator enforcing anti-generic design standards.', plugin: 'utilities', tag: 'Quality' },
-];
+    <script>
+      const skills = [
+        {
+          name: 'stitch::react-components',
+          desc: 'Convert Stitch designs to production-ready React/Vite component systems with AST validation.',
+          plugin: 'build',
+          tag: 'React',
+        },
+        {
+          name: 'stitch::react-native',
+          desc: 'Convert Stitch HTML designs to React Native components with StyleSheet theming.',
+          plugin: 'build',
+          tag: 'React Native',
+        },
+        {
+          name: 'remotion',
+          desc: 'Generate walkthrough videos from Stitch app designs using Remotion.',
+          plugin: 'build',
+          tag: 'Video',
+        },
+        {
+          name: 'shadcn-ui',
+          desc: 'Expert guidance for discovering, installing, and customizing shadcn/ui components.',
+          plugin: 'build',
+          tag: 'shadcn',
+        },
+        {
+          name: 'stitch::code-to-design',
+          desc: 'Orchestrate the full pipeline of converting frontend code into a Stitch Design.',
+          plugin: 'design',
+          tag: 'Pipeline',
+        },
+        {
+          name: 'stitch::generate-design',
+          desc: 'Create new screens from text or images, edit existing screens, generate variants.',
+          plugin: 'design',
+          tag: 'Generation',
+        },
+        {
+          name: 'stitch::manage-design-system',
+          desc: 'Upload DESIGN.md, create/update design systems, apply themes to screens.',
+          plugin: 'design',
+          tag: 'Tokens',
+        },
+        {
+          name: 'stitch::extract-design-md',
+          desc: 'Reverse-engineer DESIGN.md directly from source code — no build needed.',
+          plugin: 'design',
+          tag: 'Reverse',
+        },
+        {
+          name: 'stitch::extract-static-html',
+          desc: 'Capture self-contained HTML from running web apps by inlining CSS and images.',
+          plugin: 'design',
+          tag: 'Snapshot',
+        },
+        {
+          name: 'stitch::upload-to-stitch',
+          desc: 'Upload local assets to Stitch via Python script — bypasses MCP token limits.',
+          plugin: 'design',
+          tag: 'Upload',
+        },
+        {
+          name: 'design-md',
+          desc: 'Analyze Stitch screens and synthesize a semantic DESIGN.md — the source of truth for design language.',
+          plugin: 'utilities',
+          tag: 'Core',
+        },
+        {
+          name: 'enhance-prompt',
+          desc: 'Transform vague UI ideas into polished, Stitch-optimized prompts.',
+          plugin: 'utilities',
+          tag: 'Prompts',
+        },
+        {
+          name: 'stitch-loop',
+          desc: 'Autonomous multi-page website generation with baton-passing loop pattern.',
+          plugin: 'utilities',
+          tag: 'Automation',
+        },
+        {
+          name: 'taste-design',
+          desc: 'Premium DESIGN.md generator enforcing anti-generic design standards.',
+          plugin: 'utilities',
+          tag: 'Quality',
+        },
+      ];
 
-const grid = document.getElementById('skills-grid');
-const tabs = document.querySelectorAll('.skill-tab');
+      const grid = document.getElementById('skills-grid');
+      const tabs = document.querySelectorAll('.skill-tab');
 
-function renderSkills(plugin) {
-  const filtered = plugin === 'all' ? skills : skills.filter(s => s.plugin === plugin);
-  grid.innerHTML = filtered.map(s => `
+      function renderSkills(plugin) {
+        const filtered = plugin === 'all' ? skills : skills.filter((s) => s.plugin === plugin);
+        grid.innerHTML = filtered
+          .map(
+            (s) => `
     <div class="skill-card">
       <div class="name">${s.name}</div>
       <div class="desc">${s.desc}</div>
       <span class="plugin-badge">${s.plugin} · ${s.tag}</span>
     </div>
-  `).join('');
-}
+  `
+          )
+          .join('');
+      }
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    renderSkills(tab.dataset.tab);
-  });
-});
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          renderSkills(tab.dataset.tab);
+        });
+      });
 
-renderSkills('all');
+      renderSkills('all');
 
-function toggleMobileNav() {
-  document.getElementById('mobile-nav').classList.toggle('open');
-  document.getElementById('mobile-overlay').classList.toggle('open');
-}
-</script>
-</body>
+      function toggleMobileNav() {
+        document.getElementById('mobile-nav').classList.toggle('open');
+        document.getElementById('mobile-overlay').classList.toggle('open');
+      }
+    </script>
+  </body>
 </html>
 <!-- build-1782841506 -->

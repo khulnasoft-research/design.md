@@ -1,8 +1,5 @@
-/**
- * Validation and rule checking service
- */
-
-import type { LintFinding, DesignSystem } from '@google/design-core';
+import type { LintFinding, DesignSystem } from '@scalify/design-core';
+import { isValidColor, isTokenReference, isParseableDimension } from '@scalify/design-core';
 
 export interface ValidationRule {
   id: string;
@@ -20,7 +17,6 @@ class ValidationService {
   }
 
   private initializeDefaultRules(): void {
-    // Color validation rules
     this.registerRule({
       id: 'missing-primary',
       name: 'Missing Primary Color',
@@ -38,36 +34,34 @@ class ValidationService {
       },
     });
 
-    // Typography validation rules
     this.registerRule({
-      id: 'missing-base-typography',
-      name: 'Missing Base Typography',
-      description: 'Design system should have base typography scales defined',
+      id: 'invalid-color-values',
+      name: 'Invalid Color Values',
+      description: 'Check color values are valid CSS colors',
       check: (ds: DesignSystem) => {
         const findings: LintFinding[] = [];
-        if (!ds.typography || Object.keys(ds.typography).length === 0) {
-          findings.push({
-            level: 'warning',
-            rule: 'missing-base-typography',
-            message: 'No typography tokens defined',
-          });
+        for (const [name, token] of Object.entries(ds.colors || {})) {
+          if (!isValidColor(token.value)) {
+            findings.push({
+              level: 'error',
+              rule: 'invalid-color-values',
+              message: `'${name}' has invalid color value: "${token.value}"`,
+            });
+          }
         }
         return findings;
       },
     });
 
-    // Component validation rules
     this.registerRule({
       id: 'orphaned-tokens',
       name: 'Orphaned Tokens',
       description: 'Check for tokens that are not used in any component',
       check: () => {
-        // Implementation would check component references
         return [];
       },
     });
 
-    // Spacing validation rules
     this.registerRule({
       id: 'spacing-scale-consistency',
       name: 'Spacing Scale Consistency',
@@ -85,7 +79,6 @@ class ValidationService {
       },
     });
 
-    // Activate all by default
     this.activeRules = new Set(this.rules.keys());
   }
 

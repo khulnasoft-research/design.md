@@ -23,7 +23,7 @@ describe('brokenRef', () => {
       components: { button: { backgroundColor: '{colors.nonexistent}' } },
     });
     const findings = brokenRef(state);
-    expect(findings.some(d => d.message.includes('does not resolve'))).toBe(true);
+    expect(findings.some((d) => d.message.includes('does not resolve'))).toBe(true);
   });
 
   it('returns empty when all references resolve', () => {
@@ -31,7 +31,7 @@ describe('brokenRef', () => {
       colors: { primary: '#ff0000' },
       components: { button: { backgroundColor: '{colors.primary}' } },
     });
-    const errors = brokenRef(state).filter(d => d.message.includes('does not resolve'));
+    const errors = brokenRef(state).filter((d) => d.message.includes('does not resolve'));
     expect(errors.length).toBe(0);
   });
 
@@ -41,7 +41,7 @@ describe('brokenRef', () => {
       components: { button: { borderColor: '#ff0000' } },
     });
     const findings = brokenRef(state);
-    const subTokenDiag = findings.find(d => d.message.includes('not a recognized'));
+    const subTokenDiag = findings.find((d) => d.message.includes('not a recognized'));
     expect(subTokenDiag).toBeDefined();
     expect(subTokenDiag!.severity).toBe('warning');
   });

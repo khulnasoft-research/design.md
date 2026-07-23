@@ -38,12 +38,12 @@ export default defineCommand({
   },
   async run({ args }) {
     const rulesTable = getRulesTable(DEFAULT_RULE_DESCRIPTORS);
-    
+
     if (args.format === 'json') {
       const jsonOutput: any = {};
-      
+
       if (args.rulesOnly) {
-        jsonOutput.rules = DEFAULT_RULE_DESCRIPTORS.map(r => ({
+        jsonOutput.rules = DEFAULT_RULE_DESCRIPTORS.map((r) => ({
           name: r.name,
           severity: r.severity,
           description: r.description,
@@ -51,29 +51,29 @@ export default defineCommand({
       } else {
         jsonOutput.spec = getSpecContent();
         if (args.rules) {
-          jsonOutput.rules = DEFAULT_RULE_DESCRIPTORS.map(r => ({
+          jsonOutput.rules = DEFAULT_RULE_DESCRIPTORS.map((r) => ({
             name: r.name,
             severity: r.severity,
             description: r.description,
           }));
         }
       }
-      
+
       console.log(JSON.stringify(jsonOutput, null, 2));
       return;
     }
-    
+
     if (args.rulesOnly) {
       console.log(rulesTable);
       return;
     }
-    
+
     let output = getSpecContent();
-    
+
     if (args.rules) {
       output += '\n\n## Active Linting Rules\n\n' + rulesTable;
     }
-    
+
     console.log(output);
   },
 });

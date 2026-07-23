@@ -33,7 +33,7 @@ export class TailwindEmitterHandler implements TailwindEmitterSpec {
             spacing: this.mapDimensions(state.spacing),
           },
         },
-      }
+      },
     };
   }
 
@@ -69,7 +69,9 @@ export class TailwindEmitterHandler implements TailwindEmitterSpec {
     return result;
   }
 
-  private mapDimensions(dims: Map<string, { value: number; unit: string }>): Record<string, string> {
+  private mapDimensions(
+    dims: Map<string, { value: number; unit: string }>
+  ): Record<string, string> {
     const result: Record<string, string> = {};
     for (const [name, dim] of dims) {
       result[name] = this.dimToString(dim);

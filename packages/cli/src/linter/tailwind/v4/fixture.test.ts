@@ -21,7 +21,10 @@ import { serializeToCss } from './serialize.js';
 
 describe('Tailwind v4 export against real fixtures', () => {
   it('produces a valid @theme block from examples/paws-and-paths/DESIGN.md', () => {
-    const fixturePath = join(import.meta.dir, '../../../../../../examples/paws-and-paths/DESIGN.md');
+    const fixturePath = join(
+      import.meta.dir,
+      '../../../../../../examples/paws-and-paths/DESIGN.md'
+    );
     const content = readFileSync(fixturePath, 'utf8');
     const report = lint(content);
 
@@ -41,7 +44,7 @@ describe('Tailwind v4 export against real fixtures', () => {
     expect(css).toContain('--radius-');
 
     // Non-empty body
-    const bodyLines = css.split('\n').filter(l => l.trim().startsWith('--'));
+    const bodyLines = css.split('\n').filter((l) => l.trim().startsWith('--'));
     expect(bodyLines.length).toBeGreaterThan(10);
   });
 });

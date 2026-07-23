@@ -4,16 +4,16 @@ A format specification for describing a visual identity to coding agents. DESIGN
 
 ## The Format
 
-A DESIGN.md file combines machine-readable design tokens (YAML front matter) with human-readable design rationale (markdown prose). Tokens give agents exact values. Prose tells them *why* those values exist and how to apply them.
+A DESIGN.md file combines machine-readable design tokens (YAML front matter) with human-readable design rationale (markdown prose). Tokens give agents exact values. Prose tells them _why_ those values exist and how to apply them.
 
 ```md
 ---
 name: Heritage
 colors:
-  primary: "#1A1C1E"
-  secondary: "#6C7278"
-  tertiary: "#B8422E"
-  neutral: "#F7F5F2"
+  primary: '#1A1C1E'
+  secondary: '#6C7278'
+  tertiary: '#B8422E'
+  neutral: '#F7F5F2'
 typography:
   h1:
     fontFamily: Public Sans
@@ -54,7 +54,7 @@ An agent that reads this file will produce a UI with deep ink headlines in Publi
 Validate a DESIGN.md against the spec, catch broken token references, check WCAG contrast ratios, and surface structural findings — all as structured JSON that agents can act on.
 
 ```bash
-npx @google/design.md lint DESIGN.md
+npx @scalify/cli lint DESIGN.md
 ```
 
 ```json
@@ -73,7 +73,7 @@ npx @google/design.md lint DESIGN.md
 Compare two versions of a design system to detect token-level and prose regressions:
 
 ```bash
-npx @google/design.md diff DESIGN.md DESIGN-v2.md
+npx @scalify/cli diff DESIGN.md DESIGN-v2.md
 ```
 
 ```json
@@ -102,9 +102,9 @@ The tokens are the normative values. The prose provides context for how to apply
 ### Token Schema
 
 ```yaml
-version: <string>          # optional, current: "alpha"
+version: <string> # optional, current: "alpha"
 name: <string>
-description: <string>      # optional
+description: <string> # optional
 colors:
   <token-name>: <Color>
 typography:
@@ -120,27 +120,27 @@ components:
 
 ### Token Types
 
-| Type | Format | Example |
-|:-----|:-------|:--------|
-| Color | Any CSS color (hex, `rgb()`, `oklch()`, named, etc.) | `"#1A1C1E"`, `"oklch(62% 0.18 250)"` |
-| Dimension | number + unit (`px`, `em`, `rem`) | `48px`, `-0.02em` |
-| Token Reference | `{path.to.token}` | `{colors.primary}` |
-| Typography | object with `fontFamily`, `fontSize`, `fontWeight`, `lineHeight`, `letterSpacing`, `fontFeature`, `fontVariation` | See example above |
+| Type            | Format                                                                                                            | Example                              |
+| :-------------- | :---------------------------------------------------------------------------------------------------------------- | :----------------------------------- |
+| Color           | Any CSS color (hex, `rgb()`, `oklch()`, named, etc.)                                                              | `"#1A1C1E"`, `"oklch(62% 0.18 250)"` |
+| Dimension       | number + unit (`px`, `em`, `rem`)                                                                                 | `48px`, `-0.02em`                    |
+| Token Reference | `{path.to.token}`                                                                                                 | `{colors.primary}`                   |
+| Typography      | object with `fontFamily`, `fontSize`, `fontWeight`, `lineHeight`, `letterSpacing`, `fontFeature`, `fontVariation` | See example above                    |
 
 ### Section Order
 
 Sections use `##` headings. They can be omitted, but those present must appear in this order:
 
-| # | Section | Aliases |
-|:--|:--------|:--------|
-| 1 | Overview | Brand & Style |
-| 2 | Colors | |
-| 3 | Typography | |
-| 4 | Layout | Layout & Spacing |
-| 5 | Elevation & Depth | Elevation |
-| 6 | Shapes | |
-| 7 | Components | |
-| 8 | Do's and Don'ts | |
+| #   | Section           | Aliases          |
+| :-- | :---------------- | :--------------- |
+| 1   | Overview          | Brand & Style    |
+| 2   | Colors            |                  |
+| 3   | Typography        |                  |
+| 4   | Layout            | Layout & Spacing |
+| 5   | Elevation & Depth | Elevation        |
+| 6   | Shapes            |                  |
+| 7   | Components        |                  |
+| 8   | Do's and Don'ts   |                  |
 
 ### Component Tokens
 
@@ -149,12 +149,12 @@ Components map a name to a group of sub-token properties:
 ```yaml
 components:
   button-primary:
-    backgroundColor: "{colors.tertiary}"
-    textColor: "{colors.on-tertiary}"
-    rounded: "{rounded.sm}"
+    backgroundColor: '{colors.tertiary}'
+    textColor: '{colors.on-tertiary}'
+    rounded: '{rounded.sm}'
     padding: 12px
   button-primary-hover:
-    backgroundColor: "{colors.tertiary-container}"
+    backgroundColor: '{colors.tertiary-container}'
 ```
 
 Valid component properties: `backgroundColor`, `textColor`, `typography`, `rounded`, `padding`, `size`, `height`, `width`.
@@ -163,32 +163,32 @@ Variants (hover, active, pressed) are expressed as separate component entries wi
 
 ### Consumer Behavior for Unknown Content
 
-| Scenario | Behavior |
-|:---------|:---------|
-| Unknown section heading | Preserve; do not error |
-| Unknown color token name | Accept if value is valid |
+| Scenario                      | Behavior                   |
+| :---------------------------- | :------------------------- |
+| Unknown section heading       | Preserve; do not error     |
+| Unknown color token name      | Accept if value is valid   |
 | Unknown typography token name | Accept as valid typography |
-| Unknown component property | Accept with warning |
-| Duplicate section heading | Error; reject the file |
+| Unknown component property    | Accept with warning        |
+| Duplicate section heading     | Error; reject the file     |
 
 ## CLI Reference
 
 ### Installation
 
 ```bash
-npm install @google/design.md
+npm install @scalify/cli
 ```
 
 On **Windows**, quote the package name if your shell treats `@` specially (PowerShell, some terminals):
 
 ```bash
-npm install "@google/design.md"
+npm install "@scalify/cli"
 ```
 
 Or run directly (always resolves from the public npm registry):
 
 ```bash
-npx @google/design.md lint DESIGN.md
+npx @scalify/cli lint DESIGN.md
 ```
 
 On **Windows/PowerShell**, this direct form can produce no output (or open
@@ -198,15 +198,15 @@ resolution. Run the dot-free `designmd` alias instead — point `npx` at the
 package with `-p`, then invoke `designmd`:
 
 ```bash
-npx -p @google/design.md designmd lint DESIGN.md
+npx -p @scalify/cli designmd lint DESIGN.md
 ```
 
 The `designmd` shim resolves to the same entrypoint and works identically across
 all platforms.
 
-#### `npm error ENOVERSIONS` (“No versions available for @google/design.md”)
+#### `npm error ENOVERSIONS` (“No versions available for @scalify/cli”)
 
-The CLI is published as [`@google/design.md` on npm](https://www.npmjs.com/package/@google/design.md). `ENOVERSIONS` almost always means npm is not querying the public registry (custom `registry=` in `.npmrc`, a corporate mirror that has not synced this package, or a misconfigured `@google:registry` for the `@google` scope).
+The CLI is published as [`@scalify/cli` on npm](https://www.npmjs.com/package/@scalify/cli). `ENOVERSIONS` almost always means npm is not querying the public registry (custom `registry=` in `.npmrc`, a corporate mirror that has not synced this package, or a misconfigured `@google:registry` for the `@google` scope).
 
 Check your effective registry:
 
@@ -228,8 +228,8 @@ All commands accept a file path or `-` for stdin. Output defaults to JSON.
 > // package.json
 > {
 >   "scripts": {
->     "design:lint": "designmd lint DESIGN.md"
->   }
+>     "design:lint": "designmd lint DESIGN.md",
+>   },
 > }
 > ```
 
@@ -238,15 +238,15 @@ All commands accept a file path or `-` for stdin. Output defaults to JSON.
 Validate a DESIGN.md file for structural correctness.
 
 ```bash
-npx @google/design.md lint DESIGN.md
-npx @google/design.md lint --format json DESIGN.md
-cat DESIGN.md | npx @google/design.md lint -
+npx @scalify/cli lint DESIGN.md
+npx @scalify/cli lint --format json DESIGN.md
+cat DESIGN.md | npx @scalify/cli lint -
 ```
 
-| Option | Type | Default | Description |
-|:-------|:-----|:--------|:------------|
-| `file` | positional | required | Path to DESIGN.md (or `-` for stdin) |
-| `--format` | `json` | `json` | Output format |
+| Option     | Type       | Default  | Description                          |
+| :--------- | :--------- | :------- | :----------------------------------- |
+| `file`     | positional | required | Path to DESIGN.md (or `-` for stdin) |
+| `--format` | `json`     | `json`   | Output format                        |
 
 Exit code `1` if errors are found, `0` otherwise.
 
@@ -255,14 +255,14 @@ Exit code `1` if errors are found, `0` otherwise.
 Compare two DESIGN.md files and report token-level changes.
 
 ```bash
-npx @google/design.md diff DESIGN.md DESIGN-v2.md
+npx @scalify/cli diff DESIGN.md DESIGN-v2.md
 ```
 
-| Option | Type | Default | Description |
-|:-------|:-----|:--------|:------------|
-| `before` | positional | required | Path to the "before" DESIGN.md |
-| `after` | positional | required | Path to the "after" DESIGN.md |
-| `--format` | `json` | `json` | Output format |
+| Option     | Type       | Default  | Description                    |
+| :--------- | :--------- | :------- | :----------------------------- |
+| `before`   | positional | required | Path to the "before" DESIGN.md |
+| `after`    | positional | required | Path to the "after" DESIGN.md  |
+| `--format` | `json`     | `json`   | Output format                  |
 
 Exit code `1` if regressions are detected (more errors or warnings in the "after" file).
 
@@ -271,76 +271,76 @@ Exit code `1` if regressions are detected (more errors or warnings in the "after
 Export DESIGN.md tokens to other formats.
 
 ```bash
-npx @google/design.md export --format json-tailwind DESIGN.md > tailwind.theme.json
-npx @google/design.md export --format css-tailwind DESIGN.md > theme.css
-npx @google/design.md export --format dtcg DESIGN.md > tokens.json
+npx @scalify/cli export --format json-tailwind DESIGN.md > tailwind.theme.json
+npx @scalify/cli export --format css-tailwind DESIGN.md > theme.css
+npx @scalify/cli export --format dtcg DESIGN.md > tokens.json
 ```
 
-| Option | Type | Default | Description |
-|:-------|:-----|:--------|:------------|
-| `file` | positional | required | Path to DESIGN.md (or `-` for stdin) |
-| `--format` | `json-tailwind` \| `css-tailwind` \| `tailwind` \| `dtcg` | required | Output format |
+| Option     | Type                                                      | Default  | Description                          |
+| :--------- | :-------------------------------------------------------- | :------- | :----------------------------------- |
+| `file`     | positional                                                | required | Path to DESIGN.md (or `-` for stdin) |
+| `--format` | `json-tailwind` \| `css-tailwind` \| `tailwind` \| `dtcg` | required | Output format                        |
 
-| Format | Output | Description |
-|:-------|:-------|:------------|
-| `json-tailwind` | JSON | Tailwind v3 `theme.extend` config object |
-| `css-tailwind` | CSS | Tailwind v4 `@theme { ... }` block with CSS custom properties |
-| `tailwind` | JSON | Alias for `json-tailwind` |
-| `dtcg` | JSON | W3C Design Tokens Format Module |
+| Format          | Output | Description                                                   |
+| :-------------- | :----- | :------------------------------------------------------------ |
+| `json-tailwind` | JSON   | Tailwind v3 `theme.extend` config object                      |
+| `css-tailwind`  | CSS    | Tailwind v4 `@theme { ... }` block with CSS custom properties |
+| `tailwind`      | JSON   | Alias for `json-tailwind`                                     |
+| `dtcg`          | JSON   | W3C Design Tokens Format Module                               |
 
 ### `spec`
 
 Output the DESIGN.md format specification (useful for injecting spec context into agent prompts).
 
 ```bash
-npx @google/design.md spec
-npx @google/design.md spec --rules
-npx @google/design.md spec --rules-only --format json
+npx @scalify/cli spec
+npx @scalify/cli spec --rules
+npx @scalify/cli spec --rules-only --format json
 ```
 
-| Option | Type | Default | Description |
-|:-------|:-----|:--------|:------------|
-| `--rules` | boolean | `false` | Append the active linting rules table |
-| `--rules-only` | boolean | `false` | Output only the linting rules table |
-| `--format` | `markdown` \| `json` | `markdown` | Output format |
+| Option         | Type                 | Default    | Description                           |
+| :------------- | :------------------- | :--------- | :------------------------------------ |
+| `--rules`      | boolean              | `false`    | Append the active linting rules table |
+| `--rules-only` | boolean              | `false`    | Output only the linting rules table   |
+| `--format`     | `markdown` \| `json` | `markdown` | Output format                         |
 
 ## Linting Rules
 
 The linter runs nine rules against a parsed DESIGN.md. Each rule produces findings at a fixed severity level.
 
-| Rule | Severity | What it checks |
-|:-----|:---------|:---------------|
-| `broken-ref` | error | Token references (`{colors.primary}`) that don't resolve to any defined token |
-| `missing-primary` | warning | Colors are defined but no `primary` color exists — agents will auto-generate one |
-| `contrast-ratio` | warning | Component `backgroundColor`/`textColor` pairs below WCAG AA minimum (4.5:1) |
-| `orphaned-tokens` | warning | Color tokens defined but never referenced by any component |
-| `token-summary` | info | Summary of how many tokens are defined in each section |
-| `missing-sections` | info | Optional sections (spacing, rounded) absent when other tokens exist |
-| `missing-typography` | warning | Colors are defined but no typography tokens exist — agents will use default fonts |
-| `section-order` | warning | Sections appear out of the canonical order defined by the spec |
-| `unknown-key` | warning | A top-level YAML key looks like a typo of a known schema key (e.g. `colours:` → `colors:`); custom extension keys stay silent |
+| Rule                 | Severity | What it checks                                                                                                                |
+| :------------------- | :------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| `broken-ref`         | error    | Token references (`{colors.primary}`) that don't resolve to any defined token                                                 |
+| `missing-primary`    | warning  | Colors are defined but no `primary` color exists — agents will auto-generate one                                              |
+| `contrast-ratio`     | warning  | Component `backgroundColor`/`textColor` pairs below WCAG AA minimum (4.5:1)                                                   |
+| `orphaned-tokens`    | warning  | Color tokens defined but never referenced by any component                                                                    |
+| `token-summary`      | info     | Summary of how many tokens are defined in each section                                                                        |
+| `missing-sections`   | info     | Optional sections (spacing, rounded) absent when other tokens exist                                                           |
+| `missing-typography` | warning  | Colors are defined but no typography tokens exist — agents will use default fonts                                             |
+| `section-order`      | warning  | Sections appear out of the canonical order defined by the spec                                                                |
+| `unknown-key`        | warning  | A top-level YAML key looks like a typo of a known schema key (e.g. `colours:` → `colors:`); custom extension keys stay silent |
 
 ### Programmatic API
 
 The linter is also available as a library:
 
 ```typescript
-import { lint } from '@google/design.md/linter';
+import { lint } from '@scalify/cli/linter';
 
 const report = lint(markdownString);
 
-console.log(report.findings);       // Finding[]
-console.log(report.summary);        // { errors, warnings, info }
-console.log(report.designSystem);   // Parsed DesignSystemState
+console.log(report.findings); // Finding[]
+console.log(report.summary); // { errors, warnings, info }
+console.log(report.designSystem); // Parsed DesignSystemState
 ```
 
 ## Design Token Interoperability
 
 DESIGN.md tokens are inspired by the [W3C Design Token Format](https://www.designtokens.org/). The `export` command converts tokens to other formats:
 
-- **Tailwind v3 config (JSON)** — `npx @google/design.md export --format json-tailwind DESIGN.md` — emits a `theme.extend` JSON object for `tailwind.config.js`. `--format tailwind` is a backwards-compatible alias.
-- **Tailwind v4 theme (CSS)** — `npx @google/design.md export --format css-tailwind DESIGN.md` — emits a CSS `@theme { ... }` block using Tailwind v4's CSS-variable token namespaces (`--color-*`, `--font-*`, `--text-*`, `--leading-*`, `--tracking-*`, `--font-weight-*`, `--radius-*`, `--spacing-*`).
-- **DTCG tokens.json** ([W3C Design Tokens Format Module](https://tr.designtokens.org/format/)) — `npx @google/design.md export --format dtcg DESIGN.md`
+- **Tailwind v3 config (JSON)** — `npx @scalify/cli export --format json-tailwind DESIGN.md` — emits a `theme.extend` JSON object for `tailwind.config.js`. `--format tailwind` is a backwards-compatible alias.
+- **Tailwind v4 theme (CSS)** — `npx @scalify/cli export --format css-tailwind DESIGN.md` — emits a CSS `@theme { ... }` block using Tailwind v4's CSS-variable token namespaces (`--color-*`, `--font-*`, `--text-*`, `--leading-*`, `--tracking-*`, `--font-weight-*`, `--radius-*`, `--spacing-*`).
+- **DTCG tokens.json** ([W3C Design Tokens Format Module](https://tr.designtokens.org/format/)) — `npx @scalify/cli export --format dtcg DESIGN.md`
 
 ## Status
 

@@ -109,6 +109,6 @@ describe('unknownKey', () => {
       ]),
     });
     const findings = unknownKey(state);
-    expect(findings.map(f => f.path).sort()).toEqual(['colours', 'typografy']);
+    expect(findings.map((f) => f.path).sort()).toEqual(['colours', 'typografy']);
   });
 });

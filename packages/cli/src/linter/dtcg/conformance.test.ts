@@ -23,7 +23,7 @@ import { DtcgEmitterHandler } from './handler.js';
 describe('DTCG Conformance', () => {
   // Skipped: @terrazzo/token-types@^2.4.0 was removed from npm (404).
   // This test depends on installing Terrazzo from the public registry.
-  // Re-enable once Terrazzo publishes a fix. See: https://github.com/google-labs-code/design.md/issues/106
+  // Re-enable once Terrazzo publishes a fix. See: https://github.com/khulnasoft/scalify/issues/106
   test.skip('Terrazzo can parse our DTCG output and generate CSS', () => {
     const fixtureContent = `---
 name: Test Brand
@@ -77,10 +77,7 @@ export default defineConfig({
 
       // We also need a package.json in the temp dir to make it a module,
       // so we can use ES imports in terrazzo.config.js
-      writeFileSync(
-        join(tmpDir, 'package.json'),
-        JSON.stringify({ type: 'module' })
-      );
+      writeFileSync(join(tmpDir, 'package.json'), JSON.stringify({ type: 'module' }));
 
       // Install dependencies in temp dir so they can be imported in config
       // Using bun add should be fast if cached
@@ -88,7 +85,7 @@ export default defineConfig({
       const installProc = spawnSync('bun', ['add', '@terrazzo/cli', '@terrazzo/plugin-css'], {
         cwd: tmpDir,
         env: { ...process.env, PATH: customPath },
-        shell: true
+        shell: true,
       });
 
       if (installProc.status !== 0) {
@@ -99,7 +96,7 @@ export default defineConfig({
       const proc = spawnSync('npx', ['@terrazzo/cli', 'build'], {
         cwd: tmpDir,
         env: { ...process.env, PATH: customPath },
-        shell: true
+        shell: true,
       });
 
       if (proc.status !== 0) {
@@ -111,7 +108,7 @@ export default defineConfig({
 
       // 6. Verify CSS was generated
       const cssPath = join(tmpDir, 'out/index.css');
-      
+
       if (!existsSync(cssPath)) {
         console.log('Temp dir contents:', spawnSync('ls', ['-R', tmpDir]).stdout.toString());
       }

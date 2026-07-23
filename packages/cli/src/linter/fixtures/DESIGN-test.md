@@ -124,7 +124,7 @@ The palette is centered on a "Calming Mint" primary tone that signals health and
 
 ## Typography
 
-This design system utilizes a dual-font strategy to balance character with utility. 
+This design system utilizes a dual-font strategy to balance character with utility.
 
 **Manrope** is used for headlines. Its geometric yet slightly rounded apertures provide a contemporary, friendly look that mirrors the "roundedness" of the brand's shape language.
 
@@ -134,7 +134,7 @@ This design system utilizes a dual-font strategy to balance character with utili
 
 The layout follows a **Fixed Grid** philosophy for desktop views, centering content within a 1200px container to create an organized, professional feel. On smaller screens, the system transitions to a fluid model with generous margins.
 
-The rhythm is built on a strictly enforced 8px base unit. 
+The rhythm is built on a strictly enforced 8px base unit.
 
 - Use **24px (3 units)** for standard gutters and element spacing.
 - Use **48px-64px (6-8 units)** for vertical section spacing to maintain an "airy" and unhurried feel.

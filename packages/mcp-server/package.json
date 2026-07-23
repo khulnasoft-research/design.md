@@ -1,19 +1,22 @@
 {
-  "name": "@google/design.md-mcp",
+  "name": "@scalify/mcp-server",
   "version": "0.1.0",
   "description": "MCP server for DESIGN.md — expose lint, export, and diff as AI agent tools",
   "type": "module",
   "bin": {
     "designmd-mcp": "./dist/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --target node && npx tsc --project tsconfig.build.json --emitDeclarationOnly --skipLibCheck",
     "dev": "bun run src/index.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@google/design.md": "workspace:*"
+    "@scalify/design-core": "workspace:*",
+    "@scalify/cli": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "latest",

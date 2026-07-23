@@ -16,8 +16,6 @@ import type { DesignSystemState } from '../model/spec.js';
 export type { Finding, Severity } from '../model/spec.js';
 import type { Finding } from '../model/spec.js';
 
-
-
 // ── LINT RESULT ────────────────────────────────────────────────────
 export interface LintResult {
   findings: Finding[];

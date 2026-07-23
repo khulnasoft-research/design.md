@@ -88,17 +88,19 @@ function FrontmatterItem({ name, value, expanded, onToggle, onChange }: Frontmat
       </div>
       {expanded && (isObject || isArray) && (
         <div className="frontmatter-nested">
-          {isObject && Object.entries(value as Record<string, unknown>).map(([k, v]) => (
-            <div key={k} className="nested-item">
-              <code>{k}:</code>
-              <span>{JSON.stringify(v)}</span>
-            </div>
-          ))}
-          {isArray && (value as unknown[]).map((item, idx) => (
-            <div key={idx} className="nested-item">
-              <span>{JSON.stringify(item)}</span>
-            </div>
-          ))}
+          {isObject &&
+            Object.entries(value as Record<string, unknown>).map(([k, v]) => (
+              <div key={k} className="nested-item">
+                <code>{k}:</code>
+                <span>{JSON.stringify(v)}</span>
+              </div>
+            ))}
+          {isArray &&
+            (value as unknown[]).map((item, idx) => (
+              <div key={idx} className="nested-item">
+                <span>{JSON.stringify(item)}</span>
+              </div>
+            ))}
         </div>
       )}
     </div>

@@ -15,7 +15,18 @@ type TabType = 'editor' | 'tokens' | 'diff' | 'export' | 'tools';
 export default function App() {
   const [connected, setConnected] = useState(false);
   const [filePath, setFilePath] = useState('');
-  const { selectedTab, setSelectedTab, content, fileName, setFileName, isDirty, setIsDirty, setFindings, setDesignSystem, summary } = useDesignMdState();
+  const {
+    selectedTab,
+    setSelectedTab,
+    content,
+    fileName,
+    setFileName,
+    isDirty,
+    setIsDirty,
+    setFindings,
+    setDesignSystem,
+    summary,
+  } = useDesignMdState();
 
   useEffect(() => {
     health()
@@ -30,15 +41,17 @@ export default function App() {
       const data = result as Record<string, unknown>;
       const lintResult = await callTool('lint_design_md', { path: filePath });
       const lintData = lintResult as Record<string, unknown>;
-      
+
       setDesignSystem((lintData.designSystem || {}) as Record<string, unknown>);
-      setFindings(((lintData.findings || []) as any[]).map((f: any) => ({
-        level: f.level || 'info',
-        rule: f.rule || 'unknown',
-        message: f.message || '',
-        line: f.line,
-        column: f.column,
-      })));
+      setFindings(
+        ((lintData.findings || []) as any[]).map((f: any) => ({
+          level: f.level || 'info',
+          rule: f.rule || 'unknown',
+          message: f.message || '',
+          line: f.line,
+          column: f.column,
+        }))
+      );
       setFileName(filePath.split('/').pop() || 'DESIGN.md');
       setIsDirty(false);
     } catch (e) {
@@ -54,13 +67,15 @@ export default function App() {
         body: content,
       });
       const data = result as Record<string, unknown>;
-      setFindings(((data.findings || []) as any[]).map((f: any) => ({
-        level: f.level || 'info',
-        rule: f.rule || 'unknown',
-        message: f.message || '',
-        line: f.line,
-        column: f.column,
-      })));
+      setFindings(
+        ((data.findings || []) as any[]).map((f: any) => ({
+          level: f.level || 'info',
+          rule: f.rule || 'unknown',
+          message: f.message || '',
+          line: f.line,
+          column: f.column,
+        }))
+      );
       setIsDirty(false);
     } catch (e) {
       console.error('Failed to save file:', e);
@@ -78,7 +93,7 @@ export default function App() {
   return (
     <div className="app-layout">
       <Sidebar connected={connected} />
-      
+
       <div className="main-content">
         <TopBar
           fileName={fileName}
@@ -176,10 +191,18 @@ function TopBar({
             onChange={(e) => onFilePathChange(e.target.value)}
           />
         </div>
-        <button className="btn btn-secondary btn-sm" onClick={onLoad} disabled={!filePath || !connected}>
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={onLoad}
+          disabled={!filePath || !connected}
+        >
           <Plus size={14} /> Load
         </button>
-        <button className="btn btn-primary btn-sm" onClick={onSave} disabled={!isDirty || !connected}>
+        <button
+          className="btn btn-primary btn-sm"
+          onClick={onSave}
+          disabled={!isDirty || !connected}
+        >
           <Save size={14} /> Save
         </button>
       </div>
@@ -190,9 +213,19 @@ function TopBar({
       </div>
 
       <div className="validation-summary">
-        {summary.errors > 0 && <span className="badge-error">{summary.errors} error{summary.errors !== 1 ? 's' : ''}</span>}
-        {summary.warnings > 0 && <span className="badge-warning">{summary.warnings} warning{summary.warnings !== 1 ? 's' : ''}</span>}
-        {summary.errors === 0 && summary.warnings === 0 && <span className="badge-success">Valid</span>}
+        {summary.errors > 0 && (
+          <span className="badge-error">
+            {summary.errors} error{summary.errors !== 1 ? 's' : ''}
+          </span>
+        )}
+        {summary.warnings > 0 && (
+          <span className="badge-warning">
+            {summary.warnings} warning{summary.warnings !== 1 ? 's' : ''}
+          </span>
+        )}
+        {summary.errors === 0 && summary.warnings === 0 && (
+          <span className="badge-success">Valid</span>
+        )}
       </div>
     </div>
   );
@@ -213,7 +246,12 @@ function ToolsPanel() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="tools-panel"><div className="loading">Loading tools</div></div>;
+  if (loading)
+    return (
+      <div className="tools-panel">
+        <div className="loading">Loading tools</div>
+      </div>
+    );
 
   return (
     <div className="tools-panel">

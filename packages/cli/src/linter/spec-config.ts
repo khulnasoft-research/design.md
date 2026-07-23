@@ -40,15 +40,21 @@ const PropertyDefSchema = z.object({
 
 const ConfigSchema = z.object({
   version: z.string(),
-  limits: z.object({
-    max_token_nesting_depth: z.number().default(20),
-    max_reference_depth: z.number().default(10),
-  }).default({}),
+  limits: z
+    .object({
+      max_token_nesting_depth: z.number().default(20),
+      max_reference_depth: z.number().default(10),
+    })
+    .default({}),
   units: z.array(z.string()).min(1),
-  sections: z.array(z.object({
-    canonical: z.string(),
-    aliases: z.array(z.string()).optional(),
-  })).min(1),
+  sections: z
+    .array(
+      z.object({
+        canonical: z.string(),
+        aliases: z.array(z.string()).optional(),
+      })
+    )
+    .min(1),
   typography_properties: z.array(PropertyDefSchema).min(1),
   component_sub_tokens: z.array(PropertyDefSchema).min(1),
   color_roles: z.array(z.string()).min(1),
@@ -147,13 +153,11 @@ export const EXAMPLES = config.examples;
 // ── Derived constants ─────────────────────────────────────────────────
 
 /** Ordered list of canonical section names. */
-export const CANONICAL_ORDER = SECTIONS.map(s => s.canonical);
+export const CANONICAL_ORDER = SECTIONS.map((s) => s.canonical);
 
 /** Map of alias → canonical name. */
 export const SECTION_ALIASES: Record<string, string> = Object.fromEntries(
-  SECTIONS.flatMap(s =>
-    (s.aliases ?? []).map(alias => [alias, s.canonical])
-  )
+  SECTIONS.flatMap((s) => (s.aliases ?? []).map((alias) => [alias, s.canonical]))
 );
 
 /** Resolve a section heading to its canonical name. */
@@ -162,10 +166,10 @@ export function resolveAlias(heading: string): string {
 }
 
 /** Valid typography property names (for linter validation). */
-export const VALID_TYPOGRAPHY_PROPS = TYPOGRAPHY_PROPERTIES.map(p => p.name);
+export const VALID_TYPOGRAPHY_PROPS = TYPOGRAPHY_PROPERTIES.map((p) => p.name);
 
 /** Valid component sub-token names (for linter validation). */
-export const VALID_COMPONENT_SUB_TOKENS = COMPONENT_SUB_TOKENS.map(p => p.name);
+export const VALID_COMPONENT_SUB_TOKENS = COMPONENT_SUB_TOKENS.map((p) => p.name);
 
 // ── Aggregate type ────────────────────────────────────────────────────
 

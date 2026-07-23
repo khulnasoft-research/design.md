@@ -85,45 +85,45 @@ spacing:
   gutter: 1rem
   unit: 4px
 ---
- 
+
 ## Brand & Style
- 
+
 This design system channels the rigorous spirit of 19th-century exploration, blending the intellectual weight of a Royal Geographical Society with the technical precision required for high-altitude survival. The aesthetic is defined as **Scientific Alpinism**—a hybrid of tactile, historic materials and cold, celestial data.
- 
+
 The UI should evoke a sense of "The Sublime"—a mixture of awe and peril found at extreme elevations. It utilizes a **Modern-Tactile** approach where information is treated like artifacts on a cartographer’s desk or telemetry viewed through a brass sextant. It avoids all modern softness, favoring the rigid structures of physical instruments and the starkness of the night sky above the treeline.
- 
+
 ## Colors
- 
-The palette is anchored by **The Void**, a deep observatory navy that serves as the infinite backdrop of the high-altitude atmosphere. **The Lens** (Parchment) provides a high-contrast surface for intensive reading, mimicking the hand-drawn maps of early expeditions. 
- 
+
+The palette is anchored by **The Void**, a deep observatory navy that serves as the infinite backdrop of the high-altitude atmosphere. **The Lens** (Parchment) provides a high-contrast surface for intensive reading, mimicking the hand-drawn maps of early expeditions.
+
 **The Instrument** (Antique Brass) is used exclusively for interactive elements and critical focus points, representing the physical tools of navigation. **The Hardware** (Glacial Steel) provides the structural framework, acting as the thin, cold line between the observer and the environment. Use parchment sparingly for primary content containers to create a "magnified" effect against the dark canvas.
- 
+
 ## Typography
- 
-Typography functions as both narrative and data. **Primary Markings** (Marcellus) lend an air of classical authority and historical permanence to headers. 
- 
+
+Typography functions as both narrative and data. **Primary Markings** (Marcellus) lend an air of classical authority and historical permanence to headers.
+
 **The Journal** text uses Newsreader (as a proxy for the requested EB Garamond style) to facilitate long-form reading of expedition logs and alpine surveys. It should feel literary and intentional.
- 
+
 **The Telemetry** (IBM Plex Mono) is the voice of the machine. It must always be presented in uppercase with wide tracking, simulating the etched labels on brass equipment or the printed output of a barometer. This font is used for navigation, coordinates, and metadata.
- 
+
 ## Layout & Spacing
- 
+
 The design system utilizes a **Fixed Grid** philosophy inspired by technical drafting sheets. The layout is composed of rigid panels separated by a mandatory **1rem gap**, ensuring that every module feels like a distinct instrument housed within a larger kit.
- 
+
 Structure is reinforced by 1px Glacial Steel borders. Layouts should be symmetrical where possible, mimicking the balanced lens of a telescope. Use white space not for "breathability," but to isolate specific data points, much like a star map isolates celestial bodies. Alignment should be strictly mathematical, with no rounded corners to break the geometry.
- 
+
 ## Elevation & Depth
- 
+
 Depth is achieved through **Tonal Layering** and structural framing rather than shadows. The global canvas is the deepest level (The Void). Information panels (The Lens) sit on top as flat, non-elevated surfaces.
- 
+
 To indicate hierarchy, use "crosshair" intersection points where 1px borders meet. Subtle 1px insets can be used to suggest that a piece of glass has been "mounted" into a frame. There are no ambient shadows; the "light" in this system is binary—either an element is illuminated by the brass accent color or it remains in the cold steel of the background.
- 
+
 ## Shapes
- 
+
 The shape language is strictly **Linear and Sharp**. A 0px border radius is enforced across all components, from buttons to large containers. This communicates precision, danger, and the uncompromising nature of high-altitude environments. Decorative elements are limited to 45-degree angled corners (chamfers) and compass-inspired iconography.
- 
+
 ## Components
- 
+
 - **Action Orreries (Buttons):** Rectangular with 0px radius. Default state features a 1px Navy border and transparent background. On hover, the background fills with Antique Brass, and text shifts to Navy.
 - **The Ledger (Lists):** Rows are separated by 1px Glacial Steel rules. Each row starts with a Telemetry-style timestamp or coordinate.
 - **The Sextant (Inputs):** Input fields are underlined only or fully boxed in Glacial Steel. Focus state changes the border to Antique Brass with a small crosshair icon appearing in the top-right corner.

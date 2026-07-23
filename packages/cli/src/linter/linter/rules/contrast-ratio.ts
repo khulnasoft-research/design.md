@@ -54,6 +54,7 @@ function resolveToColor(value: ResolvedValue): ResolvedColor | null {
 export const contrastCheckRule: RuleDescriptor = {
   name: 'contrast-ratio',
   severity: 'warning',
-  description: 'WCAG contrast ratio — warns when component backgroundColor/textColor pairs fall below the AA minimum of 4.5:1.',
+  description:
+    'WCAG contrast ratio — warns when component backgroundColor/textColor pairs fall below the AA minimum of 4.5:1.',
   run: contrastCheck,
 };

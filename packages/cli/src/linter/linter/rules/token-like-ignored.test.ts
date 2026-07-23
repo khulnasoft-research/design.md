@@ -108,7 +108,7 @@ describe('tokenLikeIgnored', () => {
     });
     const findings = tokenLikeIgnored(state);
     expect(findings.length).toBe(2);
-    expect(findings.map(f => f.path).sort()).toEqual(['base_colors', 'semantic_colors']);
+    expect(findings.map((f) => f.path).sort()).toEqual(['base_colors', 'semantic_colors']);
   });
 
   it('warns on nested token maps', () => {

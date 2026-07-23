@@ -14,7 +14,12 @@
 
 import { describe, test, expect } from 'bun:test';
 import { DtcgEmitterHandler } from './handler.js';
-import type { DesignSystemState, ResolvedColor, ResolvedDimension, ResolvedTypography } from '../model/spec.js';
+import type {
+  DesignSystemState,
+  ResolvedColor,
+  ResolvedDimension,
+  ResolvedTypography,
+} from '../model/spec.js';
 
 function emptyState(overrides?: Partial<DesignSystemState>): DesignSystemState {
   return {
@@ -67,7 +72,7 @@ describe('DtcgEmitterHandler', () => {
   test('colors → DTCG color tokens with sRGB components in 0–1 range', () => {
     const state = emptyState({
       colors: new Map([
-        ['primary', makeColor('#1A1C1E', 0x1A, 0x1C, 0x1E)],
+        ['primary', makeColor('#1A1C1E', 0x1a, 0x1c, 0x1e)],
         ['white', makeColor('#FFFFFF', 255, 255, 255)],
         ['black', makeColor('#000000', 0, 0, 0)],
       ]),
@@ -86,9 +91,9 @@ describe('DtcgEmitterHandler', () => {
     expect(primaryValue['hex']).toBe('#1a1c1e');
 
     const components = primaryValue['components'] as number[];
-    expect(components[0]).toBeCloseTo(0x1A / 255, 2);
-    expect(components[1]).toBeCloseTo(0x1C / 255, 2);
-    expect(components[2]).toBeCloseTo(0x1E / 255, 2);
+    expect(components[0]).toBeCloseTo(0x1a / 255, 2);
+    expect(components[1]).toBeCloseTo(0x1c / 255, 2);
+    expect(components[2]).toBeCloseTo(0x1e / 255, 2);
 
     // Black = [0, 0, 0]
     const black = colorGroup['black'] as Record<string, unknown>;
@@ -125,9 +130,7 @@ describe('DtcgEmitterHandler', () => {
 
   test('rounded → DTCG dimension tokens under "rounded" group', () => {
     const state = emptyState({
-      rounded: new Map([
-        ['sm', makeDim(4, 'px')],
-      ]),
+      rounded: new Map([['sm', makeDim(4, 'px')]]),
     });
 
     const result = handler.execute(state);
@@ -184,7 +187,9 @@ describe('DtcgEmitterHandler', () => {
     expect(result.success).toBe(true);
     if (!result.success) return;
 
-    const value = ((result.data['typography'] as Record<string, unknown>)['body'] as Record<string, unknown>)['$value'] as Record<string, unknown>;
+    const value = (
+      (result.data['typography'] as Record<string, unknown>)['body'] as Record<string, unknown>
+    )['$value'] as Record<string, unknown>;
     expect(value['fontFamily']).toBe('Roboto');
     expect(value['fontSize']).toBeUndefined();
     expect(value['fontWeight']).toBeUndefined();

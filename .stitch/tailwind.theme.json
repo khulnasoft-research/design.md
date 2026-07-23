@@ -62,45 +62,19 @@
         "terminal-bg": "#060e20cc"
       },
       "fontFamily": {
-        "display": [
-          "Plus Jakarta Sans"
-        ],
-        "headline-lg": [
-          "Plus Jakarta Sans"
-        ],
-        "headline-md": [
-          "Plus Jakarta Sans"
-        ],
-        "title-lg": [
-          "Inter"
-        ],
-        "body-lg": [
-          "Inter"
-        ],
-        "body-md": [
-          "Inter"
-        ],
-        "body-sm": [
-          "Inter"
-        ],
-        "label-sm": [
-          "Inter"
-        ],
-        "label-tiny": [
-          "Inter"
-        ],
-        "code-sm": [
-          "JetBrains Mono, Fira Code, monospace"
-        ],
-        "code-xs": [
-          "JetBrains Mono, Fira Code, monospace"
-        ],
-        "nav-link": [
-          "Inter"
-        ],
-        "section-label": [
-          "Inter"
-        ]
+        "display": ["Plus Jakarta Sans"],
+        "headline-lg": ["Plus Jakarta Sans"],
+        "headline-md": ["Plus Jakarta Sans"],
+        "title-lg": ["Inter"],
+        "body-lg": ["Inter"],
+        "body-md": ["Inter"],
+        "body-sm": ["Inter"],
+        "label-sm": ["Inter"],
+        "label-tiny": ["Inter"],
+        "code-sm": ["JetBrains Mono, Fira Code, monospace"],
+        "code-xs": ["JetBrains Mono, Fira Code, monospace"],
+        "nav-link": ["Inter"],
+        "section-label": ["Inter"]
       },
       "fontSize": {
         "display": [
@@ -130,18 +104,9 @@
             "fontWeight": "600"
           }
         ],
-        "body-lg": [
-          "20px",
-          {}
-        ],
-        "body-md": [
-          "16px",
-          {}
-        ],
-        "body-sm": [
-          "14px",
-          {}
-        ],
+        "body-lg": ["20px", {}],
+        "body-md": ["16px", {}],
+        "body-sm": ["14px", {}],
         "label-sm": [
           "12px",
           {
@@ -156,14 +121,8 @@
             "fontWeight": "600"
           }
         ],
-        "code-sm": [
-          "13px",
-          {}
-        ],
-        "code-xs": [
-          "12px",
-          {}
-        ],
+        "code-sm": ["13px", {}],
+        "code-xs": ["12px", {}],
         "nav-link": [
           "14px",
           {

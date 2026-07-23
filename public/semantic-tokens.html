@@ -1,227 +1,666 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Why Semantic Tokens — Stitch</title>
-  <meta name="description" content="Understand why descriptive design language works better for AI than raw CSS values. Consistency, intent, maintainability, and cross-format benefits.">
-  <meta name="og:title" content="Why Semantic Tokens — Stitch">
-  <meta name="og:description" content="Understand why descriptive design language works better for AI than raw CSS values. Consistency, intent, maintainability, and cross-format benefits.">
-  <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg">
-  <meta name="twitter:card" content="summary">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --surface: #0b1326; --surface-dim: #0b1326; --surface-bright: #31394d;
-      --surface-container-lowest: #060e20; --surface-container-low: #131b2e;
-      --surface-container: #171f33; --surface-container-high: #222a3d;
-      --surface-container-highest: #2d3449; --on-surface: #dae2fd;
-      --on-surface-variant: #c4c7c8; --primary: #ffffff; --on-primary: #2f3131;
-      --secondary: #adc9eb; --outline: #8e9192; --outline-variant: #444748;
-      --gradient-start: #6366f1; --gradient-mid: #8b5cf6; --gradient-violet: #a855f7;
-      --gradient-end: #d946ef; --glass-bg: rgba(255,255,255,0.04);
-      --glass-hover: rgba(255,255,255,0.07); --glass-border: rgba(255,255,255,0.06);
-      --glass-strong: rgba(255,255,255,0.10);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: Inter, system-ui, sans-serif; background: var(--surface);
-      color: var(--on-surface); line-height: 1.6; overflow-x: hidden;
-    }
-    ::selection { background: rgba(99,102,241,0.3); }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Why Semantic Tokens — Stitch</title>
+    <meta
+      name="description"
+      content="Understand why descriptive design language works better for AI than raw CSS values. Consistency, intent, maintainability, and cross-format benefits."
+    />
+    <meta name="og:title" content="Why Semantic Tokens — Stitch" />
+    <meta
+      name="og:description"
+      content="Understand why descriptive design language works better for AI than raw CSS values. Consistency, intent, maintainability, and cross-format benefits."
+    />
+    <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #0b1326;
+        --surface-dim: #0b1326;
+        --surface-bright: #31394d;
+        --surface-container-lowest: #060e20;
+        --surface-container-low: #131b2e;
+        --surface-container: #171f33;
+        --surface-container-high: #222a3d;
+        --surface-container-highest: #2d3449;
+        --on-surface: #dae2fd;
+        --on-surface-variant: #c4c7c8;
+        --primary: #ffffff;
+        --on-primary: #2f3131;
+        --secondary: #adc9eb;
+        --outline: #8e9192;
+        --outline-variant: #444748;
+        --gradient-start: #6366f1;
+        --gradient-mid: #8b5cf6;
+        --gradient-violet: #a855f7;
+        --gradient-end: #d946ef;
+        --glass-bg: rgba(255, 255, 255, 0.04);
+        --glass-hover: rgba(255, 255, 255, 0.07);
+        --glass-border: rgba(255, 255, 255, 0.06);
+        --glass-strong: rgba(255, 255, 255, 0.1);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: Inter, system-ui, sans-serif;
+        background: var(--surface);
+        color: var(--on-surface);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      ::selection {
+        background: rgba(99, 102, 241, 0.3);
+      }
 
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 14px 32px; display: flex; align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      background: rgba(11,19,38,0.6); border-bottom: 1px solid var(--glass-border);
-    }
-    nav .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; text-decoration: none; color: var(--on-surface); }
-    nav .logo svg { width: 24px; height: 24px; }
-    nav .links { display: flex; gap: 20px; align-items: center; }
-    nav .links a { color: var(--on-surface-variant); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
-    nav .links a:hover { color: var(--on-surface); }
-    nav .links .btn-primary { background: var(--primary); color: var(--on-primary); padding: 7px 18px; border-radius: 999px; font-weight: 600; font-size: 12px; }
-    nav .links .btn-primary:hover { opacity: 0.85; }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 14px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background: rgba(11, 19, 38, 0.6);
+        border-bottom: 1px solid var(--glass-border);
+      }
+      nav .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+        color: var(--on-surface);
+      }
+      nav .logo svg {
+        width: 24px;
+        height: 24px;
+      }
+      nav .links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      nav .links a {
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      nav .links a:hover {
+        color: var(--on-surface);
+      }
+      nav .links .btn-primary {
+        background: var(--primary);
+        color: var(--on-primary);
+        padding: 7px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+      nav .links .btn-primary:hover {
+        opacity: 0.85;
+      }
 
-    .bg-glow { position: fixed; top: -40vh; left: 50%; transform: translateX(-50%); width: 120vw; height: 80vh; background: radial-gradient(ellipse at center, rgba(99,102,241,0.10), rgba(139,92,246,0.05), transparent); pointer-events: none; z-index: 0; }
+      .bg-glow {
+        position: fixed;
+        top: -40vh;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120vw;
+        height: 80vh;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(99, 102, 241, 0.1),
+          rgba(139, 92, 246, 0.05),
+          transparent
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
 
-    .page { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 100px 24px 80px; }
-    .page-header { margin-bottom: 48px; }
-    .page-header .breadcrumb { font-size: 12px; color: var(--on-surface-variant); margin-bottom: 8px; }
-    .page-header .breadcrumb a { color: var(--secondary); text-decoration: none; }
-    .page-header .breadcrumb a:hover { text-decoration: underline; }
-    .page-header h1 { font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
-    .page-header p { font-size: 16px; color: var(--on-surface-variant); max-width: 600px; }
+      .page {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 100px 24px 80px;
+      }
+      .page-header {
+        margin-bottom: 48px;
+      }
+      .page-header .breadcrumb {
+        font-size: 12px;
+        color: var(--on-surface-variant);
+        margin-bottom: 8px;
+      }
+      .page-header .breadcrumb a {
+        color: var(--secondary);
+        text-decoration: none;
+      }
+      .page-header .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+      .page-header h1 {
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 12px;
+      }
+      .page-header p {
+        font-size: 16px;
+        color: var(--on-surface-variant);
+        max-width: 600px;
+      }
 
-    h2 { font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-top: 48px; margin-bottom: 12px; }
-    h3 { font-size: 17px; font-weight: 600; margin-top: 28px; margin-bottom: 8px; }
-    p { font-size: 15px; color: var(--on-surface-variant); margin-bottom: 16px; line-height: 1.7; }
-    p strong { color: var(--on-surface); }
+      h2 {
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-top: 48px;
+        margin-bottom: 12px;
+      }
+      h3 {
+        font-size: 17px;
+        font-weight: 600;
+        margin-top: 28px;
+        margin-bottom: 8px;
+      }
+      p {
+        font-size: 15px;
+        color: var(--on-surface-variant);
+        margin-bottom: 16px;
+        line-height: 1.7;
+      }
+      p strong {
+        color: var(--on-surface);
+      }
 
-    .prompt-block { background: var(--surface-container-low); border: 1px solid var(--glass-border); border-radius: 10px; padding: 16px 18px; margin: 16px 0 20px; }
-    .prompt-block .prompt-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gradient-violet); margin-bottom: 6px; }
-    .prompt-block .prompt-text { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--on-surface); line-height: 1.7; }
+      .prompt-block {
+        background: var(--surface-container-low);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin: 16px 0 20px;
+      }
+      .prompt-block .prompt-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--gradient-violet);
+        margin-bottom: 6px;
+      }
+      .prompt-block .prompt-text {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        color: var(--on-surface);
+        line-height: 1.7;
+      }
 
-    .tip-box { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.15); border-radius: 10px; padding: 16px 18px; margin: 16px 0 20px; }
-    .tip-box .tip-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--secondary); margin-bottom: 4px; }
-    .tip-box p { font-size: 14px; margin-bottom: 0; }
+      .tip-box {
+        background: rgba(99, 102, 241, 0.06);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin: 16px 0 20px;
+      }
+      .tip-box .tip-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--secondary);
+        margin-bottom: 4px;
+      }
+      .tip-box p {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
 
-    table { width: 100%; border-collapse: collapse; margin: 16px 0 20px; font-size: 13px; }
-    table th { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--glass-border); color: var(--secondary); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
-    table td { padding: 10px 12px; border-bottom: 1px solid var(--glass-border); color: var(--on-surface-variant); }
-    table td strong { color: var(--on-surface); }
-    table tr:last-child td { border-bottom: none; }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0 20px;
+        font-size: 13px;
+      }
+      table th {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--glass-border);
+        color: var(--secondary);
+        font-weight: 600;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--glass-border);
+        color: var(--on-surface-variant);
+      }
+      table td strong {
+        color: var(--on-surface);
+      }
+      table tr:last-child td {
+        border-bottom: none;
+      }
 
-    .next-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 24px 0; }
-    .next-link { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 16px; text-decoration: none; transition: all 0.2s; display: block; }
-    .next-link:hover { background: var(--glass-hover); transform: translateY(-1px); }
-    .next-link .nl-title { font-size: 14px; font-weight: 600; color: var(--on-surface); margin-bottom: 2px; }
-    .next-link .nl-desc { font-size: 12px; color: var(--on-surface-variant); }
+      .next-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin: 24px 0;
+      }
+      .next-link {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 16px;
+        text-decoration: none;
+        transition: all 0.2s;
+        display: block;
+      }
+      .next-link:hover {
+        background: var(--glass-hover);
+        transform: translateY(-1px);
+      }
+      .next-link .nl-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--on-surface);
+        margin-bottom: 2px;
+      }
+      .next-link .nl-desc {
+        font-size: 12px;
+        color: var(--on-surface-variant);
+      }
 
-    hr { border: none; border-top: 1px solid var(--glass-border); margin: 40px 0; }
+      hr {
+        border: none;
+        border-top: 1px solid var(--glass-border);
+        margin: 40px 0;
+      }
 
-    footer { text-align: center; padding: 24px; font-size: 12px; color: var(--outline); border-top: 1px solid var(--glass-border); }
-    footer a { color: var(--on-surface-variant); text-decoration: none; }
-    footer a:hover { color: var(--on-surface); }
+      footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 12px;
+        color: var(--outline);
+        border-top: 1px solid var(--glass-border);
+      }
+      footer a {
+        color: var(--on-surface-variant);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--on-surface);
+      }
 
-    .hamburger { display: none; background: none; border: none; color: var(--on-surface); font-size: 26px; cursor: pointer; padding: 0 4px; line-height: 1; }
-    .mobile-overlay { position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.6); z-index: 150; opacity:0; pointer-events:none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
-    .mobile-overlay.open { opacity:1; pointer-events:auto; }
-    .mobile-nav { position: fixed; top:0; right:-280px; width:260px; height:100vh; background: var(--surface-container); border-left: 1px solid var(--glass-border); z-index:200; transition: right 0.3s; padding: 20px; backdrop-filter: blur(20px); overflow-y:auto; }
-    .mobile-nav.open { right:0; }
-    .mobile-nav-header { display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--glass-border); margin-bottom:8px; }
-    .mobile-nav .close-btn { background:none; border:none; color:var(--on-surface); font-size:20px; cursor:pointer; padding:4px; }
-    .mobile-nav-links { display:flex; flex-direction:column; gap:4px; }
-    .mobile-nav-links a { display:block; padding:10px 12px; border-radius:8px; color:var(--on-surface-variant); text-decoration:none; font-size:14px; font-weight:500; transition:all 0.15s; }
-    .mobile-nav-links a:hover { background:var(--glass-hover); color:var(--on-surface); }
+      .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 26px;
+        cursor: pointer;
+        padding: 0 4px;
+        line-height: 1;
+      }
+      .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 150;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        backdrop-filter: blur(4px);
+      }
+      .mobile-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -280px;
+        width: 260px;
+        height: 100vh;
+        background: var(--surface-container);
+        border-left: 1px solid var(--glass-border);
+        z-index: 200;
+        transition: right 0.3s;
+        padding: 20px;
+        backdrop-filter: blur(20px);
+        overflow-y: auto;
+      }
+      .mobile-nav.open {
+        right: 0;
+      }
+      .mobile-nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--glass-border);
+        margin-bottom: 8px;
+      }
+      .mobile-nav .close-btn {
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .mobile-nav-links a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.15s;
+      }
+      .mobile-nav-links a:hover {
+        background: var(--glass-hover);
+        color: var(--on-surface);
+      }
 
-    @media (max-width: 640px) {
-      nav .links { display: none; }
-      .page { padding: 80px 16px 40px; }
-      .page-header h1 { font-size: 28px; }
-    }
-  </style>
-</head>
-<body>
-<div class="bg-glow"></div>
+      @media (max-width: 640px) {
+        nav .links {
+          display: none;
+        }
+        .page {
+          padding: 80px 16px 40px;
+        }
+        .page-header h1 {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-glow"></div>
 
-<nav>
-  <a href="index.html" class="logo">
-    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="url(#lg)"/><path d="M8 14L12 10L16 14L20 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 18L12 14L16 18L20 14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/><defs><linearGradient id="lg" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs></svg>
-    Stitch
-  </a>
-  <div class="links">
-    <a href="index.html">Home</a>
-    <a href="get-started.html">Get Started</a>
-    <a href="roundtrip.html">Roundtrip</a>
-    <a href="import.html">Import</a>
-    <a href="premium-design.html">Premium</a>
-    <a href="semantic-tokens.html">Semantic Tokens</a>
-    <a href="design-system.html">Design System</a>
-    <a href="https://stitch.withgoogle.com" class="btn-primary" target="_blank">Open Stitch</a>
-  </div>
-<button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
-<div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
-<div class="mobile-nav" id="mobile-nav">
-  <div class="mobile-nav-header">
-    <span style="font-weight:700;">Menu</span>
-    <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
-  </div>
-  <div class="mobile-nav-links">
-    <a href="index.html">Home</a>
-    <a href="get-started.html">Get Started</a>
-    <a href="roundtrip.html">Roundtrip</a>
-    <a href="import.html">Import</a>
-    <a href="premium-design.html">Premium</a>
-    <a href="semantic-tokens.html">Semantic Tokens</a>
-    <a href="design-system.html">Design System</a>
-    <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
-  </div>
-</div>
-</nav>
+    <nav>
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="url(#lg)" />
+          <path
+            d="M8 14L12 10L16 14L20 10"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8 18L12 14L16 18L20 14"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            opacity="0.5"
+          />
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="28" y2="28">
+              <stop stop-color="#6366f1" />
+              <stop offset="1" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+        </svg>
+        Stitch
+      </a>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="get-started.html">Get Started</a>
+        <a href="roundtrip.html">Roundtrip</a>
+        <a href="import.html">Import</a>
+        <a href="premium-design.html">Premium</a>
+        <a href="semantic-tokens.html">Semantic Tokens</a>
+        <a href="design-system.html">Design System</a>
+        <a href="https://stitch.withgoogle.com" class="btn-primary" target="_blank">Open Stitch</a>
+      </div>
+      <button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
+      <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
+      <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-header">
+          <span style="font-weight: 700">Menu</span>
+          <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
+        </div>
+        <div class="mobile-nav-links">
+          <a href="index.html">Home</a>
+          <a href="get-started.html">Get Started</a>
+          <a href="roundtrip.html">Roundtrip</a>
+          <a href="import.html">Import</a>
+          <a href="premium-design.html">Premium</a>
+          <a href="semantic-tokens.html">Semantic Tokens</a>
+          <a href="design-system.html">Design System</a>
+          <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
+        </div>
+      </div>
+    </nav>
 
-<main class="page">
-  <div class="page-header">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Why Semantic Tokens</div>
-    <h1>Why Semantic Tokens?</h1>
-    <p>Descriptive design language works better for AI than raw CSS values. Semantic tokens encode purpose, not just pixels.</p>
-  </div>
+    <main class="page">
+      <div class="page-header">
+        <div class="breadcrumb"><a href="index.html">Home</a> / Why Semantic Tokens</div>
+        <h1>Why Semantic Tokens?</h1>
+        <p>
+          Descriptive design language works better for AI than raw CSS values. Semantic tokens
+          encode purpose, not just pixels.
+        </p>
+      </div>
 
-  <p>When AI generates code, raw hex codes have no meaning. A color like <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">#1a365d</code> doesn't tell you whether it's a background, text, or border color. Semantic tokens solve this by naming the <em>role</em>, not just the value.</p>
+      <p>
+        When AI generates code, raw hex codes have no meaning. A color like
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >#1a365d</code
+        >
+        doesn't tell you whether it's a background, text, or border color. Semantic tokens solve
+        this by naming the <em>role</em>, not just the value.
+      </p>
 
-  <h2>The problem with raw values</h2>
-  <p>Most design tokens in codebases are flat — they describe what something <em>looks like</em> but not what it <em>does</em>. When an AI model encounters <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">#1a365d</code>, it has no way to know:</p>
+      <h2>The problem with raw values</h2>
+      <p>
+        Most design tokens in codebases are flat — they describe what something
+        <em>looks like</em> but not what it <em>does</em>. When an AI model encounters
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >#1a365d</code
+        >, it has no way to know:
+      </p>
 
-  <p>Is this a background color? A text color? A border? A hover state? An accent? The AI has to guess, and guessing leads to inconsistent output.</p>
+      <p>
+        Is this a background color? A text color? A border? A hover state? An accent? The AI has to
+        guess, and guessing leads to inconsistent output.
+      </p>
 
-  <h2>Semantic naming</h2>
-  <p>With semantic tokens, every value carries context. Compare:</p>
+      <h2>Semantic naming</h2>
+      <p>With semantic tokens, every value carries context. Compare:</p>
 
-  <p><code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">#171f33</code> → just a dark blue-gray</p>
-  <p><code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">surface-container (#171f33)</code> → a container surface, sits above the base surface, pairs with <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">on-surface</code> for text</p>
+      <p>
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >#171f33</code
+        >
+        → just a dark blue-gray
+      </p>
+      <p>
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >surface-container (#171f33)</code
+        >
+        → a container surface, sits above the base surface, pairs with
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >on-surface</code
+        >
+        for text
+      </p>
 
-  <p>The name encodes purpose, relationship, and usage. An AI can confidently assign <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">surface-container</code> to a card or sidebar background because the name tells it that's what the token is for.</p>
+      <p>
+        The name encodes purpose, relationship, and usage. An AI can confidently assign
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >surface-container</code
+        >
+        to a card or sidebar background because the name tells it that's what the token is for.
+      </p>
 
-  <h2>Benefits for AI generation</h2>
-  <table>
-    <tr><th>Benefit</th><th>Why it matters</th></tr>
-    <tr><td><strong>Consistency</strong></td><td>Same token → same value everywhere → AI chooses the right token every time instead of inventing a new hex code</td></tr>
-    <tr><td><strong>Intent</strong></td><td>Token names encode purpose → AI understands layout hierarchy (surface vs. container vs. accent)</td></tr>
-    <tr><td><strong>Maintainability</strong></td><td>Change one token → updates everywhere → AI can refactor confidently without hunting for values</td></tr>
-    <tr><td><strong>Cross-format</strong></td><td>Same tokens → Tailwind/CSS/DTCG → AI works in any framework without translation errors</td></tr>
-  </table>
+      <h2>Benefits for AI generation</h2>
+      <table>
+        <tr>
+          <th>Benefit</th>
+          <th>Why it matters</th>
+        </tr>
+        <tr>
+          <td><strong>Consistency</strong></td>
+          <td>
+            Same token → same value everywhere → AI chooses the right token every time instead of
+            inventing a new hex code
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Intent</strong></td>
+          <td>
+            Token names encode purpose → AI understands layout hierarchy (surface vs. container vs.
+            accent)
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Maintainability</strong></td>
+          <td>
+            Change one token → updates everywhere → AI can refactor confidently without hunting for
+            values
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Cross-format</strong></td>
+          <td>
+            Same tokens → Tailwind/CSS/DTCG → AI works in any framework without translation errors
+          </td>
+        </tr>
+      </table>
 
-  <h2>Example: before and after</h2>
-  <p>Here's what happens when you give an AI raw values versus semantic tokens:</p>
+      <h2>Example: before and after</h2>
+      <p>Here's what happens when you give an AI raw values versus semantic tokens:</p>
 
-  <div class="prompt-block">
-    <div class="prompt-label">BEFORE — Raw values</div>
-    <div class="prompt-text">"A card with #1a365d background and #dae2fd text"</div>
-  </div>
+      <div class="prompt-block">
+        <div class="prompt-label">BEFORE — Raw values</div>
+        <div class="prompt-text">"A card with #1a365d background and #dae2fd text"</div>
+      </div>
 
-  <div class="prompt-block">
-    <div class="prompt-label">AFTER — Semantic tokens</div>
-    <div class="prompt-text">"A card with surface-container background and on-surface text"</div>
-  </div>
+      <div class="prompt-block">
+        <div class="prompt-label">AFTER — Semantic tokens</div>
+        <div class="prompt-text">
+          "A card with surface-container background and on-surface text"
+        </div>
+      </div>
 
-  <p>The semantic version is clearer, more maintainable, and produces better results because the AI understands the design intent — not just pixel values.</p>
+      <p>
+        The semantic version is clearer, more maintainable, and produces better results because the
+        AI understands the design intent — not just pixel values.
+      </p>
 
-  <div class="tip-box">
-    <div class="tip-label">Key insight</div>
-    <p>When you use semantic tokens, the AI understands your design intent, not just pixel values. This means fewer hallucinations, more consistent output, and designs that actually follow your system.</p>
-  </div>
+      <div class="tip-box">
+        <div class="tip-label">Key insight</div>
+        <p>
+          When you use semantic tokens, the AI understands your design intent, not just pixel
+          values. This means fewer hallucinations, more consistent output, and designs that actually
+          follow your system.
+        </p>
+      </div>
 
-  <hr>
+      <hr />
 
-  <h2>What's next</h2>
-  <div class="next-links">
-    <a href="import.html" class="next-link">
-      <div class="nl-title">Import from your codebase</div>
-      <div class="nl-desc">Extract a DESIGN.md from existing source code</div>
-    </a>
-    <a href="get-started.html" class="next-link">
-      <div class="nl-title">Get started with skills</div>
-      <div class="nl-desc">Install Stitch Design Skills and generate your first screen</div>
-    </a>
-    <a href="premium-design.html" class="next-link">
-      <div class="nl-title">Premium design system</div>
-      <div class="nl-desc">Generate a curated design system with anti-generic standards</div>
-    </a>
-  </div>
-</main>
+      <h2>What's next</h2>
+      <div class="next-links">
+        <a href="import.html" class="next-link">
+          <div class="nl-title">Import from your codebase</div>
+          <div class="nl-desc">Extract a DESIGN.md from existing source code</div>
+        </a>
+        <a href="get-started.html" class="next-link">
+          <div class="nl-title">Get started with skills</div>
+          <div class="nl-desc">Install Stitch Design Skills and generate your first screen</div>
+        </a>
+        <a href="premium-design.html" class="next-link">
+          <div class="nl-title">Premium design system</div>
+          <div class="nl-desc">Generate a curated design system with anti-generic standards</div>
+        </a>
+      </div>
+    </main>
 
-<footer>
-  Built by <a href="https://github.com/google-labs-code">Google Labs</a> &middot; Licensed under Apache 2.0
-</footer>
-<script>
-function toggleMobileNav() {
-  document.getElementById('mobile-nav').classList.toggle('open');
-  document.getElementById('mobile-overlay').classList.toggle('open');
-}
-</script>
-</body>
+    <footer>
+      Built by <a href="https://github.com/google-labs-code">Google Labs</a> &middot; Licensed under
+      Apache 2.0
+    </footer>
+    <script>
+      function toggleMobileNav() {
+        document.getElementById('mobile-nav').classList.toggle('open');
+        document.getElementById('mobile-overlay').classList.toggle('open');
+      }
+    </script>
+  </body>
 </html>

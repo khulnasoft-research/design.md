@@ -25,13 +25,15 @@ import type {
   Finding,
 } from './spec.js';
 
-import { isValidColor, isParseableDimension, isTokenReference, parseDimensionParts } from './spec.js';
+import {
+  isValidColor,
+  isParseableDimension,
+  isTokenReference,
+  parseDimensionParts,
+} from './spec.js';
 import { parseCssColor } from './color-parser.js';
 
-import {
-  MAX_REFERENCE_DEPTH,
-  MAX_TOKEN_NESTING_DEPTH,
-} from '../spec-config.js';
+import { MAX_REFERENCE_DEPTH, MAX_TOKEN_NESTING_DEPTH } from '../spec-config.js';
 
 const SCHEMA_KEY_SET: ReadonlySet<string> = new Set(SCHEMA_KEYS);
 
@@ -54,24 +56,31 @@ export class ModelHandler implements ModelSpec {
       // ── Phase 1: Resolve primitive tokens ──────────────────────────
       // Colors
       if (input.colors) {
-        forEachLeaf(input.colors, (name, raw) => {
-          if (typeof raw === 'string' && isTokenReference(raw)) {
-            // Store raw reference for later resolution
-            symbolTable.set(`colors.${name}`, raw);
-          } else if (isValidColor(raw)) {
-            const resolved = parseColor(raw);
-            colors.set(name, resolved);
-            symbolTable.set(`colors.${name}`, resolved);
-          } else {
-            findings.push({
-              severity: 'error',
-              path: `colors.${name}`,
-              message: `'${raw}' is not a valid color. Expected a CSS color value (e.g., #ffffff, rgb(0 0 0), oklch(0.5 0.2 240)).`,
-            });
-            // Store as-is for fallback
-            symbolTable.set(`colors.${name}`, raw);
-          }
-        }, '', 0, findings, 'colors');
+        forEachLeaf(
+          input.colors,
+          (name, raw) => {
+            if (typeof raw === 'string' && isTokenReference(raw)) {
+              // Store raw reference for later resolution
+              symbolTable.set(`colors.${name}`, raw);
+            } else if (isValidColor(raw)) {
+              const resolved = parseColor(raw);
+              colors.set(name, resolved);
+              symbolTable.set(`colors.${name}`, resolved);
+            } else {
+              findings.push({
+                severity: 'error',
+                path: `colors.${name}`,
+                message: `'${raw}' is not a valid color. Expected a CSS color value (e.g., #ffffff, rgb(0 0 0), oklch(0.5 0.2 240)).`,
+              });
+              // Store as-is for fallback
+              symbolTable.set(`colors.${name}`, raw);
+            }
+          },
+          '',
+          0,
+          findings,
+          'colors'
+        );
       }
 
       // Typography
@@ -85,44 +94,58 @@ export class ModelHandler implements ModelSpec {
 
       // Rounded
       if (input.rounded) {
-        forEachLeaf(input.rounded, (name, raw) => {
-          if (typeof raw === 'string') {
-            if (isParseableDimension(raw)) {
-              const resolved = parseDimension(raw);
-              if (resolved.unit !== 'px' && resolved.unit !== 'rem' && resolved.unit !== 'em') {
+        forEachLeaf(
+          input.rounded,
+          (name, raw) => {
+            if (typeof raw === 'string') {
+              if (isParseableDimension(raw)) {
+                const resolved = parseDimension(raw);
+                if (resolved.unit !== 'px' && resolved.unit !== 'rem' && resolved.unit !== 'em') {
+                  findings.push({
+                    severity: 'error',
+                    path: `rounded.${name}`,
+                    message: `'${raw}' has an invalid unit '${resolved.unit}'. Only px, rem, and em are allowed.`,
+                  });
+                }
+                rounded.set(name, resolved);
+                symbolTable.set(`rounded.${name}`, resolved);
+              } else if (!isTokenReference(raw)) {
                 findings.push({
                   severity: 'error',
                   path: `rounded.${name}`,
-                  message: `'${raw}' has an invalid unit '${resolved.unit}'. Only px, rem, and em are allowed.`,
+                  message: `'${raw}' is not a valid dimension.`,
                 });
+                symbolTable.set(`rounded.${name}`, raw);
+              } else {
+                symbolTable.set(`rounded.${name}`, raw);
               }
-              rounded.set(name, resolved);
-              symbolTable.set(`rounded.${name}`, resolved);
-            } else if (!isTokenReference(raw)) {
-              findings.push({
-                severity: 'error',
-                path: `rounded.${name}`,
-                message: `'${raw}' is not a valid dimension.`,
-              });
-              symbolTable.set(`rounded.${name}`, raw);
-            } else {
-              symbolTable.set(`rounded.${name}`, raw);
             }
-          }
-        }, '', 0, findings, 'rounded');
+          },
+          '',
+          0,
+          findings,
+          'rounded'
+        );
       }
 
       // Spacing
       if (input.spacing) {
-        forEachLeaf(input.spacing, (name, raw) => {
-          if (isParseableDimension(raw)) {
-            const resolved = parseDimension(raw);
-            spacing.set(name, resolved);
-            symbolTable.set(`spacing.${name}`, resolved);
-          } else {
-            symbolTable.set(`spacing.${name}`, raw);
-          }
-        }, '', 0, findings, 'spacing');
+        forEachLeaf(
+          input.spacing,
+          (name, raw) => {
+            if (isParseableDimension(raw)) {
+              const resolved = parseDimension(raw);
+              spacing.set(name, resolved);
+              symbolTable.set(`spacing.${name}`, resolved);
+            } else {
+              symbolTable.set(`spacing.${name}`, raw);
+            }
+          },
+          '',
+          0,
+          findings,
+          'spacing'
+        );
       }
 
       // ── Phase 2: Resolve chained color references ──────────────────
@@ -131,7 +154,12 @@ export class ModelHandler implements ModelSpec {
         forEachLeaf(input.colors, (name, raw) => {
           if (typeof raw === 'string' && isTokenReference(raw)) {
             const resolved = resolveReference(symbolTable, raw.slice(1, -1), new Set());
-            if (resolved !== null && typeof resolved === 'object' && 'type' in resolved && resolved.type === 'color') {
+            if (
+              resolved !== null &&
+              typeof resolved === 'object' &&
+              'type' in resolved &&
+              resolved.type === 'color'
+            ) {
               colors.set(name, resolved as ResolvedColor);
               symbolTable.set(`colors.${name}`, resolved);
             }
@@ -212,9 +240,7 @@ export class ModelHandler implements ModelSpec {
         }
       }
 
-      const unknownKeys = [...input.sourceMap.keys()].filter(
-        key => !SCHEMA_KEY_SET.has(key)
-      );
+      const unknownKeys = [...input.sourceMap.keys()].filter((key) => !SCHEMA_KEY_SET.has(key));
 
       const unknownKeyValues: Record<string, unknown> = {};
       if (input.rawValues) {
@@ -254,8 +280,9 @@ export class ModelHandler implements ModelSpec {
         findings: [
           {
             severity: 'error',
-            message: `Unexpected error during model building: ${error instanceof Error ? error.message : String(error)
-              }`,
+            message: `Unexpected error during model building: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
           },
         ],
       };
@@ -297,7 +324,11 @@ function parseDimension(raw: string): ResolvedDimension {
 /**
  * Parse a typography properties object into a ResolvedTypography.
  */
-function parseTypography(props: Record<string, string | number>, path: string, findings: Finding[]): ResolvedTypography {
+function parseTypography(
+  props: Record<string, string | number>,
+  path: string,
+  findings: Finding[]
+): ResolvedTypography {
   const result: ResolvedTypography = { type: 'typography' };
 
   if (typeof props['fontFamily'] === 'string') {
@@ -378,7 +409,7 @@ function resolveReference(
   symbolTable: Map<string, ResolvedValue>,
   path: string,
   visited: Set<string>,
-  depth: number = 0,
+  depth: number = 0
 ): ResolvedValue | null {
   if (depth > MAX_REFERENCE_DEPTH) return null;
   if (visited.has(path)) return null; // Circular reference

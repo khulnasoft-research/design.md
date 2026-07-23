@@ -24,7 +24,7 @@ describe('missingSections', () => {
       // no spacing
     });
     const findings = missingSections(state);
-    const spacingNote = findings.find(d => d.path === 'spacing');
+    const spacingNote = findings.find((d) => d.path === 'spacing');
     expect(spacingNote).toBeDefined();
     expect(spacingNote!.message).toMatch(/spacing/);
   });

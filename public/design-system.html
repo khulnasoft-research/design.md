@@ -1,621 +1,978 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Stitch Design System tokens. Browse colors, typography, spacing, and components from .stitch/DESIGN.md.">
-  <meta name="og:title" content="Design System — Stitch">
-  <meta name="og:description" content="Visual browser for Stitch design system tokens — colors, typography, spacing, and components from DESIGN.md.">
-  <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg">
-  <meta name="twitter:card" content="summary">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <title>Design System — Stitch</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --surface: #0b1326;
-      --surface-dim: #0b1326;
-      --surface-container-lowest: #060e20;
-      --surface-container-low: #131b2e;
-      --surface-container: #171f33;
-      --surface-container-high: #222a3d;
-      --surface-container-highest: #2d3449;
-      --on-surface: #dae2fd;
-      --on-surface-variant: #c4c7c8;
-      --primary: #ffffff;
-      --on-primary: #2f3131;
-      --secondary: #adc9eb;
-      --outline: #8e9192;
-      --gradient-start: #6366f1;
-      --gradient-violet: #a855f7;
-      --glass-bg: rgba(255,255,255,0.04);
-      --glass-hover: rgba(255,255,255,0.07);
-      --glass-border: rgba(255,255,255,0.06);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Inter, system-ui, sans-serif;
-      background: var(--surface);
-      color: var(--on-surface);
-      line-height: 1.6;
-      display: flex;
-      min-height: 100vh;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Stitch Design System tokens. Browse colors, typography, spacing, and components from .stitch/DESIGN.md."
+    />
+    <meta name="og:title" content="Design System — Stitch" />
+    <meta
+      name="og:description"
+      content="Visual browser for Stitch design system tokens — colors, typography, spacing, and components from DESIGN.md."
+    />
+    <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <title>Design System — Stitch</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #0b1326;
+        --surface-dim: #0b1326;
+        --surface-container-lowest: #060e20;
+        --surface-container-low: #131b2e;
+        --surface-container: #171f33;
+        --surface-container-high: #222a3d;
+        --surface-container-highest: #2d3449;
+        --on-surface: #dae2fd;
+        --on-surface-variant: #c4c7c8;
+        --primary: #ffffff;
+        --on-primary: #2f3131;
+        --secondary: #adc9eb;
+        --outline: #8e9192;
+        --gradient-start: #6366f1;
+        --gradient-violet: #a855f7;
+        --glass-bg: rgba(255, 255, 255, 0.04);
+        --glass-hover: rgba(255, 255, 255, 0.07);
+        --glass-border: rgba(255, 255, 255, 0.06);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Inter, system-ui, sans-serif;
+        background: var(--surface);
+        color: var(--on-surface);
+        line-height: 1.6;
+        display: flex;
+        min-height: 100vh;
+      }
 
-    .sidebar {
-      width: 260px;
-      background: var(--surface-container-low);
-      border-right: 1px solid var(--glass-border);
-      padding: 20px 0;
-      flex-shrink: 0;
-      overflow-y: auto;
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      z-index: 10;
-    }
-    .sidebar .title {
-      padding: 0 20px 16px;
-      font-family: 'Plus Jakarta Sans', Inter, sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      border-bottom: 1px solid var(--glass-border);
-      margin-bottom: 8px;
-    }
-    .sidebar .title small {
-      display: block;
-      font-family: Inter, sans-serif;
-      font-size: 11px;
-      font-weight: 400;
-      color: var(--on-surface-variant);
-      letter-spacing: 0;
-      margin-top: 2px;
-    }
-    .sidebar nav a {
-      display: block;
-      padding: 8px 20px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--on-surface-variant);
-      text-decoration: none;
-      transition: all 0.15s;
-      border-left: 2px solid transparent;
-    }
-    .sidebar nav a:hover { color: var(--on-surface); background: var(--glass-hover); }
-    .sidebar nav a.active { color: var(--secondary); border-left-color: var(--gradient-start); background: rgba(99,102,241,0.06); }
+      .sidebar {
+        width: 260px;
+        background: var(--surface-container-low);
+        border-right: 1px solid var(--glass-border);
+        padding: 20px 0;
+        flex-shrink: 0;
+        overflow-y: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 10;
+      }
+      .sidebar .title {
+        padding: 0 20px 16px;
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        border-bottom: 1px solid var(--glass-border);
+        margin-bottom: 8px;
+      }
+      .sidebar .title small {
+        display: block;
+        font-family: Inter, sans-serif;
+        font-size: 11px;
+        font-weight: 400;
+        color: var(--on-surface-variant);
+        letter-spacing: 0;
+        margin-top: 2px;
+      }
+      .sidebar nav a {
+        display: block;
+        padding: 8px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        transition: all 0.15s;
+        border-left: 2px solid transparent;
+      }
+      .sidebar nav a:hover {
+        color: var(--on-surface);
+        background: var(--glass-hover);
+      }
+      .sidebar nav a.active {
+        color: var(--secondary);
+        border-left-color: var(--gradient-start);
+        background: rgba(99, 102, 241, 0.06);
+      }
 
-    .main {
-      margin-left: 260px;
-      flex: 1;
-      padding: 32px 40px 80px;
-      max-width: 960px;
-    }
+      .main {
+        margin-left: 260px;
+        flex: 1;
+        padding: 32px 40px 80px;
+        max-width: 960px;
+      }
 
-    .page-title {
-      font-family: 'Plus Jakarta Sans', Inter, sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 4px;
-    }
-    .page-sub {
-      color: var(--on-surface-variant);
-      font-size: 14px;
-      margin-bottom: 32px;
-    }
-    .page-sub .file { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--gradient-violet); }
+      .page-title {
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin-bottom: 4px;
+      }
+      .page-sub {
+        color: var(--on-surface-variant);
+        font-size: 14px;
+        margin-bottom: 32px;
+      }
+      .page-sub .file {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        color: var(--gradient-violet);
+      }
 
-    section { margin-bottom: 40px; }
-    section h2 {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--secondary);
-      margin-bottom: 16px;
-    }
+      section {
+        margin-bottom: 40px;
+      }
+      section h2 {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--secondary);
+        margin-bottom: 16px;
+      }
 
-    .token-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 8px;
-    }
-    .token-card {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .token-card:hover { background: var(--glass-hover); }
-    .token-card .swatch {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.1);
-      flex-shrink: 0;
-    }
-    .token-card .info { min-width: 0; }
-    .token-card .info .name {
-      font-size: 12px;
-      font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .token-card .info .value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--on-surface-variant);
-    }
+      .token-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 8px;
+      }
+      .token-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .token-card:hover {
+        background: var(--glass-hover);
+      }
+      .token-card .swatch {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        flex-shrink: 0;
+      }
+      .token-card .info {
+        min-width: 0;
+      }
+      .token-card .info .name {
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .token-card .info .value {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: var(--on-surface-variant);
+      }
 
-    .typography-list { display: flex; flex-direction: column; gap: 12px; }
-    .typo-item {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 16px 18px;
-    }
-    .typo-item .typo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .typo-item .typo-name { font-size: 13px; font-weight: 600; }
-    .typo-item .typo-spec { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--on-surface-variant); }
-    .typo-item .typo-preview {
-      margin-top: 6px;
-      padding-top: 8px;
-      border-top: 1px solid var(--glass-border);
-      opacity: 0.9;
-    }
+      .typography-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .typo-item {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 16px 18px;
+      }
+      .typo-item .typo-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+      .typo-item .typo-name {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .typo-item .typo-spec {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        color: var(--on-surface-variant);
+      }
+      .typo-item .typo-preview {
+        margin-top: 6px;
+        padding-top: 8px;
+        border-top: 1px solid var(--glass-border);
+        opacity: 0.9;
+      }
 
-    .spacing-scale {
-      display: flex;
-      align-items: flex-end;
-      gap: 6px;
-      padding: 12px 0;
-      flex-wrap: wrap;
-    }
-    .spacing-bar {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .spacing-bar .bar {
-      background: var(--gradient-start);
-      border-radius: 3px 3px 0 0;
-      width: 20px;
-      min-height: 4px;
-      transition: height 0.3s;
-    }
-    .spacing-bar .label { font-size: 10px; color: var(--on-surface-variant); white-space: nowrap; }
+      .spacing-scale {
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+        padding: 12px 0;
+        flex-wrap: wrap;
+      }
+      .spacing-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      .spacing-bar .bar {
+        background: var(--gradient-start);
+        border-radius: 3px 3px 0 0;
+        width: 20px;
+        min-height: 4px;
+        transition: height 0.3s;
+      }
+      .spacing-bar .label {
+        font-size: 10px;
+        color: var(--on-surface-variant);
+        white-space: nowrap;
+      }
 
-    .rounded-preview {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .rounded-sample {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .rounded-sample .box {
-      width: 40px;
-      height: 40px;
-      background: var(--gradient-start);
-      border: 1px solid var(--glass-border);
-    }
-    .rounded-sample .label { font-size: 10px; color: var(--on-surface-variant); }
+      .rounded-preview {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .rounded-sample {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      .rounded-sample .box {
+        width: 40px;
+        height: 40px;
+        background: var(--gradient-start);
+        border: 1px solid var(--glass-border);
+      }
+      .rounded-sample .label {
+        font-size: 10px;
+        color: var(--on-surface-variant);
+      }
 
-    .component-list { display: flex; flex-direction: column; gap: 6px; }
-    .component-item {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 8px;
-      padding: 10px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .component-item .comp-name { font-size: 13px; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
-    .component-item .comp-count { font-size: 11px; color: var(--on-surface-variant); }
+      .component-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .component-item {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .component-item .comp-name {
+        font-size: 13px;
+        font-weight: 500;
+        font-family: 'JetBrains Mono', monospace;
+      }
+      .component-item .comp-count {
+        font-size: 11px;
+        color: var(--on-surface-variant);
+      }
 
-    .editor-section { margin-top: 16px; }
-    .editor-section textarea {
-      width: 100%;
-      min-height: 400px;
-      background: var(--surface-container-lowest);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 16px;
-      color: var(--on-surface);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      line-height: 1.7;
-      resize: vertical;
-      outline: none;
-    }
-    .editor-section textarea:focus { border-color: var(--gradient-violet); }
+      .editor-section {
+        margin-top: 16px;
+      }
+      .editor-section textarea {
+        width: 100%;
+        min-height: 400px;
+        background: var(--surface-container-lowest);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 16px;
+        color: var(--on-surface);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        line-height: 1.7;
+        resize: vertical;
+        outline: none;
+      }
+      .editor-section textarea:focus {
+        border-color: var(--gradient-violet);
+      }
 
-    .export-output {
-      background: var(--surface-container-lowest);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      overflow-x: auto;
-      max-height: 400px;
-      overflow-y: auto;
-      color: #c5c5c5;
-    }
-    .export-tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
-    .export-tab {
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      border: 1px solid var(--glass-border);
-      background: transparent;
-      color: var(--on-surface-variant);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .export-tab:hover { border-color: rgba(255,255,255,0.15); color: var(--on-surface); }
-    .export-tab.active { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.3); color: var(--secondary); }
-    .export-actions { display: flex; gap: 8px; margin-top: 12px; }
-    .export-actions button {
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 500;
-      border: none;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .btn-copy { background: var(--glass-bg); border: 1px solid var(--glass-border) !important; color: var(--on-surface); }
-    .btn-copy:hover { background: var(--glass-hover); }
-    .btn-download { background: var(--gradient-start); color: #fff; }
-    .btn-download:hover { opacity: 0.85; }
+      .export-output {
+        background: var(--surface-container-lowest);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        overflow-x: auto;
+        max-height: 400px;
+        overflow-y: auto;
+        color: #c5c5c5;
+      }
+      .export-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .export-tab {
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        border: 1px solid var(--glass-border);
+        background: transparent;
+        color: var(--on-surface-variant);
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .export-tab:hover {
+        border-color: rgba(255, 255, 255, 0.15);
+        color: var(--on-surface);
+      }
+      .export-tab.active {
+        background: rgba(99, 102, 241, 0.15);
+        border-color: rgba(99, 102, 241, 0.3);
+        color: var(--secondary);
+      }
+      .export-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .export-actions button {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .btn-copy {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border) !important;
+        color: var(--on-surface);
+      }
+      .btn-copy:hover {
+        background: var(--glass-hover);
+      }
+      .btn-download {
+        background: var(--gradient-start);
+        color: #fff;
+      }
+      .btn-download:hover {
+        opacity: 0.85;
+      }
 
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--surface-container-high);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 12px 20px;
-      font-size: 13px;
-      color: var(--on-surface);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: all 0.25s;
-      pointer-events: none;
-      z-index: 100;
-    }
-    .toast.show { opacity: 1; transform: translateY(0); }
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: var(--surface-container-high);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 12px 20px;
+        font-size: 13px;
+        color: var(--on-surface);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transform: translateY(8px);
+        transition: all 0.25s;
+        pointer-events: none;
+        z-index: 100;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-    .stats-bar {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 28px;
-    }
-    .stat {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 14px 20px;
-      display: flex;
-      flex-direction: column;
-      min-width: 100px;
-    }
-    .stat .num {
-      font-family: 'Plus Jakarta Sans', Inter, sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--secondary);
-    }
-    .stat .label { font-size: 11px; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.04em; }
+      .stats-bar {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+      }
+      .stat {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 14px 20px;
+        display: flex;
+        flex-direction: column;
+        min-width: 100px;
+      }
+      .stat .num {
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--secondary);
+      }
+      .stat .label {
+        font-size: 11px;
+        color: var(--on-surface-variant);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
 
-    .color-group-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--on-surface-variant);
-      margin: 12px 0 6px;
-      padding: 0 2px;
-    }
+      .color-group-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--on-surface-variant);
+        margin: 12px 0 6px;
+        padding: 0 2px;
+      }
 
-    .hamburger { display: none; background: none; border: none; color: var(--on-surface); font-size: 26px; cursor: pointer; padding: 0 4px; line-height:1; }
-    .mobile-overlay { position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.6); z-index: 150; opacity:0; pointer-events:none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
-    .mobile-overlay.open { opacity:1; pointer-events:auto; }
-    .mobile-nav { position: fixed; top:0; right:-280px; width:260px; height:100vh; background: var(--surface-container); border-left: 1px solid var(--glass-border); z-index:200; transition: right 0.3s; padding: 20px; backdrop-filter: blur(20px); }
-    .mobile-nav.open { right:0; }
-    .mobile-nav-header { display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--glass-border); margin-bottom:8px; }
-    .mobile-nav .close-btn { background:none; border:none; color:var(--on-surface); font-size:20px; cursor:pointer; padding:4px; }
-    .mobile-nav-links { display:flex; flex-direction:column; gap:4px; }
-    .mobile-nav-links a { display:block; padding:10px 12px; border-radius:8px; color:var(--on-surface-variant); text-decoration:none; font-size:14px; font-weight:500; transition:all 0.15s; }
-    .mobile-nav-links a:hover { background:var(--glass-hover); color:var(--on-surface); }
-    .mobile-topnav { display: none; }
-    @media (max-width: 768px) {
-      .mobile-topnav { display: flex; position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 14px 16px; align-items: center; justify-content: space-between; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(11,19,38,0.6); border-bottom: 1px solid var(--glass-border); }
-      .mobile-topnav .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; text-decoration: none; color: var(--on-surface); }
-      .mobile-topnav .logo svg { width: 24px; height: 24px; }
-      .mobile-topnav .hamburger { display: block; }
-      .sidebar { display: none; }
-      .main { margin-left: 0; padding: 64px 16px 24px; }
-      .token-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-    }
+      .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 26px;
+        cursor: pointer;
+        padding: 0 4px;
+        line-height: 1;
+      }
+      .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 150;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        backdrop-filter: blur(4px);
+      }
+      .mobile-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -280px;
+        width: 260px;
+        height: 100vh;
+        background: var(--surface-container);
+        border-left: 1px solid var(--glass-border);
+        z-index: 200;
+        transition: right 0.3s;
+        padding: 20px;
+        backdrop-filter: blur(20px);
+      }
+      .mobile-nav.open {
+        right: 0;
+      }
+      .mobile-nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--glass-border);
+        margin-bottom: 8px;
+      }
+      .mobile-nav .close-btn {
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .mobile-nav-links a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.15s;
+      }
+      .mobile-nav-links a:hover {
+        background: var(--glass-hover);
+        color: var(--on-surface);
+      }
+      .mobile-topnav {
+        display: none;
+      }
+      @media (max-width: 768px) {
+        .mobile-topnav {
+          display: flex;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 100;
+          padding: 14px 16px;
+          align-items: center;
+          justify-content: space-between;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          background: rgba(11, 19, 38, 0.6);
+          border-bottom: 1px solid var(--glass-border);
+        }
+        .mobile-topnav .logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-weight: 700;
+          font-size: 18px;
+          letter-spacing: -0.02em;
+          text-decoration: none;
+          color: var(--on-surface);
+        }
+        .mobile-topnav .logo svg {
+          width: 24px;
+          height: 24px;
+        }
+        .mobile-topnav .hamburger {
+          display: block;
+        }
+        .sidebar {
+          display: none;
+        }
+        .main {
+          margin-left: 0;
+          padding: 64px 16px 24px;
+        }
+        .token-grid {
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+      }
 
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 60vh; color: var(--on-surface-variant); }
-    .loading::after { content: ''; width: 20px; height: 20px; border: 2px solid var(--glass-border); border-top-color: var(--gradient-violet); border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 10px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .error-state { text-align: center; padding: 60px 20px; color: var(--on-surface-variant); }
-    .error-state h3 { font-size: 20px; margin-bottom: 8px; color: var(--on-surface); }
-  </style>
-</head>
-<body>
-<div id="toast" class="toast"></div>
+      .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 60vh;
+        color: var(--on-surface-variant);
+      }
+      .loading::after {
+        content: '';
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--glass-border);
+        border-top-color: var(--gradient-violet);
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        margin-left: 10px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .error-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--on-surface-variant);
+      }
+      .error-state h3 {
+        font-size: 20px;
+        margin-bottom: 8px;
+        color: var(--on-surface);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="toast" class="toast"></div>
 
-<nav id="mobile-topnav" class="mobile-topnav">
-  <a href="../index.html" class="logo">
-    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="url(#lg-top)"/><path d="M8 14L12 10L16 14L20 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 18L12 14L16 18L20 14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/><defs><linearGradient id="lg-top" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs></svg>
-    Stitch
-  </a>
-  <button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
-  <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
-  <div class="mobile-nav" id="mobile-nav">
-    <div class="mobile-nav-header">
-      <span style="font-weight:700;">Menu</span>
-      <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
-    </div>
-    <div class="mobile-nav-links">
-      <a href="../index.html">Home</a>
-      <a href="get-started.html">Get Started</a>
-      <a href="roundtrip.html">Roundtrip</a>
-      <a href="import.html">Import</a>
-      <a href="premium-design.html">Premium</a>
-      <a href="semantic-tokens.html">Semantic Tokens</a>
-      <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
-    </div>
-  </div>
-</nav>
+    <nav id="mobile-topnav" class="mobile-topnav">
+      <a href="../index.html" class="logo">
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="url(#lg-top)" />
+          <path
+            d="M8 14L12 10L16 14L20 10"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8 18L12 14L16 18L20 14"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            opacity="0.5"
+          />
+          <defs>
+            <linearGradient id="lg-top" x1="0" y1="0" x2="28" y2="28">
+              <stop stop-color="#6366f1" />
+              <stop offset="1" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+        </svg>
+        Stitch
+      </a>
+      <button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
+      <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
+      <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-header">
+          <span style="font-weight: 700">Menu</span>
+          <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
+        </div>
+        <div class="mobile-nav-links">
+          <a href="../index.html">Home</a>
+          <a href="get-started.html">Get Started</a>
+          <a href="roundtrip.html">Roundtrip</a>
+          <a href="import.html">Import</a>
+          <a href="premium-design.html">Premium</a>
+          <a href="semantic-tokens.html">Semantic Tokens</a>
+          <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
+        </div>
+      </div>
+    </nav>
 
-<aside class="sidebar" id="sidebar">
-  <div class="title">
-    <span id="ds-name">Design System</span>
-    <small id="ds-desc">Stitch Ecosystem</small>
-  </div>
-  <nav>
-    <a href="#stats" class="active">Overview</a>
-    <a href="#colors">Colors</a>
-    <a href="#typography">Typography</a>
-    <a href="#rounded">Rounded</a>
-    <a href="#spacing">Spacing</a>
-    <a href="#components">Components</a>
-    <a href="#editor">Editor</a>
-    <a href="#export">Export</a>
-    <a href="../index.html" style="margin-top:12px;border-top:1px solid var(--glass-border);padding-top:12px;font-size:12px;">← Back to landing</a>
-    <a href="../get-started.html" style="font-size:12px;">Get Started</a>
-    <a href="../roundtrip.html" style="font-size:12px;">Roundtrip</a>
-    <a href="../import.html" style="font-size:12px;">Import</a>
-    <a href="../premium-design.html" style="font-size:12px;">Premium</a>
-    <a href="../semantic-tokens.html" style="font-size:12px;">Semantic Tokens</a>
-  </nav>
-</aside>
+    <aside class="sidebar" id="sidebar">
+      <div class="title">
+        <span id="ds-name">Design System</span>
+        <small id="ds-desc">Stitch Ecosystem</small>
+      </div>
+      <nav>
+        <a href="#stats" class="active">Overview</a>
+        <a href="#colors">Colors</a>
+        <a href="#typography">Typography</a>
+        <a href="#rounded">Rounded</a>
+        <a href="#spacing">Spacing</a>
+        <a href="#components">Components</a>
+        <a href="#editor">Editor</a>
+        <a href="#export">Export</a>
+        <a
+          href="../index.html"
+          style="
+            margin-top: 12px;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 12px;
+            font-size: 12px;
+          "
+          >← Back to landing</a
+        >
+        <a href="../get-started.html" style="font-size: 12px">Get Started</a>
+        <a href="../roundtrip.html" style="font-size: 12px">Roundtrip</a>
+        <a href="../import.html" style="font-size: 12px">Import</a>
+        <a href="../premium-design.html" style="font-size: 12px">Premium</a>
+        <a href="../semantic-tokens.html" style="font-size: 12px">Semantic Tokens</a>
+      </nav>
+    </aside>
 
-<main class="main" id="main">
-  <div class="loading">Loading design system</div>
-</main>
+    <main class="main" id="main">
+      <div class="loading">Loading design system</div>
+    </main>
 
-<script>
-let ds = null;
-let rawMd = '';
+    <script>
+      let ds = null;
+      let rawMd = '';
 
-async function load() {
-  const main = document.getElementById('main');
-  try {
-    const res = await fetch('design-system.md' + '?v=' + Date.now());
-    if (!res.ok) throw new Error('Not found');
-    rawMd = await res.text();
-    const parts = rawMd.split('---');
-    if (parts.length < 3) throw new Error('Invalid DESIGN.md format');
-    const yamlText = parts[1];
-    ds = parseYaml(yamlText);
-    render();
-  } catch (e) {
-    main.innerHTML = `<div class="error-state"><h3>Could not load DESIGN.md</h3><p>${e.message}</p><p style="margin-top:16px;font-size:12px;">Make sure <code style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;">.stitch/DESIGN.md</code> exists and is served.</p></div>`;
-  }
-}
+      async function load() {
+        const main = document.getElementById('main');
+        try {
+          const res = await fetch('design-system.md' + '?v=' + Date.now());
+          if (!res.ok) throw new Error('Not found');
+          rawMd = await res.text();
+          const parts = rawMd.split('---');
+          if (parts.length < 3) throw new Error('Invalid DESIGN.md format');
+          const yamlText = parts[1];
+          ds = parseYaml(yamlText);
+          render();
+        } catch (e) {
+          main.innerHTML = `<div class="error-state"><h3>Could not load DESIGN.md</h3><p>${e.message}</p><p style="margin-top:16px;font-size:12px;">Make sure <code style="background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;">.stitch/DESIGN.md</code> exists and is served.</p></div>`;
+        }
+      }
 
-function parseYaml(text) {
-  const obj = {};
-  let lines = text.split('\n');
-  let current = obj;
-  let path = [obj];
-  let keyStack = [null];
-  for (const line of lines) {
-    const trimmed = line.trimEnd();
-    if (trimmed === '' || trimmed.startsWith('#')) continue;
-    const indent = line.length - trimmed.length;
-    while (indent < keyStack[keyStack.length - 1] && path.length > 1) {
-      path.pop();
-      keyStack.pop();
-    }
-    const match = trimmed.match(/^(\w[\w-]*):\s*(.*)$/);
-    if (!match) continue;
-    const key = match[1];
-    const val = match[2].trim();
-    const cur = path[path.length - 1];
-    if (val === '' || val === '|') {
-      const next = {};
-      cur[key] = next;
-      path.push(next);
-      keyStack.push(indent);
-    } else if (val.startsWith('"') && val.endsWith('"')) {
-      cur[key] = val.slice(1, -1);
-    } else if (val.startsWith("'") && val.endsWith("'")) {
-      cur[key] = val.slice(1, -1);
-    } else if (val === 'true') {
-      cur[key] = true;
-    } else if (val === 'false') {
-      cur[key] = false;
-    } else if (!isNaN(Number(val))) {
-      cur[key] = Number(val);
-    } else {
-      cur[key] = val;
-    }
-    if (val === '') {
-      keyStack.push(indent);
-    } else {
-      keyStack.push(-1);
-    }
-  }
-  return obj;
-}
+      function parseYaml(text) {
+        const obj = {};
+        let lines = text.split('\n');
+        let current = obj;
+        let path = [obj];
+        let keyStack = [null];
+        for (const line of lines) {
+          const trimmed = line.trimEnd();
+          if (trimmed === '' || trimmed.startsWith('#')) continue;
+          const indent = line.length - trimmed.length;
+          while (indent < keyStack[keyStack.length - 1] && path.length > 1) {
+            path.pop();
+            keyStack.pop();
+          }
+          const match = trimmed.match(/^(\w[\w-]*):\s*(.*)$/);
+          if (!match) continue;
+          const key = match[1];
+          const val = match[2].trim();
+          const cur = path[path.length - 1];
+          if (val === '' || val === '|') {
+            const next = {};
+            cur[key] = next;
+            path.push(next);
+            keyStack.push(indent);
+          } else if (val.startsWith('"') && val.endsWith('"')) {
+            cur[key] = val.slice(1, -1);
+          } else if (val.startsWith("'") && val.endsWith("'")) {
+            cur[key] = val.slice(1, -1);
+          } else if (val === 'true') {
+            cur[key] = true;
+          } else if (val === 'false') {
+            cur[key] = false;
+          } else if (!isNaN(Number(val))) {
+            cur[key] = Number(val);
+          } else {
+            cur[key] = val;
+          }
+          if (val === '') {
+            keyStack.push(indent);
+          } else {
+            keyStack.push(-1);
+          }
+        }
+        return obj;
+      }
 
-function resolveRef(ref, context) {
-  if (!ref.startsWith('{') || !ref.endsWith('}')) return ref;
-  const path = ref.slice(1, -1).split('.');
-  let cur = context || ds;
-  for (const p of path) {
-    if (cur && typeof cur === 'object' && p in cur) cur = cur[p];
-    else return ref;
-  }
-  return cur !== undefined ? cur : ref;
-}
+      function resolveRef(ref, context) {
+        if (!ref.startsWith('{') || !ref.endsWith('}')) return ref;
+        const path = ref.slice(1, -1).split('.');
+        let cur = context || ds;
+        for (const p of path) {
+          if (cur && typeof cur === 'object' && p in cur) cur = cur[p];
+          else return ref;
+        }
+        return cur !== undefined ? cur : ref;
+      }
 
-function render() {
-  const main = document.getElementById('main');
-  const name = ds.name || 'Unnamed';
-  document.getElementById('ds-name').textContent = name;
-  document.getElementById('ds-desc').textContent = ds.description || 'Stitch Ecosystem';
+      function render() {
+        const main = document.getElementById('main');
+        const name = ds.name || 'Unnamed';
+        document.getElementById('ds-name').textContent = name;
+        document.getElementById('ds-desc').textContent = ds.description || 'Stitch Ecosystem';
 
-  const colors = ds.colors || {};
-  const typography = ds.typography || {};
-  const rounded = ds.rounded || {};
-  const spacing = ds.spacing || {};
-  const components = ds.components || {};
+        const colors = ds.colors || {};
+        const typography = ds.typography || {};
+        const rounded = ds.rounded || {};
+        const spacing = ds.spacing || {};
+        const components = ds.components || {};
 
-  const colorCount = Object.keys(colors).length;
-  const typoCount = Object.keys(typography).length;
-  const compCount = Object.keys(components).length;
+        const colorCount = Object.keys(colors).length;
+        const typoCount = Object.keys(typography).length;
+        const compCount = Object.keys(components).length;
 
-  function renderColors() {
-    const groups = { surfaces: [], text: [], accent: [], semantic: [], glass: [], fixed: [], other: [] };
-    const surfaceKeys = ['surface', 'surface-dim', 'surface-bright', 'surface-container-lowest', 'surface-container-low', 'surface-container', 'surface-container-high', 'surface-container-highest', 'surface-variant', 'background'];
-    const textKeys = ['on-surface', 'on-surface-variant', 'inverse-surface', 'inverse-on-surface', 'on-background'];
-    const accentKeys = ['gradient-start', 'gradient-mid', 'gradient-violet', 'gradient-end'];
-    const semanticKeys = ['primary', 'on-primary', 'primary-container', 'on-primary-container', 'inverse-primary', 'secondary', 'on-secondary', 'secondary-container', 'on-secondary-container', 'tertiary', 'on-tertiary', 'tertiary-container', 'on-tertiary-container', 'error', 'on-error', 'error-container', 'on-error-container'];
-    const glassKeys = ['glass-bg', 'glass-hover', 'glass-strong', 'badge-bg', 'tab-active-bg', 'tab-active-border', 'nav-bg', 'terminal-bg'];
-    const fixedKeys = ['primary-fixed', 'primary-fixed-dim', 'on-primary-fixed', 'on-primary-fixed-variant', 'secondary-fixed', 'secondary-fixed-dim', 'on-secondary-fixed', 'on-secondary-fixed-variant', 'tertiary-fixed', 'tertiary-fixed-dim', 'on-tertiary-fixed', 'on-tertiary-fixed-variant'];
+        function renderColors() {
+          const groups = {
+            surfaces: [],
+            text: [],
+            accent: [],
+            semantic: [],
+            glass: [],
+            fixed: [],
+            other: [],
+          };
+          const surfaceKeys = [
+            'surface',
+            'surface-dim',
+            'surface-bright',
+            'surface-container-lowest',
+            'surface-container-low',
+            'surface-container',
+            'surface-container-high',
+            'surface-container-highest',
+            'surface-variant',
+            'background',
+          ];
+          const textKeys = [
+            'on-surface',
+            'on-surface-variant',
+            'inverse-surface',
+            'inverse-on-surface',
+            'on-background',
+          ];
+          const accentKeys = ['gradient-start', 'gradient-mid', 'gradient-violet', 'gradient-end'];
+          const semanticKeys = [
+            'primary',
+            'on-primary',
+            'primary-container',
+            'on-primary-container',
+            'inverse-primary',
+            'secondary',
+            'on-secondary',
+            'secondary-container',
+            'on-secondary-container',
+            'tertiary',
+            'on-tertiary',
+            'tertiary-container',
+            'on-tertiary-container',
+            'error',
+            'on-error',
+            'error-container',
+            'on-error-container',
+          ];
+          const glassKeys = [
+            'glass-bg',
+            'glass-hover',
+            'glass-strong',
+            'badge-bg',
+            'tab-active-bg',
+            'tab-active-border',
+            'nav-bg',
+            'terminal-bg',
+          ];
+          const fixedKeys = [
+            'primary-fixed',
+            'primary-fixed-dim',
+            'on-primary-fixed',
+            'on-primary-fixed-variant',
+            'secondary-fixed',
+            'secondary-fixed-dim',
+            'on-secondary-fixed',
+            'on-secondary-fixed-variant',
+            'tertiary-fixed',
+            'tertiary-fixed-dim',
+            'on-tertiary-fixed',
+            'on-tertiary-fixed-variant',
+          ];
 
-    for (const [k, v] of Object.entries(colors)) {
-      const colorStr = typeof v === 'string' ? v : String(v);
-      if (surfaceKeys.includes(k)) groups.surfaces.push([k, colorStr]);
-      else if (textKeys.includes(k)) groups.text.push([k, colorStr]);
-      else if (accentKeys.includes(k)) groups.accent.push([k, colorStr]);
-      else if (semanticKeys.includes(k)) groups.semantic.push([k, colorStr]);
-      else if (glassKeys.includes(k)) groups.glass.push([k, colorStr]);
-      else if (fixedKeys.includes(k)) groups.fixed.push([k, colorStr]);
-      else groups.other.push([k, colorStr]);
-    }
+          for (const [k, v] of Object.entries(colors)) {
+            const colorStr = typeof v === 'string' ? v : String(v);
+            if (surfaceKeys.includes(k)) groups.surfaces.push([k, colorStr]);
+            else if (textKeys.includes(k)) groups.text.push([k, colorStr]);
+            else if (accentKeys.includes(k)) groups.accent.push([k, colorStr]);
+            else if (semanticKeys.includes(k)) groups.semantic.push([k, colorStr]);
+            else if (glassKeys.includes(k)) groups.glass.push([k, colorStr]);
+            else if (fixedKeys.includes(k)) groups.fixed.push([k, colorStr]);
+            else groups.other.push([k, colorStr]);
+          }
 
-    const groupLabels = { surfaces: 'Surfaces', text: 'Text', accent: 'Accent', semantic: 'Semantic', glass: 'Glass Effects', fixed: 'Fixed Variants', other: 'Other' };
+          const groupLabels = {
+            surfaces: 'Surfaces',
+            text: 'Text',
+            accent: 'Accent',
+            semantic: 'Semantic',
+            glass: 'Glass Effects',
+            fixed: 'Fixed Variants',
+            other: 'Other',
+          };
 
-    let html = '';
-    for (const [g, items] of Object.entries(groups)) {
-      if (items.length === 0) continue;
-      html += `<div class="color-group-label">${groupLabels[g]}</div><div class="token-grid">`;
-      for (const [name, val] of items) {
-        html += `<div class="token-card" onclick="copyValue('${val.replace(/'/g, "\\'")}')">
+          let html = '';
+          for (const [g, items] of Object.entries(groups)) {
+            if (items.length === 0) continue;
+            html += `<div class="color-group-label">${groupLabels[g]}</div><div class="token-grid">`;
+            for (const [name, val] of items) {
+              html += `<div class="token-card" onclick="copyValue('${val.replace(/'/g, "\\'")}')">
           <div class="swatch" style="background:${val}"></div>
           <div class="info"><div class="name">${name}</div><div class="value">${val}</div></div>
         </div>`;
-      }
-      html += `</div>`;
-    }
-    return html;
-  }
+            }
+            html += `</div>`;
+          }
+          return html;
+        }
 
-  function renderTypography() {
-    const families = {};
-    for (const [k, v] of Object.entries(typography)) {
-      if (typeof v !== 'object') continue;
-      const fam = v.fontFamily || 'Inter';
-      if (!families[fam]) families[fam] = [];
-      families[fam].push([k, v]);
-    }
-    let html = '';
-    for (const [fam, items] of Object.entries(families)) {
-      html += `<div class="color-group-label">${fam}</div><div class="typography-list">`;
-      for (const [name, spec] of items) {
-        const parts = [`${spec.fontSize || ''}`, spec.fontWeight ? `w${spec.fontWeight}` : '', spec.lineHeight ? `lh${spec.lineHeight}` : '', spec.letterSpacing || ''].filter(Boolean).join(' / ');
-        const previewStyle = `font-family:${spec.fontFamily || 'Inter'};font-size:${spec.fontSize || '16px'};font-weight:${spec.fontWeight || 400};line-height:${spec.lineHeight || 1.4};letter-spacing:${spec.letterSpacing || 0}`;
-        html += `<div class="typo-item">
+        function renderTypography() {
+          const families = {};
+          for (const [k, v] of Object.entries(typography)) {
+            if (typeof v !== 'object') continue;
+            const fam = v.fontFamily || 'Inter';
+            if (!families[fam]) families[fam] = [];
+            families[fam].push([k, v]);
+          }
+          let html = '';
+          for (const [fam, items] of Object.entries(families)) {
+            html += `<div class="color-group-label">${fam}</div><div class="typography-list">`;
+            for (const [name, spec] of items) {
+              const parts = [
+                `${spec.fontSize || ''}`,
+                spec.fontWeight ? `w${spec.fontWeight}` : '',
+                spec.lineHeight ? `lh${spec.lineHeight}` : '',
+                spec.letterSpacing || '',
+              ]
+                .filter(Boolean)
+                .join(' / ');
+              const previewStyle = `font-family:${spec.fontFamily || 'Inter'};font-size:${spec.fontSize || '16px'};font-weight:${spec.fontWeight || 400};line-height:${spec.lineHeight || 1.4};letter-spacing:${spec.letterSpacing || 0}`;
+              html += `<div class="typo-item">
           <div class="typo-header"><span class="typo-name">${name}</span><span class="typo-spec">${parts}</span></div>
           <div class="typo-preview" style="${previewStyle}">The quick brown fox jumps over the lazy dog</div>
         </div>`;
-      }
-      html += `</div>`;
-    }
-    return html;
-  }
+            }
+            html += `</div>`;
+          }
+          return html;
+        }
 
-  function renderRounded() {
-    const maxVal = Math.max(...Object.values(rounded).filter(v => typeof v === 'number' || (typeof v === 'string' && v.endsWith('px'))).map(v => parseInt(v)), 24);
-    let html = '<div class="rounded-preview">';
-    for (const [k, v] of Object.entries(rounded)) {
-      const px = parseInt(v);
-      const r = Math.min(px / maxVal * 24, 24);
-      html += `<div class="rounded-sample"><div class="box" style="border-radius:${v}"></div><span class="label">${k} ${v}</span></div>`;
-    }
-    html += '</div>';
-    return html;
-  }
+        function renderRounded() {
+          const maxVal = Math.max(
+            ...Object.values(rounded)
+              .filter((v) => typeof v === 'number' || (typeof v === 'string' && v.endsWith('px')))
+              .map((v) => parseInt(v)),
+            24
+          );
+          let html = '<div class="rounded-preview">';
+          for (const [k, v] of Object.entries(rounded)) {
+            const px = parseInt(v);
+            const r = Math.min((px / maxVal) * 24, 24);
+            html += `<div class="rounded-sample"><div class="box" style="border-radius:${v}"></div><span class="label">${k} ${v}</span></div>`;
+          }
+          html += '</div>';
+          return html;
+        }
 
-  function renderSpacing() {
-    const items = Object.entries(spacing);
-    const maxVal = Math.max(...items.map(([,v]) => typeof v === 'number' ? v : (typeof v === 'string' ? parseInt(v) : 0)), 100);
-    let html = '<div class="spacing-scale">';
-    for (const [k, v] of items) {
-      const px = typeof v === 'number' ? v : parseInt(v);
-      const h = Math.max(4, px / maxVal * 80);
-      html += `<div class="spacing-bar"><div class="bar" style="height:${h}px"></div><span class="label">${k} ${v}</span></div>`;
-    }
-    html += '</div>';
-    return html;
-  }
+        function renderSpacing() {
+          const items = Object.entries(spacing);
+          const maxVal = Math.max(
+            ...items.map(([, v]) =>
+              typeof v === 'number' ? v : typeof v === 'string' ? parseInt(v) : 0
+            ),
+            100
+          );
+          let html = '<div class="spacing-scale">';
+          for (const [k, v] of items) {
+            const px = typeof v === 'number' ? v : parseInt(v);
+            const h = Math.max(4, (px / maxVal) * 80);
+            html += `<div class="spacing-bar"><div class="bar" style="height:${h}px"></div><span class="label">${k} ${v}</span></div>`;
+          }
+          html += '</div>';
+          return html;
+        }
 
-  function renderComponents() {
-    let html = '<div class="component-list">';
-    for (const [name, spec] of Object.entries(components)) {
-      if (typeof spec !== 'object') continue;
-      const props = Object.keys(spec);
-      html += `<div class="component-item"><span class="comp-name">${name}</span><span class="comp-count">${props.length} properties</span></div>`;
-    }
-    html += '</div>';
-    return html;
-  }
+        function renderComponents() {
+          let html = '<div class="component-list">';
+          for (const [name, spec] of Object.entries(components)) {
+            if (typeof spec !== 'object') continue;
+            const props = Object.keys(spec);
+            html += `<div class="component-item"><span class="comp-name">${name}</span><span class="comp-count">${props.length} properties</span></div>`;
+          }
+          html += '</div>';
+          return html;
+        }
 
-  function renderEditor() {
-    return `<div class="editor-section"><textarea id="editor-textarea">${escapeHtml(rawMd)}</textarea></div>`;
-  }
+        function renderEditor() {
+          return `<div class="editor-section"><textarea id="editor-textarea">${escapeHtml(rawMd)}</textarea></div>`;
+        }
 
-  main.innerHTML = `
+        main.innerHTML = `
     <h1 class="page-title">${escapeHtml(name)}</h1>
     <p class="page-sub">Design system tokens from <span class="file">.stitch/DESIGN.md</span></p>
 
@@ -644,122 +1001,132 @@ function render() {
     </section>
   `;
 
-  setupNav();
-  setupExport();
-}
-
-function setupNav() {
-  const links = document.querySelectorAll('.sidebar nav a[href^="#"]');
-  links.forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const id = a.getAttribute('href').slice(1);
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-      links.forEach(l => l.classList.remove('active'));
-      a.classList.add('active');
-    });
-  });
-  const observer = new IntersectionObserver(entries => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) {
-        links.forEach(l => {
-          l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id);
-        });
+        setupNav();
+        setupExport();
       }
-    }
-  }, { rootMargin: '-80px 0px -60% 0px' });
-  document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
-}
 
-const exportFetchers = {
-  tailwind: () => fetchExport('json-tailwind'),
-  'css-tailwind': () => fetchExport('css-tailwind'),
-  dtcg: () => fetchExport('dtcg'),
-};
+      function setupNav() {
+        const links = document.querySelectorAll('.sidebar nav a[href^="#"]');
+        links.forEach((a) => {
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = a.getAttribute('href').slice(1);
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            links.forEach((l) => l.classList.remove('active'));
+            a.classList.add('active');
+          });
+        });
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                links.forEach((l) => {
+                  l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id);
+                });
+              }
+            }
+          },
+          { rootMargin: '-80px 0px -60% 0px' }
+        );
+        document.querySelectorAll('section[id]').forEach((s) => observer.observe(s));
+      }
 
-async function fetchExport(fmt) {
-  const res = await fetch('../packages/cli/src/index.ts', { method: 'POST' }); // no-op, we'll use API
-  // fallback: compute in-browser
-  return 'Export via server API not available in browser.\n\nRun: bun run packages/cli/src/index.ts export --format ' + fmt + ' .stitch/DESIGN.md';
-}
+      const exportFetchers = {
+        tailwind: () => fetchExport('json-tailwind'),
+        'css-tailwind': () => fetchExport('css-tailwind'),
+        dtcg: () => fetchExport('dtcg'),
+      };
 
-async function setupExport() {
-  const tabs = document.querySelectorAll('#export-tabs .export-tab');
-  const output = document.getElementById('export-output');
-  let currentFmt = 'tailwind';
-  let cache = {};
+      async function fetchExport(fmt) {
+        const res = await fetch('../packages/cli/src/index.ts', { method: 'POST' }); // no-op, we'll use API
+        // fallback: compute in-browser
+        return (
+          'Export via server API not available in browser.\n\nRun: bun run packages/cli/src/index.ts export --format ' +
+          fmt +
+          ' .stitch/DESIGN.md'
+        );
+      }
 
-  async function loadExport(fmt) {
-    if (cache[fmt]) { output.textContent = cache[fmt]; return; }
-    output.textContent = 'Loading...';
-    try {
-      const res = await fetch(exportUrl(fmt));
-      if (!res.ok) throw new Error('Export not available');
-      const text = await res.text();
-      cache[fmt] = text;
-      output.textContent = text;
-    } catch {
-      output.textContent = `// Run locally:\nbun run packages/cli/src/index.ts export --format ${fmt} .stitch/DESIGN.md`;
-    }
-  }
+      async function setupExport() {
+        const tabs = document.querySelectorAll('#export-tabs .export-tab');
+        const output = document.getElementById('export-output');
+        let currentFmt = 'tailwind';
+        let cache = {};
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      currentFmt = tab.dataset.fmt;
-      loadExport(currentFmt);
-    });
-  });
+        async function loadExport(fmt) {
+          if (cache[fmt]) {
+            output.textContent = cache[fmt];
+            return;
+          }
+          output.textContent = 'Loading...';
+          try {
+            const res = await fetch(exportUrl(fmt));
+            if (!res.ok) throw new Error('Export not available');
+            const text = await res.text();
+            cache[fmt] = text;
+            output.textContent = text;
+          } catch {
+            output.textContent = `// Run locally:\nbun run packages/cli/src/index.ts export --format ${fmt} .stitch/DESIGN.md`;
+          }
+        }
 
-  loadExport('tailwind');
-}
+        tabs.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            tabs.forEach((t) => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentFmt = tab.dataset.fmt;
+            loadExport(currentFmt);
+          });
+        });
 
-function exportUrl(fmt) {
-  const m = { 'tailwind': 'json-tailwind', 'css-tailwind': 'css-tailwind', 'dtcg': 'dtcg' };
-  return '../export?format=' + (m[fmt] || fmt);
-}
+        loadExport('tailwind');
+      }
 
-function copyValue(val) {
-  navigator.clipboard.writeText(val).then(() => showToast('Copied ' + val));
-}
+      function exportUrl(fmt) {
+        const m = { tailwind: 'json-tailwind', 'css-tailwind': 'css-tailwind', dtcg: 'dtcg' };
+        return '../export?format=' + (m[fmt] || fmt);
+      }
 
-function copyExport() {
-  const text = document.getElementById('export-output').textContent;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'));
-}
+      function copyValue(val) {
+        navigator.clipboard.writeText(val).then(() => showToast('Copied ' + val));
+      }
 
-function downloadExport() {
-  const text = document.getElementById('export-output').textContent;
-  const fmt = document.querySelector('#export-tabs .active')?.dataset.fmt || 'tailwind';
-  const ext = fmt === 'dtcg' ? 'json' : fmt === 'css-tailwind' ? 'css' : 'json';
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `stitch-export.${ext}`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-  showToast('Downloaded stitch-export.' + ext);
-}
+      function copyExport() {
+        const text = document.getElementById('export-output').textContent;
+        navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard'));
+      }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._hide);
-  t._hide = setTimeout(() => t.classList.remove('show'), 2000);
-}
+      function downloadExport() {
+        const text = document.getElementById('export-output').textContent;
+        const fmt = document.querySelector('#export-tabs .active')?.dataset.fmt || 'tailwind';
+        const ext = fmt === 'dtcg' ? 'json' : fmt === 'css-tailwind' ? 'css' : 'json';
+        const blob = new Blob([text], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `stitch-export.${ext}`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast('Downloaded stitch-export.' + ext);
+      }
 
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+      function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(t._hide);
+        t._hide = setTimeout(() => t.classList.remove('show'), 2000);
+      }
 
-load();
+      function escapeHtml(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
 
-function toggleMobileNav() {
-  document.getElementById('mobile-nav').classList.toggle('open');
-  document.getElementById('mobile-overlay').classList.toggle('open');
-}
-</script>
-</body>
+      load();
+
+      function toggleMobileNav() {
+        document.getElementById('mobile-nav').classList.toggle('open');
+        document.getElementById('mobile-overlay').classList.toggle('open');
+      }
+    </script>
+  </body>
 </html>

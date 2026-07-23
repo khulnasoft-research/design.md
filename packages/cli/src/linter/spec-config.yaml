@@ -51,9 +51,9 @@ typography_properties:
     type: Dimension
   - name: fontWeight
     type: number
-    description: "A numeric font weight value (e.g., `400`, `700`). In YAML, this may be expressed as either a bare number or a quoted string; both are equivalent."
+    description: 'A numeric font weight value (e.g., `400`, `700`). In YAML, this may be expressed as either a bare number or a quoted string; both are equivalent.'
   - name: lineHeight
-    type: "Dimension | number"
+    type: 'Dimension | number'
     description: "Accepts either a Dimension (e.g., `24px`, `1.5rem`) or a unitless number (e.g., `1.6`). A unitless number represents a multiplier of the element's `fontSize`, which is the recommended CSS practice."
   - name: letterSpacing
     type: Dimension
@@ -117,17 +117,17 @@ recommended_tokens:
 
 examples:
   colors:
-    primary: "#1A1C1E"
-    secondary: "#6C7278"
-    tertiary: "#B8422E"
-    neutral: "#F7F5F2"
+    primary: '#1A1C1E'
+    secondary: '#6C7278'
+    tertiary: '#B8422E'
+    neutral: '#F7F5F2'
   typography:
     h1:
       fontFamily: Public Sans
       fontSize: 48px
       fontWeight: 600
       lineHeight: 1.1
-      letterSpacing: "-0.02em"
+      letterSpacing: '-0.02em'
     body-md:
       fontFamily: Public Sans
       fontSize: 16px
@@ -138,12 +138,12 @@ examples:
       fontSize: 12px
       fontWeight: 500
       lineHeight: 1.0
-      letterSpacing: "0.1em"
+      letterSpacing: '0.1em'
   components:
     button-primary:
-      backgroundColor: "{colors.primary-60}"
-      textColor: "{colors.primary-20}"
-      rounded: "{rounded.md}"
+      backgroundColor: '{colors.primary-60}'
+      textColor: '{colors.primary-20}'
+      rounded: '{rounded.md}'
       padding: 12px
     button-primary-hover:
-      backgroundColor: "{colors.primary-70}"
+      backgroundColor: '{colors.primary-70}'

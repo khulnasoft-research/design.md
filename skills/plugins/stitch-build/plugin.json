@@ -1,0 +1,21 @@
+{
+  "name": "stitch-build",
+  "description": "Code generation and build tools for Google Stitch — convert designs to React components, generate walkthrough videos with Remotion, and integrate shadcn/ui.",
+  "version": "1.0.0",
+  "author": {
+    "name": "khulnasoft"
+  },
+  "homepage": "https://github.com/khulnasoft/stitch-skills",
+  "repository": "https://github.com/khulnasoft/stitch-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "stitch",
+    "react",
+    "components",
+    "remotion",
+    "shadcn-ui",
+    "react-vite-dashboard",
+    "code-generation",
+    "video"
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "name": "@google/design-core",
+  "name": "@scalify/design-core",
   "version": "1.0.0",
   "description": "Shared core utilities for DESIGN.md - types, linting, and export functionality",
   "type": "module",
@@ -14,6 +14,10 @@
       "types": "./dist/linter/index.d.ts",
       "import": "./dist/linter/index.js"
     },
+    "./linter/rules": {
+      "types": "./dist/linter/rules/index.d.ts",
+      "import": "./dist/linter/rules/index.js"
+    },
     "./types": {
       "types": "./dist/types/index.d.ts",
       "import": "./dist/types/index.js"
@@ -21,14 +25,32 @@
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
+    },
+    "./parser": {
+      "types": "./dist/parser/index.d.ts",
+      "import": "./dist/parser/index.js"
+    },
+    "./model": {
+      "types": "./dist/model/index.d.ts",
+      "import": "./dist/model/index.js"
+    },
+    "./spec-config": {
+      "types": "./dist/spec-config.d.ts",
+      "import": "./dist/spec-config.js"
+    },
+    "./fixer": {
+      "types": "./dist/fixer/index.d.ts",
+      "import": "./dist/fixer/index.js"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src/**/*.yaml"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp src/spec-config.yaml dist/spec-config.yaml",
     "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
     "test": "vitest"
   },
   "keywords": [
@@ -37,7 +59,17 @@
     "tokens",
     "linting"
   ],
+  "dependencies": {
+    "remark-frontmatter": "^5.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.1.0",
+    "yaml": "^2.7.1",
+    "zod": "^3.24.0"
+  },
   "devDependencies": {
+    "@types/mdast": "^4.0.4",
     "@types/node": "^20.0.0",
     "typescript": "^5.3.0",
     "vitest": "^1.0.0"

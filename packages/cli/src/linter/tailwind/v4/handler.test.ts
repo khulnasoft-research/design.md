@@ -23,9 +23,9 @@ const modelHandler = new ModelHandler();
 function buildState(overrides: Partial<ParsedDesignSystem> = {}) {
   const parsed: ParsedDesignSystem = { sourceMap: new Map(), ...overrides };
   const result = modelHandler.execute(parsed);
-  const hasErrors = result.findings.some(d => d.severity === 'error');
+  const hasErrors = result.findings.some((d) => d.severity === 'error');
   if (hasErrors) {
-    throw new Error(`Model build failed: ${result.findings.map(d => d.message).join(', ')}`);
+    throw new Error(`Model build failed: ${result.findings.map((d) => d.message).join(', ')}`);
   }
   return result.designSystem;
 }
@@ -135,7 +135,12 @@ describe('TailwindV4EmitterHandler', () => {
       });
       // Inject an invalid name directly into the Map to simulate an invalid token
       state.colors.set('primary.surface', {
-        type: 'color', hex: '#ffffff', r: 255, g: 255, b: 255, luminance: 1,
+        type: 'color',
+        hex: '#ffffff',
+        r: 255,
+        g: 255,
+        b: 255,
+        luminance: 1,
       });
       const result = emitter.execute(state);
       expect(result.success).toBe(false);

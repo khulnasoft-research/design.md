@@ -13,10 +13,26 @@
 // limitations under the License.
 
 import { describe, it, expect } from 'bun:test';
-import { isValidColor, isStandardDimension, isParseableDimension, parseDimensionParts, isTokenReference } from './spec.js';
+import {
+  isValidColor,
+  isStandardDimension,
+  isParseableDimension,
+  parseDimensionParts,
+  isTokenReference,
+} from './spec.js';
 
 describe('isValidColor', () => {
-  const validColors = ['#ff0000', '#FF0000', '#abc', '#ABC', '#647D66', '#000', '#fff', 'red', 'blue'];
+  const validColors = [
+    '#ff0000',
+    '#FF0000',
+    '#abc',
+    '#ABC',
+    '#647D66',
+    '#000',
+    '#fff',
+    'red',
+    'blue',
+  ];
   const invalidColors = ['#gg0000', '#12345', '647D66', '#1234567', '', '#'];
 
   it.each(validColors)('accepts valid hex color: %s', (color: string) => {
@@ -43,9 +59,19 @@ describe('isStandardDimension', () => {
 
 describe('isParseableDimension', () => {
   const parseable = [
-    '12px', '1.5rem', '-0.02em', '100vh', '50%', '0.75rem', '1em', '12vw',
+    '12px',
+    '1.5rem',
+    '-0.02em',
+    '100vh',
+    '50%',
+    '0.75rem',
+    '1em',
+    '12vw',
     // CSS Level 4 units now in scope
-    '10cqi', '20lvh', '30dvw', '5cqmin',
+    '10cqi',
+    '20lvh',
+    '30dvw',
+    '5cqmin',
   ];
   const unparseable = ['42', 'px', 'rem', '', '12 px', 'auto', 'inherit'];
 

@@ -13,17 +13,23 @@
 // limitations under the License.
 
 import { defineCommand } from 'citty';
-import { lint, TailwindEmitterHandler, TailwindV4EmitterHandler, serializeTailwindV4 } from '../linter/index.js';
+import {
+  lint,
+  TailwindEmitterHandler,
+  TailwindV4EmitterHandler,
+  serializeTailwindV4,
+} from '../linter/index.js';
 import { DtcgEmitterHandler } from '../linter/dtcg/handler.js';
 import { readInput } from '../utils.js';
 
 const FORMATS = ['css-tailwind', 'json-tailwind', 'tailwind', 'dtcg'] as const;
-type ExportFormat = typeof FORMATS[number];
+type ExportFormat = (typeof FORMATS)[number];
 
 export default defineCommand({
   meta: {
     name: 'export',
-    description: 'Export DESIGN.md tokens to other formats. `css-tailwind` emits Tailwind v4 CSS @theme; `json-tailwind` emits Tailwind v3 theme.extend JSON; `tailwind` is an alias for `json-tailwind`; `dtcg` emits W3C Design Tokens.',
+    description:
+      'Export DESIGN.md tokens to other formats. `css-tailwind` emits Tailwind v4 CSS @theme; `json-tailwind` emits Tailwind v3 theme.extend JSON; `tailwind` is an alias for `json-tailwind`; `dtcg` emits W3C Design Tokens.',
   },
   args: {
     file: {
@@ -42,9 +48,11 @@ export default defineCommand({
 
     // Validate --format against closed enum
     if (!FORMATS.includes(format as ExportFormat)) {
-      console.error(JSON.stringify({
-        error: `Invalid format "${format}". Valid formats: ${FORMATS.join(', ')}`,
-      }));
+      console.error(
+        JSON.stringify({
+          error: `Invalid format "${format}". Valid formats: ${FORMATS.join(', ')}`,
+        })
+      );
       process.exitCode = 1;
       return;
     }

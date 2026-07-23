@@ -19,14 +19,16 @@ import { DEFAULT_RULE_DESCRIPTORS } from './index.js';
 describe('LintRule type', () => {
   it('accepts a function that takes state and returns findings', () => {
     const rule: LintRule = (_state) => [];
-    expect(rule({
-      colors: new Map(),
-      typography: new Map(),
-      rounded: new Map(),
-      spacing: new Map(),
-      components: new Map(),
-      symbolTable: new Map(),
-    })).toEqual([]);
+    expect(
+      rule({
+        colors: new Map(),
+        typography: new Map(),
+        rounded: new Map(),
+        spacing: new Map(),
+        components: new Map(),
+        symbolTable: new Map(),
+      })
+    ).toEqual([]);
   });
 
   it('accepts a RuleDescriptor object', () => {

@@ -3,7 +3,7 @@
 
 # DESIGN.md Format
 
-DESIGN.md is a self-contained, plain-text representation of a design system. It defines the visual identity of a brand and product, thereby ensuring that these stylistic choices can be followed across design sessions and between different AI agents and tools.  As a human-readable, open-format document, it serves as a living source of truth that both humans and AI can understand and refine.
+DESIGN.md is a self-contained, plain-text representation of a design system. It defines the visual identity of a brand and product, thereby ensuring that these stylistic choices can be followed across design sessions and between different AI agents and tools. As a human-readable, open-format document, it serves as a living source of truth that both humans and AI can understand and refine.
 
 A DESIGN.md file contains two parts: An optional YAML frontmatter, and a markdown body. The YAML front matter contains machine-readable design tokens. The markdown body sections provide human-readable design rationale and guidance. Prose may use descriptive color names (e.g., "Midnight Forest Green") that correspond to systematic token names (e.g., `primary`). The tokens are the normative values; the prose provides context for how to apply them.
 
@@ -23,9 +23,9 @@ Example:
 version: alpha
 name: Daylight Prestige
 colors:
-  primary: "#1A1C1E"
-  secondary: "#6C7278"
-  tertiary: "#B8422E"
+  primary: '#1A1C1E'
+  secondary: '#6C7278'
+  tertiary: '#B8422E'
 typography:
   h1:
     fontFamily: Public Sans
@@ -41,9 +41,9 @@ typography:
 Below is the schema for the design tokens defined in the front matter:
 
 ```yaml
-version: <string>          # optional, current version: "alpha"
+version: <string> # optional, current version: "alpha"
 name: <string>
-description: <string>      # optional
+description: <string> # optional
 colors:
   <token-name>: <Color>
 typography:
@@ -61,11 +61,11 @@ The `<scale-level>` placeholder represents a named level in a sizing or spacing 
 
 **Color**: A color value is any valid CSS color string. Supported formats include:
 
-* Hex: `#RGB`, `#RGBA`, `#RRGGBB`, `#RRGGBBAA`
-* Named colors: `red`, `cornflowerblue`, `transparent`
-* Functional: `rgb()`, `rgba()`, `hsl()`, `hsla()`, `hwb()`
-* Wide-gamut: `oklch()`, `oklab()`, `lch()`, `lab()`
-* Mixing: `color-mix(in srgb, ...)`
+- Hex: `#RGB`, `#RGBA`, `#RRGGBB`, `#RRGGBBAA`
+- Named colors: `red`, `cornflowerblue`, `transparent`
+- Functional: `rgb()`, `rgba()`, `hsl()`, `hsla()`, `hwb()`
+- Wide-gamut: `oklch()`, `oklab()`, `lch()`, `lab()`
+- Mixing: `color-mix(in srgb, ...)`
 
 All color values are internally converted to sRGB for WCAG contrast checking. The original format is preserved for display and export.
 
@@ -142,10 +142,10 @@ map\<string, Color>, that maps the name of the color token to its value.
 
 ```yaml
 colors:
-  primary: "#1A1C1E"
-  secondary: "#6C7278"
-  tertiary: "#B8422E"
-  neutral: "#F7F5F2"
+  primary: '#1A1C1E'
+  secondary: '#6C7278'
+  tertiary: '#B8422E'
+  neutral: '#F7F5F2'
 ```
 
 ## Typography
@@ -288,13 +288,13 @@ rounded:
 
 This section provides style guidance for component atoms within the design system. The following are common component types. Design systems are encouraged to define additional components relevant to their domain.
 
-* **Buttons**: Covers primary, secondary, and tertiary variants, including sizing, padding, and states.
-* **Chips**: Covers selection chips, filter chips, and action chips.
-* **Lists**: Covers styling for list items, dividers, and leading/trailing elements.
-* **Tooltips**: Covers positioning, colors, and timing.
-* **Checkboxes**: Covers checked, unchecked, and indeterminate states.
-* **Radio buttons**: Covers selected and unselected states.
-* **Input fields**: Covers text inputs, text areas, labels, helper text, and error states.
+- **Buttons**: Covers primary, secondary, and tertiary variants, including sizing, padding, and states.
+- **Chips**: Covers selection chips, filter chips, and action chips.
+- **Lists**: Covers styling for list items, dividers, and leading/trailing elements.
+- **Tooltips**: Covers positioning, colors, and timing.
+- **Checkboxes**: Covers checked, unchecked, and indeterminate states.
+- **Radio buttons**: Covers selected and unselected states.
+- **Input fields**: Covers text inputs, text areas, labels, helper text, and error states.
 
 > **Note:** The components specification is actively evolving. The current structure provides intentional flexibility for domain-specific component definitions while the spec matures.
 
@@ -307,12 +307,12 @@ The components section defines a collection of design tokens used to ensure cons
 ```yaml
 components:
   button-primary:
-    backgroundColor: "{colors.primary-60}"
-    textColor: "{colors.primary-20}"
-    rounded: "{rounded.md}"
+    backgroundColor: '{colors.primary-60}'
+    textColor: '{colors.primary-20}'
+    rounded: '{rounded.md}'
     padding: 12px
   button-primary-hover:
-    backgroundColor: "{colors.primary-70}"
+    backgroundColor: '{colors.primary-70}'
 ```
 
 ### Component Property Tokens
@@ -355,11 +355,11 @@ The following names are commonly used across design systems. They are not requir
 
 When a DESIGN.md consumer encounters content not defined by this spec:
 
-| Scenario | Behavior | Example |
-|---|---|---|
-| Unknown section heading | Preserve; do not error | `## Iconography` |
-| Unknown color token name | Accept if value is valid | `surface-container-high: '#ede7dd'` |
-| Unknown typography token name | Accept as valid typography | `telemetry-data` |
-| Unknown spacing value | Accept; store as string if not a valid dimension | `grid-columns: '5'` |
-| Unknown component property | Accept with warning | `borderColor` |
-| Duplicate section heading | Error; reject the file | Two `## Colors` headings |
+| Scenario                      | Behavior                                         | Example                             |
+| ----------------------------- | ------------------------------------------------ | ----------------------------------- |
+| Unknown section heading       | Preserve; do not error                           | `## Iconography`                    |
+| Unknown color token name      | Accept if value is valid                         | `surface-container-high: '#ede7dd'` |
+| Unknown typography token name | Accept as valid typography                       | `telemetry-data`                    |
+| Unknown spacing value         | Accept; store as string if not a valid dimension | `grid-columns: '5'`                 |
+| Unknown component property    | Accept with warning                              | `borderColor`                       |
+| Duplicate section heading     | Error; reject the file                           | Two `## Colors` headings            |

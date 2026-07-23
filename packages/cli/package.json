@@ -1,5 +1,5 @@
 {
-  "name": "@google/design.md",
+  "name": "@scalify/cli",
   "version": "0.3.0",
   "description": "Bridging design systems and code: a linter and exporter for the DESIGN.md format",
   "keywords": [
@@ -7,10 +7,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/google-labs-code/design.md.git"
+    "url": "git+https://github.com/khulnasoft/scalify.git"
   },
   "bugs": {
-    "url": "https://github.com/google-labs-code/design.md/issues"
+    "url": "https://github.com/khulnasoft/scalify/issues"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -46,6 +46,7 @@
     "check-package": "bun run scripts/check-package.ts"
   },
   "dependencies": {
+    "@scalify/design-core": "workspace:*",
     "citty": "^0.1.6",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx": "^3.1.1",

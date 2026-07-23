@@ -26,23 +26,21 @@ const modelHandler = new ModelHandler();
 function buildState(overrides: Partial<ParsedDesignSystem> = {}): DesignSystemState {
   const parsed: ParsedDesignSystem = { sourceMap: new Map(), ...overrides };
   const result = modelHandler.execute(parsed);
-  const hasErrors = result.findings.some(d => d.severity === 'error');
+  const hasErrors = result.findings.some((d) => d.severity === 'error');
   if (hasErrors) {
-    throw new Error(`Model build failed: ${result.findings.map(d => d.message).join(', ')}`);
+    throw new Error(`Model build failed: ${result.findings.map((d) => d.message).join(', ')}`);
   }
   return result.designSystem;
 }
 
 describe('LinterHandler', () => {
-
-
   // ── Cycle 15: E3 — Broken reference emits error ──────────────────
   describe('E3: broken token reference', () => {
     it('emits error when a component references a non-existent token', () => {
       const state = buildState({
         colors: { primary: '#ff0000' },
         components: {
-          'button': {
+          button: {
             backgroundColor: '{colors.nonexistent}',
           },
         },
@@ -58,18 +56,24 @@ describe('LinterHandler', () => {
     it('emits error when circular references are detected', () => {
       const state = buildState({
         colors: {
-          'a': '{colors.b}' as string,
-          'b': '{colors.a}' as string,
+          a: '{colors.b}' as string,
+          b: '{colors.a}' as string,
         },
         components: {
-          'card': {
+          card: {
             backgroundColor: '{colors.a}',
           },
         },
       });
       const result = linter.lint(state);
       const errors = result.findings.filter((d: Finding) => d.severity === 'error');
-      expect(errors.some((d: Finding) => d.message.toLowerCase().includes('unresolved') || d.message.toLowerCase().includes('resolve'))).toBe(true);
+      expect(
+        errors.some(
+          (d: Finding) =>
+            d.message.toLowerCase().includes('unresolved') ||
+            d.message.toLowerCase().includes('resolve')
+        )
+      ).toBe(true);
     });
   });
 
@@ -89,7 +93,9 @@ describe('LinterHandler', () => {
         colors: { primary: '#ff0000' },
       });
       const result = linter.lint(state);
-      const warnings = result.findings.filter((d: Finding) => d.severity === 'warning' && d.message.includes('primary'));
+      const warnings = result.findings.filter(
+        (d: Finding) => d.severity === 'warning' && d.message.includes('primary')
+      );
       expect(warnings.length).toBe(0);
     });
   });
@@ -99,8 +105,8 @@ describe('LinterHandler', () => {
     it('emits warning for low contrast backgroundColor/textColor pair', () => {
       const state = buildState({
         colors: {
-          'yellow': '#ffff00',
-          'white': '#ffffff',
+          yellow: '#ffff00',
+          white: '#ffffff',
         },
         components: {
           'button-bad': {
@@ -117,8 +123,8 @@ describe('LinterHandler', () => {
     it('does NOT emit warning for high contrast pair', () => {
       const state = buildState({
         colors: {
-          'black': '#000000',
-          'white': '#ffffff',
+          black: '#000000',
+          white: '#ffffff',
         },
         components: {
           'button-good': {
@@ -135,8 +141,6 @@ describe('LinterHandler', () => {
     });
   });
 
-
-
   // ── Cycle 19: I1 — Token count summary emits info ────────────────
   describe('I1: token count summary', () => {
     it('emits an info diagnostic summarizing the token counts', () => {
@@ -150,7 +154,11 @@ describe('LinterHandler', () => {
       });
       const result = linter.lint(state);
       const infos = result.findings.filter((d: Finding) => d.severity === 'info');
-      expect(infos.some((d: Finding) => d.message.includes('2 color') && d.message.includes('1 typography'))).toBe(true);
+      expect(
+        infos.some(
+          (d: Finding) => d.message.includes('2 color') && d.message.includes('1 typography')
+        )
+      ).toBe(true);
     });
   });
 
@@ -160,7 +168,13 @@ describe('LinterHandler', () => {
       const state = buildState({
         colors: { primary: '#647D66', secondary: '#ff0000' },
         typography: {
-          'headline-lg': { fontFamily: 'Roboto', fontSize: '42px', fontWeight: 500, lineHeight: '50px', letterSpacing: '1.2px' },
+          'headline-lg': {
+            fontFamily: 'Roboto',
+            fontSize: '42px',
+            fontWeight: 500,
+            lineHeight: '50px',
+            letterSpacing: '1.2px',
+          },
         },
         rounded: { regular: '4px', lg: '8px' },
         spacing: { 'gutter-s': '8px', 'gutter-l': '16px' },
@@ -194,7 +208,7 @@ describe('LinterHandler', () => {
           'button-broken': {
             backgroundColor: '{colors.nonexistent}',
             textColor: '{colors.white}',
-          }
+          },
         },
       });
       const graded = linter.preEvaluate(state);
@@ -210,13 +224,19 @@ describe('LinterHandler', () => {
       const state = buildState({
         colors: { primary: '#ff0000' },
         components: {
-          'card': { backgroundColor: '{colors.nonexistent}' }
-        }
+          card: { backgroundColor: '{colors.nonexistent}' },
+        },
       });
       const result = linter.lint(state);
-      expect(result.summary.errors).toBe(result.findings.filter((d: Finding) => d.severity === 'error').length);
-      expect(result.summary.warnings).toBe(result.findings.filter((d: Finding) => d.severity === 'warning').length);
-      expect(result.summary.infos).toBe(result.findings.filter((d: Finding) => d.severity === 'info').length);
+      expect(result.summary.errors).toBe(
+        result.findings.filter((d: Finding) => d.severity === 'error').length
+      );
+      expect(result.summary.warnings).toBe(
+        result.findings.filter((d: Finding) => d.severity === 'warning').length
+      );
+      expect(result.summary.infos).toBe(
+        result.findings.filter((d: Finding) => d.severity === 'info').length
+      );
     });
   });
 });

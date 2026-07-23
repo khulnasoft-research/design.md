@@ -1,0 +1,465 @@
+{
+  "classes": {
+    "Stitch": {
+      "description": "Main entry point. Manages projects.",
+      "constructorParams": [],
+      "isRoot": true,
+      "factories": [
+        {
+          "method": "project",
+          "returns": "Project",
+          "description": "Create a Project handle from an existing ID without an API call."
+        }
+      ]
+    },
+    "Project": {
+      "description": "A Stitch project containing screens.",
+      "extensionPath": "../../src/project-ext.js",
+      "constructorParams": ["projectId"],
+      "factories": [
+        {
+          "method": "designSystem",
+          "returns": "DesignSystem",
+          "description": "Create a DesignSystem handle from an existing ID without an API call."
+        },
+        {
+          "method": "screen",
+          "returns": "Screen",
+          "description": "Create a Screen handle from an existing ID without an API call."
+        }
+      ],
+      "sideEffects": [
+        {
+          "method": "upload",
+          "reason": "private_rest",
+          "specPath": "src/spec/upload.ts"
+        },
+        {
+          "method": "downloadAssets",
+          "reason": "filesystem_io",
+          "specPath": "src/spec/download.ts"
+        }
+      ],
+      "reference": {
+        "keys": ["projectId"]
+      }
+    },
+    "Screen": {
+      "description": "A generated UI screen. Provides access to HTML and screenshots.",
+      "constructorParams": ["projectId", "screenId"],
+      "parentField": "projectId",
+      "reference": {
+        "keys": ["projectId", "screenId"]
+      }
+    },
+    "DesignSystem": {
+      "description": "Represents a visual theme or branding applied to projects and screens.",
+      "constructorParams": ["projectId", "assetId"],
+      "parentField": "projectId",
+      "reference": {
+        "keys": ["projectId", "assetId"]
+      }
+    }
+  },
+  "bindings": [
+    {
+      "tool": "list_projects",
+      "class": "Stitch",
+      "method": "projects",
+      "args": {},
+      "returns": {
+        "class": "Project",
+        "projection": [
+          {
+            "prop": "projects"
+          }
+        ],
+        "array": true
+      }
+    },
+    {
+      "tool": "create_project",
+      "class": "Stitch",
+      "method": "createProject",
+      "args": {
+        "title": {
+          "from": "param",
+          "optional": true
+        }
+      },
+      "returns": {
+        "class": "Project",
+        "projection": []
+      }
+    },
+    {
+      "tool": "generate_screen_from_text",
+      "class": "Project",
+      "method": "generate",
+      "args": {
+        "projectId": {
+          "from": "self"
+        },
+        "prompt": {
+          "from": "param"
+        },
+        "deviceType": {
+          "from": "param",
+          "optional": true,
+          "default": "DESKTOP"
+        },
+        "modelId": {
+          "from": "param",
+          "optional": true
+        }
+      },
+      "returns": {
+        "class": "Screen",
+        "projection": [
+          {
+            "prop": "outputComponents",
+            "find": "design.screens"
+          },
+          {
+            "prop": "design"
+          },
+          {
+            "prop": "screens",
+            "index": 0
+          }
+        ]
+      }
+    },
+    {
+      "tool": "edit_screens",
+      "class": "Screen",
+      "method": "edit",
+      "args": {
+        "projectId": {
+          "from": "self"
+        },
+        "selectedScreenIds": {
+          "from": "selfArray",
+          "field": "screenId"
+        },
+        "prompt": {
+          "from": "param"
+        },
+        "deviceType": {
+          "from": "param",
+          "optional": true
+        },
+        "modelId": {
+          "from": "param",
+          "optional": true
+        }
+      },
+      "returns": {
+        "class": "Screen",
+        "projection": [
+          {
+            "prop": "outputComponents",
+            "find": "design.screens"
+          },
+          {
+            "prop": "design"
+          },
+          {
+            "prop": "screens",
+            "index": 0
+          }
+        ]
+      }
+    },
+    {
+      "tool": "generate_variants",
+      "class": "Screen",
+      "method": "variants",
+      "args": {
+        "projectId": {
+          "from": "self"
+        },
+        "selectedScreenIds": {
+          "from": "selfArray",
+          "field": "screenId"
+        },
+        "prompt": {
+          "from": "param"
+        },
+        "variantOptions": {
+          "from": "param"
+        },
+        "deviceType": {
+          "from": "param",
+          "optional": true
+        },
+        "modelId": {
+          "from": "param",
+          "optional": true
+        }
+      },
+      "returns": {
+        "class": "Screen",
+        "projection": [
+          {
+            "prop": "outputComponents",
+            "each": true
+          },
+          {
+            "prop": "design"
+          },
+          {
+            "prop": "screens",
+            "each": true
+          }
+        ],
+        "array": true
+      }
+    },
+    {
+      "tool": "list_screens",
+      "class": "Project",
+      "method": "screens",
+      "args": {
+        "projectId": {
+          "from": "self"
+        }
+      },
+      "returns": {
+        "class": "Screen",
+        "projection": [
+          {
+            "prop": "screens"
+          }
+        ],
+        "array": true
+      }
+    },
+    {
+      "tool": "get_screen",
+      "class": "Project",
+      "method": "getScreen",
+      "args": {
+        "projectId": {
+          "from": "self"
+        },
+        "screenId": {
+          "from": "param"
+        },
+        "name": {
+          "from": "computed",
+          "template": "projects/{projectId}/screens/{screenId}"
+        }
+      },
+      "returns": {
+        "class": "Screen",
+        "projection": []
+      }
+    },
+    {
+      "tool": "get_screen",
+      "class": "Screen",
+      "method": "getHtml",
+      "args": {
+        "projectId": {
+          "from": "self"
+        },
+        "screenId": {
+          "from": "self"
+        },
+        "name": {
+          "from": "computed",
+          "template": "projects/{projectId}/screens/{screenId}"
+        }
+      },
+      "returns": {
+        "type": "string",
+        "projection": [
+          {
+            "prop": "htmlCode"
+          },
+          {
+            "prop": "downloadUrl"
+          }
+        ]
+      },
+      "cache": {
+        "projection": [
+          {
+            "prop": "htmlCode"
+          },
+          {
+            "prop": "downloadUrl"
+          }
+        ],
+        "description": "Use cached HTML download URL from generation response if available"
+      }
+    },
+    {
+      "tool": "get_screen",
+      "class": "Screen",
+      "method": "getImage",
+      "args": {
+        "projectId": {
+          "from": "self"
+        },
+        "screenId": {
+          "from": "self"
+        },
+        "name": {
+          "from": "computed",
+          "template": "projects/{projectId}/screens/{screenId}"
+        }
+      },
+      "returns": {
+        "type": "string",
+        "projection": [
+          {
+            "prop": "screenshot"
+          },
+          {
+            "prop": "downloadUrl"
+          }
+        ]
+      },
+      "cache": {
+        "projection": [
+          {
+            "prop": "screenshot"
+          },
+          {
+            "prop": "downloadUrl"
+          }
+        ],
+        "description": "Use cached screenshot URL from generation response"
+      }
+    },
+    {
+      "tool": "create_design_system",
+      "class": "Project",
+      "method": "createDesignSystem",
+      "args": {
+        "projectId": {
+          "from": "self"
+        },
+        "designSystem": {
+          "from": "param"
+        }
+      },
+      "returns": {
+        "class": "DesignSystem",
+        "projection": []
+      }
+    },
+    {
+      "tool": "list_design_systems",
+      "class": "Project",
+      "method": "listDesignSystems",
+      "args": {
+        "projectId": {
+          "from": "self"
+        }
+      },
+      "returns": {
+        "class": "DesignSystem",
+        "projection": [
+          {
+            "prop": "designSystems"
+          }
+        ],
+        "array": true
+      }
+    },
+    {
+      "tool": "update_design_system",
+      "class": "DesignSystem",
+      "method": "update",
+      "args": {
+        "name": {
+          "from": "computed",
+          "template": "assets/{assetId}"
+        },
+        "projectId": {
+          "from": "self"
+        },
+        "designSystem": {
+          "from": "param"
+        }
+      },
+      "returns": {
+        "class": "DesignSystem",
+        "projection": []
+      }
+    },
+    {
+      "tool": "apply_design_system",
+      "class": "DesignSystem",
+      "method": "apply",
+      "args": {
+        "assetId": {
+          "from": "self"
+        },
+        "projectId": {
+          "from": "self"
+        },
+        "selectedScreenInstances": {
+          "from": "param"
+        }
+      },
+      "returns": {
+        "class": "Screen",
+        "projection": [
+          {
+            "prop": "outputComponents",
+            "each": true
+          },
+          {
+            "prop": "design"
+          },
+          {
+            "prop": "screens",
+            "each": true
+          }
+        ],
+        "array": true
+      }
+    },
+    {
+      "tool": "upload_design_md",
+      "class": "Project",
+      "method": "uploadDesignMd",
+      "args": {
+        "projectId": {
+          "from": "self"
+        },
+        "designMdBase64": {
+          "from": "param"
+        }
+      },
+      "returns": {
+        "projection": []
+      }
+    },
+    {
+      "tool": "create_design_system_from_design_md",
+      "class": "Project",
+      "method": "createDesignSystemFromDesignMd",
+      "args": {
+        "projectId": {
+          "from": "self"
+        },
+        "selectedScreenInstance": {
+          "from": "param"
+        },
+        "deviceType": {
+          "from": "param",
+          "optional": true
+        }
+      },
+      "returns": {
+        "class": "DesignSystem",
+        "projection": []
+      }
+    }
+  ]
+}

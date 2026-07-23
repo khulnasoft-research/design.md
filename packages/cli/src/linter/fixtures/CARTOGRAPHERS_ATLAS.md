@@ -97,52 +97,52 @@ spacing:
   margin: 64px
   section-gap: 128px
 ---
- 
+
 ## Brand & Style
- 
+
 This design system establishes a high-end editorial atmosphere that bridges the gap between 18th-century maritime navigation and 21st-century data visualization. The brand personality is authoritative, mysterious, and precise. It targets an intellectually curious audience—scholars, analysts, and enthusiasts of long-form digital storytelling.
- 
+
 The design style is a hybrid of **Minimalism** and **Modern Editorial**. It relies on monumental typography and extreme tonal shifts rather than decorative chrome. The aesthetic response should feel like unfolding a rare, heavy-paper map in a dimly lit study: quiet, intentional, and vast.
- 
+
 ## Colors
- 
-The palette is anchored in "Obsidian Canvas," a near-black that provides infinite depth. 
- 
+
+The palette is anchored in "Obsidian Canvas," a near-black that provides infinite depth.
+
 - **Neutral (#080C14):** Used for the primary background/void.
 - **Primary (#0A0E1A):** Used for structural panels, cards, and inset surfaces. The contrast between Neutral and Primary is subtle, creating depth without harsh lines.
 - **Secondary (#2C3A4A):** Reserved for ultra-thin dividers or structural guides when tonal contrast is insufficient. Use with extreme restraint.
 - **Tertiary/Accent (#C9A227):** This vivid gold is the "Compass Rose" of the UI. It is restricted to exactly one occurrence per view—typically the primary action or a singular focal point of data.
- 
+
 ## Typography
- 
-Typography is the primary vehicle for the "Cartographer" aesthetic. 
- 
+
+Typography is the primary vehicle for the "Cartographer" aesthetic.
+
 - **Headlines:** Use **Newsreader** for its high-contrast, traditional serif quality. Display sizes should use light weights with generous tracking to feel monumental and airy.
 - **Body:** Use **Manrope** for readability. The 1.7 line height is mandatory to maintain an "open" editorial feel against the dark background.
 - **Labels & Annotations:** Use **Work Sans** in all-caps with wide tracking. These mimic the technical coordinates found on nautical charts.
- 
+
 ## Layout & Spacing
- 
+
 This design system utilizes a **Fixed Grid** model within a full-bleed canvas. While images and background panels may stretch from edge to edge, the typographic content adheres to a strict 12-column grid with wide margins.
- 
+
 The rhythm is "sparse." High-density information is discouraged. Use massive vertical gaps (section-gaps) to separate narrative beats. Elements should feel like islands in a dark ocean.
- 
+
 ## Elevation & Depth
- 
+
 There are no shadows in this design system. Depth is achieved through **Tonal Layering** and **Negative Space**:
- 
+
 1.  **Level 0 (Background):** #080C14 (The base canvas).
 2.  **Level 1 (Panels):** #0A0E1A (Used for content blocks or "floating" map segments).
 3.  **Level 2 (Interaction):** Hover states use slight shifts in background color or the introduction of a #2C3A4A hairline border.
- 
+
 Avoid stacking more than two levels of depth. The interface should feel flat and planar, like a physical map spread across a table.
- 
+
 ## Shapes
- 
+
 The shape language is strictly **Sharp**. A 0px border radius is applied to every element—buttons, cards, input fields, and images. This reinforces the precision of cartography and the "cut" feel of archival paper.
- 
+
 ## Components
- 
+
 - **Buttons:** Large, rectangular, 0px radius. The primary CTA is the only element allowed to use the Gold (#C9A227) background with dark text. Secondary buttons are transparent with a thin #2C3A4A border.
 - **Cards:** Defined by tonal change (#0A0E1A) against the background. No borders unless necessary for accessibility.
 - **Inputs:** Minimalist bottom-border only, or a solid Primary color block. Use Label-caps for field headers.

@@ -12,14 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ParserHandler } from './parser/handler.js';
-import type { ParsedDesignSystem } from './parser/spec.js';
-import { ModelHandler } from './model/handler.js';
-import { runLinter } from './linter/runner.js';
+import { ParserHandler, ModelHandler, runLinter } from '@scalify/design-core';
+import type { ParsedDesignSystem, DesignSystemState, Finding, LintRule } from '@scalify/design-core';
 import { TailwindEmitterHandler } from './tailwind/handler.js';
-import type { DesignSystemState } from './model/spec.js';
-import type { Finding } from './linter/spec.js';
-import type { LintRule } from './linter/rules/types.js';
 import type { TailwindEmitterResult } from './tailwind/spec.js';
 
 export interface LintOptions {
@@ -73,13 +68,15 @@ export function lint(content: string, options?: LintOptions): LintReport {
 
       return {
         designSystem,
-        findings: [{
-          severity: 'warning',
-          message: parseResult.error.message,
-        }],
+        findings: [
+          {
+            severity: 'warning',
+            message: parseResult.error.message,
+          },
+        ],
         summary: { errors: 0, warnings: 1, infos: 0 },
         tailwindConfig: tailwind.execute(designSystem),
-        sections: sections.map(s => s.heading).filter(Boolean),
+        sections: sections.map((s) => s.heading).filter(Boolean),
         documentSections: sections,
       };
     }
@@ -95,7 +92,8 @@ export function lint(content: string, options?: LintOptions): LintReport {
   const findings = [...modelFindings, ...lintResult.findings];
   const summary = {
     errors: modelFindings.filter((d) => d.severity === 'error').length + lintResult.summary.errors,
-    warnings: modelFindings.filter((d) => d.severity === 'warning').length + lintResult.summary.warnings,
+    warnings:
+      modelFindings.filter((d) => d.severity === 'warning').length + lintResult.summary.warnings,
     infos: modelFindings.filter((d) => d.severity === 'info').length + lintResult.summary.infos,
   };
 
@@ -107,7 +105,6 @@ export function lint(content: string, options?: LintOptions): LintReport {
     sections: parseResult.data.sections ?? [],
     documentSections: parseResult.data.documentSections ?? [],
   };
-
 }
 
 /**

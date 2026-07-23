@@ -23,9 +23,9 @@ const modelHandler = new ModelHandler();
 function buildState(overrides: Partial<ParsedDesignSystem> = {}) {
   const parsed: ParsedDesignSystem = { sourceMap: new Map(), ...overrides };
   const result = modelHandler.execute(parsed);
-  const hasErrors = result.findings.some(d => d.severity === 'error');
+  const hasErrors = result.findings.some((d) => d.severity === 'error');
   if (hasErrors) {
-    throw new Error(`Model build failed: ${result.findings.map(d => d.message).join(', ')}`);
+    throw new Error(`Model build failed: ${result.findings.map((d) => d.message).join(', ')}`);
   }
   return result.designSystem;
 }

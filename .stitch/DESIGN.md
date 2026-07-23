@@ -1,90 +1,90 @@
 ---
 name: Stitch Ecosystem
 colors:
-  surface: "#0b1326"
-  surface-dim: "#0b1326"
-  surface-bright: "#31394d"
-  surface-container-lowest: "#060e20"
-  surface-container-low: "#131b2e"
-  surface-container: "#171f33"
-  surface-container-high: "#222a3d"
-  surface-container-highest: "#2d3449"
-  on-surface: "#dae2fd"
-  on-surface-variant: "#c4c7c8"
-  inverse-surface: "#dae2fd"
-  inverse-on-surface: "#283044"
-  outline: "#8e9192"
-  outline-variant: "#444748"
-  primary: "#ffffff"
-  on-primary: "#2f3131"
-  primary-container: "#e2e2e2"
-  on-primary-container: "#636565"
-  inverse-primary: "#5d5f5f"
-  secondary: "#adc9eb"
-  on-secondary: "#14324e"
-  secondary-container: "#304b68"
-  on-secondary-container: "#9fbbdd"
-  tertiary: "#ffffff"
-  on-tertiary: "#620040"
-  tertiary-container: "#ffd8e7"
-  on-tertiary-container: "#ab3779"
-  error: "#ffb4ab"
-  on-error: "#690005"
-  error-container: "#93000a"
-  on-error-container: "#ffdad6"
-  primary-fixed: "#e2e2e2"
-  primary-fixed-dim: "#c6c6c7"
-  on-primary-fixed: "#1a1c1c"
-  on-primary-fixed-variant: "#454747"
-  secondary-fixed: "#d0e4ff"
-  secondary-fixed-dim: "#adc9eb"
-  on-secondary-fixed: "#001d35"
-  on-secondary-fixed-variant: "#2d4965"
-  tertiary-fixed: "#ffd8e7"
-  tertiary-fixed-dim: "#ffafd3"
-  on-tertiary-fixed: "#3d0026"
-  on-tertiary-fixed-variant: "#85145a"
-  background: "#0b1326"
-  on-background: "#dae2fd"
-  surface-variant: "#2d3449"
-  gradient-start: "#6366f1"
-  gradient-mid: "#8b5cf6"
-  gradient-violet: "#a855f7"
-  gradient-end: "#d946ef"
-  glass-bg: "rgba(255, 255, 255, 0.04)"
-  glass-hover: "rgba(255, 255, 255, 0.07)"
-  glass-strong: "rgba(255, 255, 255, 0.10)"
-  badge-bg: "rgba(99, 102, 241, 0.12)"
-  tab-active-bg: "rgba(99, 102, 241, 0.15)"
-  tab-active-border: "rgba(99, 102, 241, 0.30)"
-  nav-bg: "rgba(11, 19, 38, 0.60)"
-  terminal-bg: "rgba(6, 14, 32, 0.80)"
+  surface: '#0b1326'
+  surface-dim: '#0b1326'
+  surface-bright: '#31394d'
+  surface-container-lowest: '#060e20'
+  surface-container-low: '#131b2e'
+  surface-container: '#171f33'
+  surface-container-high: '#222a3d'
+  surface-container-highest: '#2d3449'
+  on-surface: '#dae2fd'
+  on-surface-variant: '#c4c7c8'
+  inverse-surface: '#dae2fd'
+  inverse-on-surface: '#283044'
+  outline: '#8e9192'
+  outline-variant: '#444748'
+  primary: '#ffffff'
+  on-primary: '#2f3131'
+  primary-container: '#e2e2e2'
+  on-primary-container: '#636565'
+  inverse-primary: '#5d5f5f'
+  secondary: '#adc9eb'
+  on-secondary: '#14324e'
+  secondary-container: '#304b68'
+  on-secondary-container: '#9fbbdd'
+  tertiary: '#ffffff'
+  on-tertiary: '#620040'
+  tertiary-container: '#ffd8e7'
+  on-tertiary-container: '#ab3779'
+  error: '#ffb4ab'
+  on-error: '#690005'
+  error-container: '#93000a'
+  on-error-container: '#ffdad6'
+  primary-fixed: '#e2e2e2'
+  primary-fixed-dim: '#c6c6c7'
+  on-primary-fixed: '#1a1c1c'
+  on-primary-fixed-variant: '#454747'
+  secondary-fixed: '#d0e4ff'
+  secondary-fixed-dim: '#adc9eb'
+  on-secondary-fixed: '#001d35'
+  on-secondary-fixed-variant: '#2d4965'
+  tertiary-fixed: '#ffd8e7'
+  tertiary-fixed-dim: '#ffafd3'
+  on-tertiary-fixed: '#3d0026'
+  on-tertiary-fixed-variant: '#85145a'
+  background: '#0b1326'
+  on-background: '#dae2fd'
+  surface-variant: '#2d3449'
+  gradient-start: '#6366f1'
+  gradient-mid: '#8b5cf6'
+  gradient-violet: '#a855f7'
+  gradient-end: '#d946ef'
+  glass-bg: 'rgba(255, 255, 255, 0.04)'
+  glass-hover: 'rgba(255, 255, 255, 0.07)'
+  glass-strong: 'rgba(255, 255, 255, 0.10)'
+  badge-bg: 'rgba(99, 102, 241, 0.12)'
+  tab-active-bg: 'rgba(99, 102, 241, 0.15)'
+  tab-active-border: 'rgba(99, 102, 241, 0.30)'
+  nav-bg: 'rgba(11, 19, 38, 0.60)'
+  terminal-bg: 'rgba(6, 14, 32, 0.80)'
 effects:
-  cta-gradient: "linear-gradient(135deg, #6366f1, #a855f7)"
-  glow: "radial-gradient(ellipse at center, rgba(99,102,241,0.15), rgba(139,92,246,0.08), transparent)"
-  hero-text-gradient: "linear-gradient(135deg, #ffffff, #adc9eb, #a855f7)"
+  cta-gradient: 'linear-gradient(135deg, #6366f1, #a855f7)'
+  glow: 'radial-gradient(ellipse at center, rgba(99,102,241,0.15), rgba(139,92,246,0.08), transparent)'
+  hero-text-gradient: 'linear-gradient(135deg, #ffffff, #adc9eb, #a855f7)'
 typography:
   display:
     fontFamily: Plus Jakarta Sans
     fontSize: 84px
-    fontWeight: "800"
+    fontWeight: '800'
     lineHeight: 1.05
     letterSpacing: -0.04em
   headline-lg:
     fontFamily: Plus Jakarta Sans
     fontSize: 40px
-    fontWeight: "800"
+    fontWeight: '800'
     lineHeight: 1.15
     letterSpacing: -0.03em
   headline-md:
     fontFamily: Plus Jakarta Sans
     fontSize: 32px
-    fontWeight: "700"
+    fontWeight: '700'
     letterSpacing: -0.03em
   title-lg:
     fontFamily: Inter
     fontSize: 18px
-    fontWeight: "600"
+    fontWeight: '600'
   body-lg:
     fontFamily: Inter
     fontSize: 20px
@@ -100,12 +100,12 @@ typography:
   label-sm:
     fontFamily: Inter
     fontSize: 12px
-    fontWeight: "600"
+    fontWeight: '600'
     letterSpacing: 0.06em
   label-tiny:
     fontFamily: Inter
     fontSize: 10px
-    fontWeight: "600"
+    fontWeight: '600'
     letterSpacing: 0.04em
   code-sm:
     fontFamily: JetBrains Mono, Fira Code, monospace
@@ -118,11 +118,11 @@ typography:
   nav-link:
     fontFamily: Inter
     fontSize: 14px
-    fontWeight: "500"
+    fontWeight: '500'
   section-label:
     fontFamily: Inter
     fontSize: 12px
-    fontWeight: "600"
+    fontWeight: '600'
     letterSpacing: 0.06em
     textTransform: uppercase
 rounded:
@@ -150,201 +150,201 @@ spacing:
   hero-padding-bottom: 80px
 components:
   nav-bar:
-    backgroundColor: "{colors.nav-bg}"
-    borderBottom: "1px solid {colors.glass-border}"
+    backgroundColor: '{colors.nav-bg}'
+    borderBottom: '1px solid {colors.glass-border}'
     backdropFilter: blur(20px)
     height: 56px
   logo:
-    fontWeight: "700"
+    fontWeight: '700'
     fontSize: 18px
     letterSpacing: -0.02em
     gap: 10px
   nav-link:
-    color: "{colors.on-surface-variant}"
-    typography: "{typography.nav-link}"
+    color: '{colors.on-surface-variant}'
+    typography: '{typography.nav-link}'
     transition: color 0.2s
   nav-link-hover:
-    color: "{colors.on-surface}"
+    color: '{colors.on-surface}'
   btn-primary-pill:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    rounded: "{rounded.full}"
+    backgroundColor: '{colors.primary}'
+    textColor: '{colors.on-primary}'
+    rounded: '{rounded.full}'
     padding: 8px 20px
-    typography: "{typography.body-sm}"
-    fontWeight: "600"
+    typography: '{typography.body-sm}'
+    fontWeight: '600'
     transition: opacity 0.2s
   btn-primary-pill-hover:
     opacity: 0.85
   hero-badge:
-    backgroundColor: "{colors.badge-bg}"
-    border: "1px solid {colors.badge-border}"
-    rounded: "{rounded.full}"
+    backgroundColor: '{colors.badge-bg}'
+    border: '1px solid {colors.badge-border}'
+    rounded: '{rounded.full}'
     padding: 6px 16px
-    typography: "{typography.label-sm}"
-    color: "{colors.secondary}"
+    typography: '{typography.label-sm}'
+    color: '{colors.secondary}'
     gap: 6px
   hero-actions-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-    rounded: "{rounded.full}"
+    backgroundColor: '{colors.primary}'
+    textColor: '{colors.on-primary}'
+    rounded: '{rounded.full}'
     padding: 14px 32px
-    typography: "{typography.body-md}"
-    fontWeight: "600"
+    typography: '{typography.body-md}'
+    fontWeight: '600'
     transition: all 0.2s
   hero-actions-primary-hover:
     opacity: 0.85
     transform: translateY(-1px)
   hero-actions-secondary:
-    backgroundColor: "{colors.glass-strong}"
-    textColor: "{colors.on-surface}"
-    border: "1px solid {colors.glass-border}"
-    rounded: "{rounded.full}"
+    backgroundColor: '{colors.glass-strong}'
+    textColor: '{colors.on-surface}'
+    border: '1px solid {colors.glass-border}'
+    rounded: '{rounded.full}'
     padding: 14px 32px
-    typography: "{typography.body-md}"
-    fontWeight: "600"
+    typography: '{typography.body-md}'
+    fontWeight: '600'
     transition: all 0.2s
   hero-actions-secondary-hover:
-    backgroundColor: "{colors.glass-hover}"
+    backgroundColor: '{colors.glass-hover}'
   terminal-window:
-    backgroundColor: "{colors.terminal-bg}"
-    border: "1px solid {colors.glass-border}"
-    rounded: "{rounded.lg}"
+    backgroundColor: '{colors.terminal-bg}'
+    border: '1px solid {colors.glass-border}'
+    rounded: '{rounded.lg}'
     padding: 20px 24px
     backdropFilter: blur(10px)
     maxWidth: 640px
   terminal-dot-red:
     width: 10px
     height: 10px
-    rounded: "{rounded.full}"
-    backgroundColor: "#ff5f56"
+    rounded: '{rounded.full}'
+    backgroundColor: '#ff5f56'
   terminal-dot-yellow:
     width: 10px
     height: 10px
-    rounded: "{rounded.full}"
-    backgroundColor: "#ffbd2e"
+    rounded: '{rounded.full}'
+    backgroundColor: '#ffbd2e'
   terminal-dot-green:
     width: 10px
     height: 10px
-    rounded: "{rounded.full}"
-    backgroundColor: "#27c93f"
+    rounded: '{rounded.full}'
+    backgroundColor: '#27c93f'
   terminal-prompt:
-    color: "{colors.gradient-violet}"
+    color: '{colors.gradient-violet}'
   terminal-string:
-    color: "#a7d9a7"
+    color: '#a7d9a7'
   terminal-comment:
-    color: "#6a6a6a"
+    color: '#6a6a6a'
   feature-card:
-    backgroundColor: "{colors.glass-bg}"
-    border: "1px solid {colors.glass-border}"
-    rounded: "{rounded.xl}"
+    backgroundColor: '{colors.glass-bg}'
+    border: '1px solid {colors.glass-border}'
+    rounded: '{rounded.xl}'
     padding: 28px
     backdropFilter: blur(12px)
     transition: all 0.25s
   feature-card-hover:
-    backgroundColor: "{colors.glass-hover}"
-    borderColor: "{colors.glass-strong}"
+    backgroundColor: '{colors.glass-hover}'
+    borderColor: '{colors.glass-strong}'
     transform: translateY(-2px)
   feature-icon:
     width: 44px
     height: 44px
-    rounded: "{rounded.md}"
+    rounded: '{rounded.md}'
     display: flex
     alignItems: center
     justifyContent: center
     fontSize: 22px
   feature-tag:
-    backgroundColor: "{colors.glass-bg}"
-    border: "1px solid {colors.glass-border}"
-    rounded: "{rounded.full}"
+    backgroundColor: '{colors.glass-bg}'
+    border: '1px solid {colors.glass-border}'
+    rounded: '{rounded.full}'
     padding: 3px 10px
-    typography: "{typography.body-sm}"
-    fontWeight: "500"
-    color: "{colors.on-surface-variant}"
+    typography: '{typography.body-sm}'
+    fontWeight: '500'
+    color: '{colors.on-surface-variant}'
   skill-tab:
     backgroundColor: transparent
-    border: "1px solid {colors.glass-border}"
-    rounded: "{rounded.full}"
+    border: '1px solid {colors.glass-border}'
+    rounded: '{rounded.full}'
     padding: 8px 20px
-    typography: "{typography.body-sm}"
-    fontWeight: "500"
-    color: "{colors.on-surface-variant}"
+    typography: '{typography.body-sm}'
+    fontWeight: '500'
+    color: '{colors.on-surface-variant}'
     cursor: pointer
     transition: all 0.2s
   skill-tab-hover:
-    borderColor: "{colors.glass-strong}"
-    color: "{colors.on-surface}"
+    borderColor: '{colors.glass-strong}'
+    color: '{colors.on-surface}'
   skill-tab-active:
-    backgroundColor: "{colors.tab-active-bg}"
-    borderColor: "{colors.tab-active-border}"
-    color: "{colors.secondary}"
+    backgroundColor: '{colors.tab-active-bg}'
+    borderColor: '{colors.tab-active-border}'
+    color: '{colors.secondary}'
   skill-card:
-    backgroundColor: "{colors.glass-bg}"
-    border: "1px solid {colors.glass-border}"
-    rounded: "{rounded.lg}"
+    backgroundColor: '{colors.glass-bg}'
+    border: '1px solid {colors.glass-border}'
+    rounded: '{rounded.lg}'
     padding: 20px
     transition: all 0.2s
   skill-card-hover:
-    backgroundColor: "{colors.glass-hover}"
+    backgroundColor: '{colors.glass-hover}'
   skill-name:
     fontSize: 15px
-    fontWeight: "600"
+    fontWeight: '600'
   skill-desc:
     fontSize: 13px
-    color: "{colors.on-surface-variant}"
+    color: '{colors.on-surface-variant}'
     lineHeight: 1.6
   plugin-badge:
-    backgroundColor: "{colors.badge-bg}"
-    border: "1px solid {colors.badge-border}"
-    color: "{colors.secondary}"
-    rounded: "{rounded.full}"
+    backgroundColor: '{colors.badge-bg}'
+    border: '1px solid {colors.badge-border}'
+    color: '{colors.secondary}'
+    rounded: '{rounded.full}'
     padding: 2px 10px
-    typography: "{typography.label-tiny}"
-    fontWeight: "600"
+    typography: '{typography.label-tiny}'
+    fontWeight: '600'
     textTransform: uppercase
     letterSpacing: 0.04em
   sdk-entry:
-    backgroundColor: "{colors.glass-bg}"
-    border: "1px solid {colors.glass-border}"
-    rounded: "{rounded.lg}"
+    backgroundColor: '{colors.glass-bg}'
+    border: '1px solid {colors.glass-border}'
+    rounded: '{rounded.lg}'
     padding: 24px
   sdk-header:
     fontFamily: JetBrains Mono, monospace
     fontSize: 14px
-    color: "{colors.gradient-violet}"
+    color: '{colors.gradient-violet}'
   sdk-header-path:
-    color: "{colors.on-surface-variant}"
-    fontWeight: "400"
+    color: '{colors.on-surface-variant}'
+    fontWeight: '400'
   cta-card:
-    backgroundColor: "{colors.glass-bg}"
-    border: "1px solid {colors.glass-border}"
-    rounded: "{rounded.xxl}"
+    backgroundColor: '{colors.glass-bg}'
+    border: '1px solid {colors.glass-border}'
+    rounded: '{rounded.xxl}'
     padding: 48px
     backdropFilter: blur(20px)
     maxWidth: 600px
   btn-cta-gradient:
-    backgroundColor: "#5046e5"
-    textColor: "#ffffff"
-    rounded: "{rounded.full}"
+    backgroundColor: '#5046e5'
+    textColor: '#ffffff'
+    rounded: '{rounded.full}'
     padding: 14px 36px
-    typography: "{typography.body-md}"
-    fontWeight: "600"
+    typography: '{typography.body-md}'
+    fontWeight: '600'
     transition: transform 0.2s, box-shadow 0.2s
   btn-cta-gradient-hover:
     transform: translateY(-2px)
-    boxShadow: "0 8px 30px rgba(99,102,241,0.3)"
+    boxShadow: '0 8px 30px rgba(99,102,241,0.3)'
   sub-link:
-    color: "{colors.on-surface-variant}"
+    color: '{colors.on-surface-variant}'
     fontSize: 13px
     transition: color 0.2s
   sub-link-hover:
-    color: "{colors.on-surface}"
+    color: '{colors.on-surface}'
   footer:
-    color: "{colors.outline}"
+    color: '{colors.outline}'
     fontSize: 13px
-    borderTop: "1px solid {colors.glass-border}"
+    borderTop: '1px solid {colors.glass-border}'
     padding: 32px 24px
   selection:
-    backgroundColor: "rgba(99, 102, 241, 0.3)"
+    backgroundColor: 'rgba(99, 102, 241, 0.3)'
 ---
 
 ## Overview
@@ -425,6 +425,7 @@ Inter's neutral, geometric clarity provides legibility at small sizes and works 
 ### Code — JetBrains Mono / Fira Code
 
 Monospace is used exclusively for code references, terminal output, and SDK import paths. The terminal window uses 13px code with three color roles:
+
 - **Prompt (#a855f7):** The `$` shell prompt, matches the violet gradient accent.
 - **String (#a7d9a9):** The quoted command arguments, a soft green for readability.
 - **Comment (#6a6a6a):** Output lines, comments, and secondary terminal info.
@@ -436,6 +437,7 @@ The layout follows a single-column, vertically-scrolling narrative structure. Co
 ### Vertical Rhythm
 
 An 8px base unit governs all spacing:
+
 - **Section vertical padding:** 100px (xxl) — generous breathing room between major sections.
 - **Container padding:** 24px (md) on each side, collapsing on mobile.
 - **Card gaps:** 20px between grid items.
@@ -444,6 +446,7 @@ An 8px base unit governs all spacing:
 ### Grid System
 
 Three responsive grid templates are used in sequence:
+
 - **Features grid:** `repeat(auto-fit, minmax(300px, 1fr))` — 2-3 column layout.
 - **Skills grid:** `repeat(auto-fit, minmax(260px, 1fr))` — 3-4 column layout for denser content.
 - **SDK grid:** `repeat(auto-fit, minmax(300px, 1fr))` — 3 columns at full width.
@@ -469,6 +472,7 @@ Depth is created through glassmorphism — translucent surfaces over the dark ba
 ### Hover System
 
 All interactive elements use a consistent 200-250ms ease transition:
+
 - Cards: background brightens, border becomes more visible, optional 2px upward translate
 - Links: color shift from `on-surface-variant` to `on-surface`
 - Primary buttons: opacity drop to 0.85
@@ -515,12 +519,14 @@ The most visually dramatic section, taking full viewport height (min-height: 100
 ### Feature Cards
 
 A responsive grid of 6 feature cards, each with:
+
 - A colored icon container (44x44px, 12px radius, tinted background matching the icon's theme)
 - A title in 18px semibold
 - A description in 14px body text on `on-surface-variant`
 - 1-2 tag pills at the bottom showing related technologies
 
 Each card lifts 2px on hover and brightens slightly. The 6 features are:
+
 1. **Text-to-UI Generation** — Natural language → complete HTML/CSS
 2. **Edit & Variants** — Iterative refinement, generate multiple visual directions
 3. **Design Systems** — DESIGN.md specs for brand consistency
@@ -531,6 +537,7 @@ Each card lifts 2px on hover and brightens slightly. The 6 features are:
 ### Skills Section
 
 A filterable gallery of 14 agent skills in a responsive grid. A row of pill-shaped tabs (All | Build | Design | Utilities) lets users filter by plugin category. Each skill card shows:
+
 - **Name:** The skill's full identifier (e.g., `stitch::react-components`)
 - **Description:** One-line explanation of what the skill does
 - **Plugin badge:** Colored pill showing the plugin group + tag

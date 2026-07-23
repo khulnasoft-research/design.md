@@ -43,7 +43,7 @@ export const DEFAULT_RULE_DESCRIPTORS: RuleDescriptor[] = [
 /** Converts a RuleDescriptor into a LintRule by injecting severity into findings. */
 function toLintRule(descriptor: RuleDescriptor): LintRule {
   return (state: DesignSystemState): Finding[] =>
-    descriptor.run(state).map(finding => ({
+    descriptor.run(state).map((finding) => ({
       severity: finding.severity ?? descriptor.severity,
       path: finding.path,
       message: finding.message,

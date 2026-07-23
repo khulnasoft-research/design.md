@@ -79,12 +79,14 @@ The Ink schema uses a flat element map with a root key:
 ## Standard Components
 
 ### Layout
+
 - `Box` - Flexbox layout container (like a terminal `<div>`). Use for grouping, spacing, borders, alignment. Default flexDirection is row.
 - `Text` - Text output with optional styling (color, bold, italic, etc.)
 - `Newline` - Inserts blank lines. Must be inside a Box with flexDirection column.
 - `Spacer` - Flexible empty space that expands along the main axis.
 
 ### Content
+
 - `Heading` - Section heading (h1: bold+underlined, h2: bold, h3: bold+dimmed, h4: dimmed)
 - `Divider` - Horizontal separator with optional centered title
 - `Badge` - Colored inline label (variants: default, info, success, warning, error)
@@ -102,6 +104,7 @@ The Ink schema uses a flat element map with a root key:
 - `Markdown` - Renders markdown text with terminal styling
 
 ### Interactive
+
 - `TextInput` - Text input field (events: submit, change)
 - `Select` - Selection menu with arrow key navigation (events: change)
 - `MultiSelect` - Multi-selection with space to toggle (events: change, submit)
@@ -176,9 +179,9 @@ Inside repeated children, use `{ "$item": "field" }` to read from the current it
 Use `useUIStream` to progressively render specs from JSONL patch streams:
 
 ```tsx
-import { useUIStream } from "@json-render/ink";
+import { useUIStream } from '@json-render/ink';
 
-const { spec, send, isStreaming } = useUIStream({ api: "/api/generate" });
+const { spec, send, isStreaming } = useUIStream({ api: '/api/generate' });
 ```
 
 ## Server-Side Prompt Generation
@@ -186,34 +189,34 @@ const { spec, send, isStreaming } = useUIStream({ api: "/api/generate" });
 Use the `./server` export to generate AI system prompts from your catalog:
 
 ```typescript
-import { catalog } from "./catalog";
+import { catalog } from './catalog';
 
-const systemPrompt = catalog.prompt({ system: "You are a terminal assistant." });
+const systemPrompt = catalog.prompt({ system: 'You are a terminal assistant.' });
 ```
 
 ## Providers
 
-| Provider | Purpose |
-|----------|---------|
-| `StateProvider` | Share state across components (JSON Pointer paths). Accepts optional `store` prop for controlled mode. |
-| `ActionProvider` | Handle actions dispatched via the event system |
-| `VisibilityProvider` | Enable conditional rendering based on state |
-| `ValidationProvider` | Form field validation |
-| `FocusProvider` | Manage focus across interactive components |
-| `JSONUIProvider` | Combined provider for all contexts |
+| Provider             | Purpose                                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------------------------ |
+| `StateProvider`      | Share state across components (JSON Pointer paths). Accepts optional `store` prop for controlled mode. |
+| `ActionProvider`     | Handle actions dispatched via the event system                                                         |
+| `VisibilityProvider` | Enable conditional rendering based on state                                                            |
+| `ValidationProvider` | Form field validation                                                                                  |
+| `FocusProvider`      | Manage focus across interactive components                                                             |
+| `JSONUIProvider`     | Combined provider for all contexts                                                                     |
 
 ### External Store (Controlled Mode)
 
 Pass a `StateStore` to `StateProvider` (or `JSONUIProvider`) to use external state management:
 
 ```tsx
-import { createStateStore, type StateStore } from "@json-render/ink";
+import { createStateStore, type StateStore } from '@json-render/ink';
 
 const store = createStateStore({ count: 0 });
 
-<StateProvider store={store}>{children}</StateProvider>
+<StateProvider store={store}>{children}</StateProvider>;
 
-store.set("/count", 1); // React re-renders automatically
+store.set('/count', 1); // React re-renders automatically
 ```
 
 When `store` is provided, `initialState` and `onStateChange` are ignored.
@@ -221,9 +224,9 @@ When `store` is provided, `initialState` and `onStateChange` are ignored.
 ## createRenderer (Higher-Level API)
 
 ```tsx
-import { createRenderer } from "@json-render/ink";
-import { standardComponents } from "@json-render/ink";
-import { catalog } from "./catalog";
+import { createRenderer } from '@json-render/ink';
+import { standardComponents } from '@json-render/ink';
+import { catalog } from './catalog';
 
 const InkRenderer = createRenderer(catalog, {
   ...standardComponents,
@@ -231,36 +234,34 @@ const InkRenderer = createRenderer(catalog, {
 });
 
 // InkRenderer includes all providers (state, visibility, actions, focus)
-render(
-  <InkRenderer spec={spec} state={{ activeTab: "overview" }} />
-);
+render(<InkRenderer spec={spec} state={{ activeTab: 'overview' }} />);
 ```
 
 ## Key Exports
 
-| Export | Purpose |
-|--------|---------|
-| `defineRegistry` | Create a type-safe component registry from a catalog |
-| `Renderer` | Render a spec using a registry |
-| `createRenderer` | Higher-level: creates a component with built-in providers |
-| `JSONUIProvider` | Combined provider for all contexts |
-| `schema` | Ink flat element map schema (includes built-in state actions) |
-| `standardComponentDefinitions` | Catalog definitions for all standard components |
-| `standardActionDefinitions` | Catalog definitions for standard actions |
-| `standardComponents` | Pre-built component implementations |
-| `useStateStore` | Access state context |
-| `useStateValue` | Get single value from state |
-| `useBoundProp` | Two-way binding for `$bindState`/`$bindItem` expressions |
-| `useActions` | Access actions context |
-| `useAction` | Get a single action dispatch function |
-| `useOptionalValidation` | Non-throwing variant of useValidation |
-| `useUIStream` | Stream specs from an API endpoint |
-| `createStateStore` | Create a framework-agnostic in-memory `StateStore` |
-| `StateStore` | Interface for plugging in external state management |
-| `Components` | Typed component map (catalog-aware) |
-| `Actions` | Typed action map (catalog-aware) |
-| `ComponentContext` | Typed component context (catalog-aware) |
-| `flatToTree` | Convert flat element map to tree structure |
+| Export                         | Purpose                                                       |
+| ------------------------------ | ------------------------------------------------------------- |
+| `defineRegistry`               | Create a type-safe component registry from a catalog          |
+| `Renderer`                     | Render a spec using a registry                                |
+| `createRenderer`               | Higher-level: creates a component with built-in providers     |
+| `JSONUIProvider`               | Combined provider for all contexts                            |
+| `schema`                       | Ink flat element map schema (includes built-in state actions) |
+| `standardComponentDefinitions` | Catalog definitions for all standard components               |
+| `standardActionDefinitions`    | Catalog definitions for standard actions                      |
+| `standardComponents`           | Pre-built component implementations                           |
+| `useStateStore`                | Access state context                                          |
+| `useStateValue`                | Get single value from state                                   |
+| `useBoundProp`                 | Two-way binding for `$bindState`/`$bindItem` expressions      |
+| `useActions`                   | Access actions context                                        |
+| `useAction`                    | Get a single action dispatch function                         |
+| `useOptionalValidation`        | Non-throwing variant of useValidation                         |
+| `useUIStream`                  | Stream specs from an API endpoint                             |
+| `createStateStore`             | Create a framework-agnostic in-memory `StateStore`            |
+| `StateStore`                   | Interface for plugging in external state management           |
+| `Components`                   | Typed component map (catalog-aware)                           |
+| `Actions`                      | Typed action map (catalog-aware)                              |
+| `ComponentContext`             | Typed component context (catalog-aware)                       |
+| `flatToTree`                   | Convert flat element map to tree structure                    |
 
 ## Terminal UI Design Guidelines
 

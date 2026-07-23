@@ -140,7 +140,7 @@ colours:
     const result = lint(content);
 
     const finding = result.findings.find(
-      f => f.message === 'Unknown key "colours" — did you mean "colors"?'
+      (f) => f.message === 'Unknown key "colours" — did you mean "colors"?'
     );
     expect(finding).toBeDefined();
     expect(finding!.severity).toBe('warning');
@@ -158,9 +158,7 @@ motion:
 
     const result = lint(content);
 
-    const unknownKeyFindings = result.findings.filter(f =>
-      f.message.startsWith('Unknown key ')
-    );
+    const unknownKeyFindings = result.findings.filter((f) => f.message.startsWith('Unknown key '));
     expect(unknownKeyFindings).toEqual([]);
   });
 });

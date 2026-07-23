@@ -1,12 +1,4 @@
-/**
- * Shared utility functions for DESIGN.md
- */
-
-import type {
-  DesignSystem,
-  DesignToken,
-  TokenDiff,
-} from '../types/index.js';
+import type { DesignSystem, DesignToken, TokenDiff } from '../types/index.js';
 
 export function parseFrontmatter(content: string): {
   frontmatter: Record<string, unknown>;
@@ -55,17 +47,12 @@ function parseValue(value: string): unknown {
   if (value === 'false') return false;
   if (value === 'null' || value === '') return null;
   if (!isNaN(Number(value))) return Number(value);
-  if (value.startsWith('"') && value.endsWith('"'))
-    return value.slice(1, -1);
-  if (value.startsWith("'") && value.endsWith("'"))
-    return value.slice(1, -1);
+  if (value.startsWith('"') && value.endsWith('"')) return value.slice(1, -1);
+  if (value.startsWith("'") && value.endsWith("'")) return value.slice(1, -1);
   return value;
 }
 
-export function serializeFrontmatter(
-  obj: Record<string, unknown>,
-  indent = 0
-): string {
+export function serializeFrontmatter(obj: Record<string, unknown>, indent = 0): string {
   const lines: string[] = [];
   const prefix = '  '.repeat(indent);
 
@@ -74,9 +61,7 @@ export function serializeFrontmatter(
 
     if (typeof val === 'object' && !Array.isArray(val)) {
       lines.push(`${prefix}${key}:`);
-      lines.push(
-        serializeFrontmatter(val as Record<string, unknown>, indent + 1)
-      );
+      lines.push(serializeFrontmatter(val as Record<string, unknown>, indent + 1));
     } else if (typeof val === 'string') {
       lines.push(`${prefix}${key}: "${val}"`);
     } else if (typeof val === 'boolean') {
@@ -120,10 +105,7 @@ export function createDesignMarkdown(
     content += '\n';
   }
 
-  if (
-    designSystem.typography &&
-    Object.keys(designSystem.typography).length > 0
-  ) {
+  if (designSystem.typography && Object.keys(designSystem.typography).length > 0) {
     content += '## Typography\n\n';
     for (const [name, token] of Object.entries(designSystem.typography)) {
       content += `- **${name}**: ${JSON.stringify(token.value)}`;
@@ -136,10 +118,7 @@ export function createDesignMarkdown(
   return content;
 }
 
-export function extractTokenByPath(
-  designSystem: DesignSystem,
-  path: string
-): unknown {
+export function extractTokenByPath(designSystem: DesignSystem, path: string): unknown {
   const keys = path.split('.');
   let value: unknown = designSystem;
 
@@ -164,9 +143,7 @@ export function computeTokenDiff(
   const added = Array.from(afterKeys).filter((k) => !beforeKeys.has(k));
   const removed = Array.from(beforeKeys).filter((k) => !afterKeys.has(k));
   const unchanged = Array.from(beforeKeys).filter((k) => afterKeys.has(k));
-  const changed = unchanged.filter(
-    (k) => JSON.stringify(before[k]) !== JSON.stringify(after[k])
-  );
+  const changed = unchanged.filter((k) => JSON.stringify(before[k]) !== JSON.stringify(after[k]));
 
   return {
     added,
@@ -176,16 +153,14 @@ export function computeTokenDiff(
   };
 }
 
-export function hexToRgb(hex: string): [number, number, number] {
+function hexToRgbInternal(hex: string): [number, number, number] {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result || !result[1] || !result[2] || !result[3])
     throw new Error(`Invalid hex color: ${hex}`);
-  return [
-    parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16),
-  ];
+  return [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)];
 }
+
+export { hexToRgbInternal as hexToRgb };
 
 export function rgbToHex(r: number, g: number, b: number): string {
   return (
@@ -200,14 +175,16 @@ export function rgbToHex(r: number, g: number, b: number): string {
   );
 }
 
-export function getLuminance(hex: string): number {
-  const [r, g, b] = hexToRgb(hex);
+function luminanceInternal(hex: string): number {
+  const [r, g, b] = hexToRgbInternal(hex);
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 }
 
+export { luminanceInternal as getLuminance };
+
 export function getContrastRatio(color1: string, color2: string): number {
-  const l1 = getLuminance(color1);
-  const l2 = getLuminance(color2);
+  const l1 = luminanceInternal(color1);
+  const l2 = luminanceInternal(color2);
   const lighter = Math.max(l1, l2);
   const darker = Math.min(l1, l2);
   return (lighter + 0.05) / (darker + 0.05);

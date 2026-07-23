@@ -8,10 +8,7 @@ import { readFile, writeFile } from 'fs/promises';
 import { existsSync } from 'fs';
 
 // Mock implementations - replace with actual MCP calls in production
-export async function loadDesignFile(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function loadDesignFile(req: Request, res: Response): Promise<void> {
   try {
     const { path } = req.query as { path: string };
     if (!path) {
@@ -33,10 +30,7 @@ export async function loadDesignFile(
   }
 }
 
-export async function saveDesignFile(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function saveDesignFile(req: Request, res: Response): Promise<void> {
   try {
     const { path, content } = req.body as {
       path: string;
@@ -57,10 +51,7 @@ export async function saveDesignFile(
   }
 }
 
-export async function lintDesignFile(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function lintDesignFile(req: Request, res: Response): Promise<void> {
   try {
     const { path } = req.body as { path: string };
     if (!path) {
@@ -88,10 +79,7 @@ export async function lintDesignFile(
   }
 }
 
-export async function exportDesignFile(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function exportDesignFile(req: Request, res: Response): Promise<void> {
   try {
     const { path, format } = req.body as {
       path: string;
@@ -117,10 +105,7 @@ export async function exportDesignFile(
   }
 }
 
-export async function diffDesignFiles(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function diffDesignFiles(req: Request, res: Response): Promise<void> {
   try {
     const { beforePath, afterPath } = req.body as {
       beforePath: string;

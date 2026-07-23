@@ -23,7 +23,7 @@ describe('FixerHandler', () => {
       sections: [
         { heading: 'Colors', content: '## Colors\ncontent' },
         { heading: 'Overview', content: '## Overview\ncontent' },
-      ]
+      ],
     };
 
     const result = fixSectionOrder(input);
@@ -41,7 +41,7 @@ describe('FixerHandler', () => {
         { heading: 'Colors', content: '## Colors\ncontent' },
         { heading: '', content: 'Prelude content' },
         { heading: 'Overview', content: '## Overview\ncontent' },
-      ]
+      ],
     };
 
     const result = fixSectionOrder(input);
@@ -59,7 +59,7 @@ describe('FixerHandler', () => {
         { heading: 'Unknown', content: '## Unknown\ncontent' },
         { heading: 'Colors', content: '## Colors\ncontent' },
         { heading: 'Overview', content: '## Overview\ncontent' },
-      ]
+      ],
     };
 
     const result = fixSectionOrder(input);
@@ -76,7 +76,7 @@ describe('FixerHandler', () => {
       sections: [
         { heading: 'Colors', content: '## Colors\ncontent' },
         { heading: 'Brand & Style', content: '## Brand & Style\ncontent' },
-      ]
+      ],
     };
 
     const result = fixSectionOrder(input);
@@ -94,7 +94,7 @@ describe('FixerHandler', () => {
       sections: [
         { heading: 'Layout & Spacing', content: '## Layout & Spacing\ncontent' },
         { heading: 'Colors', content: '## Colors\ncontent' },
-      ]
+      ],
     };
 
     const result = fixSectionOrder(input);
@@ -117,7 +117,7 @@ describe('FixerHandler', () => {
         { heading: 'Layout & Spacing', content: '## Layout & Spacing\ncontent' },
         { heading: 'Elevation & Depth', content: '## Elevation & Depth\ncontent' },
         { heading: 'Shapes', content: '## Shapes\ncontent' },
-      ]
+      ],
     };
 
     const result = fixSectionOrder(input);

@@ -119,10 +119,18 @@ export function DesignDiff() {
               <div className="finding-stat">
                 <div className="stat-label">Delta</div>
                 <div className="stat-value">
-                  {diff.findings.delta.errors > 0 && <span className="stat-delta-error">+{diff.findings.delta.errors}</span>}
-                  {diff.findings.delta.errors < 0 && <span className="stat-delta-success">{diff.findings.delta.errors}</span>}
-                  {diff.findings.delta.warnings > 0 && <span className="stat-delta-warning">+{diff.findings.delta.warnings}</span>}
-                  {diff.findings.delta.warnings < 0 && <span className="stat-delta-success">{diff.findings.delta.warnings}</span>}
+                  {diff.findings.delta.errors > 0 && (
+                    <span className="stat-delta-error">+{diff.findings.delta.errors}</span>
+                  )}
+                  {diff.findings.delta.errors < 0 && (
+                    <span className="stat-delta-success">{diff.findings.delta.errors}</span>
+                  )}
+                  {diff.findings.delta.warnings > 0 && (
+                    <span className="stat-delta-warning">+{diff.findings.delta.warnings}</span>
+                  )}
+                  {diff.findings.delta.warnings < 0 && (
+                    <span className="stat-delta-success">{diff.findings.delta.warnings}</span>
+                  )}
                 </div>
               </div>
             )}

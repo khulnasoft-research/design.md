@@ -20,10 +20,13 @@ import type { RuleDescriptor, RuleFinding } from './types.js';
  */
 export function missingPrimary(state: DesignSystemState): RuleFinding[] {
   if (state.colors.size > 0 && !state.colors.has('primary')) {
-    return [{
-      path: 'colors',
-      message: "No 'primary' color defined. The agent will auto-generate key colors, reducing your control over the palette.",
-    }];
+    return [
+      {
+        path: 'colors',
+        message:
+          "No 'primary' color defined. The agent will auto-generate key colors, reducing your control over the palette.",
+      },
+    ];
   }
   return [];
 }

@@ -60,19 +60,22 @@ describe('spec-config loader', () => {
 
   it('throws when sections array is empty', () => {
     const path = '__test_empty_sections.yaml';
-    writeFileSync(path, [
-      'version: alpha',
-      'units: [px]',
-      'sections: []',
-      'typography_properties: [{name: x, type: y}]',
-      'component_sub_tokens: [{name: x, type: y}]',
-      'color_roles: [primary]',
-      'recommended_tokens: {a: [b]}',
-      'examples:',
-      '  colors: {a: "#000"}',
-      '  typography: {a: {fontFamily: x}}',
-      '  components: {a: {bg: x}}',
-    ].join('\n'));
+    writeFileSync(
+      path,
+      [
+        'version: alpha',
+        'units: [px]',
+        'sections: []',
+        'typography_properties: [{name: x, type: y}]',
+        'component_sub_tokens: [{name: x, type: y}]',
+        'color_roles: [primary]',
+        'recommended_tokens: {a: [b]}',
+        'examples:',
+        '  colors: {a: "#000"}',
+        '  typography: {a: {fontFamily: x}}',
+        '  components: {a: {bg: x}}',
+      ].join('\n')
+    );
     try {
       expect(() => loadSpecConfig(path)).toThrow();
     } finally {
@@ -123,30 +126,30 @@ describe('spec-config structural invariants', () => {
   });
 
   it('section canonical names are unique', () => {
-    const names = SECTIONS.map(s => s.canonical);
+    const names = SECTIONS.map((s) => s.canonical);
     expect(new Set(names).size).toBe(names.length);
   });
 
   it('no alias collides with a canonical name', () => {
-    const canonicals = new Set(SECTIONS.map(s => s.canonical));
-    const aliases = SECTIONS.flatMap(s => s.aliases ?? []);
+    const canonicals = new Set(SECTIONS.map((s) => s.canonical));
+    const aliases = SECTIONS.flatMap((s) => s.aliases ?? []);
     for (const alias of aliases) {
       expect(canonicals.has(alias)).toBe(false);
     }
   });
 
   it('aliases are unique across all sections', () => {
-    const aliases = SECTIONS.flatMap(s => s.aliases ?? []);
+    const aliases = SECTIONS.flatMap((s) => s.aliases ?? []);
     expect(new Set(aliases).size).toBe(aliases.length);
   });
 
   it('typography property names are unique', () => {
-    const names = TYPOGRAPHY_PROPERTIES.map(p => p.name);
+    const names = TYPOGRAPHY_PROPERTIES.map((p) => p.name);
     expect(new Set(names).size).toBe(names.length);
   });
 
   it('component sub-token names are unique', () => {
-    const names = COMPONENT_SUB_TOKENS.map(p => p.name);
+    const names = COMPONENT_SUB_TOKENS.map((p) => p.name);
     expect(new Set(names).size).toBe(names.length);
   });
 
@@ -181,7 +184,7 @@ describe('spec-config derived constants', () => {
 
   it('resolveAlias returns canonical for known alias', () => {
     // Pick the first alias we can find
-    const sectionWithAlias = SECTIONS.find(s => s.aliases && s.aliases.length > 0);
+    const sectionWithAlias = SECTIONS.find((s) => s.aliases && s.aliases.length > 0);
     const alias = sectionWithAlias?.aliases?.[0];
     if (alias) {
       expect(resolveAlias(alias)).toBe(sectionWithAlias.canonical);

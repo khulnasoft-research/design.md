@@ -1,236 +1,674 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Import from your codebase — Stitch</title>
-  <meta name="description" content="Reverse-engineer a DESIGN.md from your existing source code — no build step required. Extract colors, typography, spacing, and component patterns.">
-  <meta name="og:title" content="Import from your codebase — Stitch">
-  <meta name="og:description" content="Reverse-engineer a DESIGN.md from your existing source code. Extract colors, typography, spacing, and component patterns.">
-  <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg">
-  <meta name="twitter:card" content="summary">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --surface: #0b1326; --surface-dim: #0b1326; --surface-bright: #31394d;
-      --surface-container-lowest: #060e20; --surface-container-low: #131b2e;
-      --surface-container: #171f33; --surface-container-high: #222a3d;
-      --surface-container-highest: #2d3449; --on-surface: #dae2fd;
-      --on-surface-variant: #c4c7c8; --primary: #ffffff; --on-primary: #2f3131;
-      --secondary: #adc9eb; --outline: #8e9192; --outline-variant: #444748;
-      --gradient-start: #6366f1; --gradient-mid: #8b5cf6; --gradient-violet: #a855f7;
-      --gradient-end: #d946ef; --glass-bg: rgba(255,255,255,0.04);
-      --glass-hover: rgba(255,255,255,0.07); --glass-border: rgba(255,255,255,0.06);
-      --glass-strong: rgba(255,255,255,0.10);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: Inter, system-ui, sans-serif; background: var(--surface);
-      color: var(--on-surface); line-height: 1.6; overflow-x: hidden;
-    }
-    ::selection { background: rgba(99,102,241,0.3); }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Import from your codebase — Stitch</title>
+    <meta
+      name="description"
+      content="Reverse-engineer a DESIGN.md from your existing source code — no build step required. Extract colors, typography, spacing, and component patterns."
+    />
+    <meta name="og:title" content="Import from your codebase — Stitch" />
+    <meta
+      name="og:description"
+      content="Reverse-engineer a DESIGN.md from your existing source code. Extract colors, typography, spacing, and component patterns."
+    />
+    <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #0b1326;
+        --surface-dim: #0b1326;
+        --surface-bright: #31394d;
+        --surface-container-lowest: #060e20;
+        --surface-container-low: #131b2e;
+        --surface-container: #171f33;
+        --surface-container-high: #222a3d;
+        --surface-container-highest: #2d3449;
+        --on-surface: #dae2fd;
+        --on-surface-variant: #c4c7c8;
+        --primary: #ffffff;
+        --on-primary: #2f3131;
+        --secondary: #adc9eb;
+        --outline: #8e9192;
+        --outline-variant: #444748;
+        --gradient-start: #6366f1;
+        --gradient-mid: #8b5cf6;
+        --gradient-violet: #a855f7;
+        --gradient-end: #d946ef;
+        --glass-bg: rgba(255, 255, 255, 0.04);
+        --glass-hover: rgba(255, 255, 255, 0.07);
+        --glass-border: rgba(255, 255, 255, 0.06);
+        --glass-strong: rgba(255, 255, 255, 0.1);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: Inter, system-ui, sans-serif;
+        background: var(--surface);
+        color: var(--on-surface);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      ::selection {
+        background: rgba(99, 102, 241, 0.3);
+      }
 
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 14px 32px; display: flex; align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      background: rgba(11,19,38,0.6); border-bottom: 1px solid var(--glass-border);
-    }
-    nav .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; text-decoration: none; color: var(--on-surface); }
-    nav .logo svg { width: 24px; height: 24px; }
-    nav .links { display: flex; gap: 20px; align-items: center; }
-    nav .links a { color: var(--on-surface-variant); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
-    nav .links a:hover { color: var(--on-surface); }
-    nav .links .btn-primary { background: var(--primary); color: var(--on-primary); padding: 7px 18px; border-radius: 999px; font-weight: 600; font-size: 12px; }
-    nav .links .btn-primary:hover { opacity: 0.85; }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 14px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background: rgba(11, 19, 38, 0.6);
+        border-bottom: 1px solid var(--glass-border);
+      }
+      nav .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+        color: var(--on-surface);
+      }
+      nav .logo svg {
+        width: 24px;
+        height: 24px;
+      }
+      nav .links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      nav .links a {
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      nav .links a:hover {
+        color: var(--on-surface);
+      }
+      nav .links .btn-primary {
+        background: var(--primary);
+        color: var(--on-primary);
+        padding: 7px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+      nav .links .btn-primary:hover {
+        opacity: 0.85;
+      }
 
-    .bg-glow { position: fixed; top: -40vh; left: 50%; transform: translateX(-50%); width: 120vw; height: 80vh; background: radial-gradient(ellipse at center, rgba(99,102,241,0.10), rgba(139,92,246,0.05), transparent); pointer-events: none; z-index: 0; }
+      .bg-glow {
+        position: fixed;
+        top: -40vh;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120vw;
+        height: 80vh;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(99, 102, 241, 0.1),
+          rgba(139, 92, 246, 0.05),
+          transparent
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
 
-    .page { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 100px 24px 80px; }
-    .page-header { margin-bottom: 48px; }
-    .page-header .breadcrumb { font-size: 12px; color: var(--on-surface-variant); margin-bottom: 8px; }
-    .page-header .breadcrumb a { color: var(--secondary); text-decoration: none; }
-    .page-header .breadcrumb a:hover { text-decoration: underline; }
-    .page-header h1 { font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
-    .page-header p { font-size: 16px; color: var(--on-surface-variant); max-width: 600px; }
+      .page {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 100px 24px 80px;
+      }
+      .page-header {
+        margin-bottom: 48px;
+      }
+      .page-header .breadcrumb {
+        font-size: 12px;
+        color: var(--on-surface-variant);
+        margin-bottom: 8px;
+      }
+      .page-header .breadcrumb a {
+        color: var(--secondary);
+        text-decoration: none;
+      }
+      .page-header .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+      .page-header h1 {
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 12px;
+      }
+      .page-header p {
+        font-size: 16px;
+        color: var(--on-surface-variant);
+        max-width: 600px;
+      }
 
-    h2 { font-family: 'Plus Jakarta Sans', Inter, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-top: 48px; margin-bottom: 12px; }
-    h3 { font-size: 17px; font-weight: 600; margin-top: 28px; margin-bottom: 8px; }
-    p { font-size: 15px; color: var(--on-surface-variant); margin-bottom: 16px; line-height: 1.7; }
-    p strong { color: var(--on-surface); }
+      h2 {
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-top: 48px;
+        margin-bottom: 12px;
+      }
+      h3 {
+        font-size: 17px;
+        font-weight: 600;
+        margin-top: 28px;
+        margin-bottom: 8px;
+      }
+      p {
+        font-size: 15px;
+        color: var(--on-surface-variant);
+        margin-bottom: 16px;
+        line-height: 1.7;
+      }
+      p strong {
+        color: var(--on-surface);
+      }
 
-    .terminal-window { background: var(--surface-container-lowest); border: 1px solid var(--glass-border); border-radius: 12px; margin: 16px 0 20px; overflow: hidden; }
-    .terminal-window .terminal-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--glass-border); }
-    .terminal-window .terminal-header .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .terminal-window .terminal-header .dot:nth-child(1) { background: #ff5f56; }
-    .terminal-window .terminal-header .dot:nth-child(2) { background: #ffbd2e; }
-    .terminal-window .terminal-header .dot:nth-child(3) { background: #27c93f; }
-    .terminal-window .terminal-header .label { font-size: 11px; color: var(--outline); margin-left: 4px; }
-    .terminal-window pre { padding: 14px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.8; color: #c5c5c5; overflow-x: auto; white-space: pre-wrap; margin: 0; }
-    .terminal-window pre .prompt { color: var(--gradient-violet); }
-    .terminal-window pre .comment { color: #6a6a6a; }
-    .terminal-window pre .highlight { color: #a7d9a7; }
+      .terminal-window {
+        background: var(--surface-container-lowest);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        margin: 16px 0 20px;
+        overflow: hidden;
+      }
+      .terminal-window .terminal-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid var(--glass-border);
+      }
+      .terminal-window .terminal-header .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .terminal-window .terminal-header .dot:nth-child(1) {
+        background: #ff5f56;
+      }
+      .terminal-window .terminal-header .dot:nth-child(2) {
+        background: #ffbd2e;
+      }
+      .terminal-window .terminal-header .dot:nth-child(3) {
+        background: #27c93f;
+      }
+      .terminal-window .terminal-header .label {
+        font-size: 11px;
+        color: var(--outline);
+        margin-left: 4px;
+      }
+      .terminal-window pre {
+        padding: 14px 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12.5px;
+        line-height: 1.8;
+        color: #c5c5c5;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        margin: 0;
+      }
+      .terminal-window pre .prompt {
+        color: var(--gradient-violet);
+      }
+      .terminal-window pre .comment {
+        color: #6a6a6a;
+      }
+      .terminal-window pre .highlight {
+        color: #a7d9a7;
+      }
 
-    .prompt-block { background: var(--surface-container-low); border: 1px solid var(--glass-border); border-radius: 10px; padding: 16px 18px; margin: 16px 0 20px; }
-    .prompt-block .prompt-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gradient-violet); margin-bottom: 6px; }
-    .prompt-block .prompt-text { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--on-surface); line-height: 1.7; }
+      .prompt-block {
+        background: var(--surface-container-low);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin: 16px 0 20px;
+      }
+      .prompt-block .prompt-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--gradient-violet);
+        margin-bottom: 6px;
+      }
+      .prompt-block .prompt-text {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        color: var(--on-surface);
+        line-height: 1.7;
+      }
 
-    .tip-box { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.15); border-radius: 10px; padding: 16px 18px; margin: 16px 0 20px; }
-    .tip-box .tip-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--secondary); margin-bottom: 4px; }
-    .tip-box p { font-size: 14px; margin-bottom: 0; }
+      .tip-box {
+        background: rgba(99, 102, 241, 0.06);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin: 16px 0 20px;
+      }
+      .tip-box .tip-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--secondary);
+        margin-bottom: 4px;
+      }
+      .tip-box p {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
 
-    table { width: 100%; border-collapse: collapse; margin: 16px 0 20px; font-size: 13px; }
-    table th { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--glass-border); color: var(--secondary); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
-    table td { padding: 10px 12px; border-bottom: 1px solid var(--glass-border); color: var(--on-surface-variant); }
-    table td strong { color: var(--on-surface); }
-    table tr:last-child td { border-bottom: none; }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0 20px;
+        font-size: 13px;
+      }
+      table th {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--glass-border);
+        color: var(--secondary);
+        font-weight: 600;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--glass-border);
+        color: var(--on-surface-variant);
+      }
+      table td strong {
+        color: var(--on-surface);
+      }
+      table tr:last-child td {
+        border-bottom: none;
+      }
 
-    .next-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 24px 0; }
-    .next-link { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 16px; text-decoration: none; transition: all 0.2s; display: block; }
-    .next-link:hover { background: var(--glass-hover); transform: translateY(-1px); }
-    .next-link .nl-title { font-size: 14px; font-weight: 600; color: var(--on-surface); margin-bottom: 2px; }
-    .next-link .nl-desc { font-size: 12px; color: var(--on-surface-variant); }
+      .next-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin: 24px 0;
+      }
+      .next-link {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 16px;
+        text-decoration: none;
+        transition: all 0.2s;
+        display: block;
+      }
+      .next-link:hover {
+        background: var(--glass-hover);
+        transform: translateY(-1px);
+      }
+      .next-link .nl-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--on-surface);
+        margin-bottom: 2px;
+      }
+      .next-link .nl-desc {
+        font-size: 12px;
+        color: var(--on-surface-variant);
+      }
 
-    hr { border: none; border-top: 1px solid var(--glass-border); margin: 40px 0; }
+      hr {
+        border: none;
+        border-top: 1px solid var(--glass-border);
+        margin: 40px 0;
+      }
 
-    footer { text-align: center; padding: 24px; font-size: 12px; color: var(--outline); border-top: 1px solid var(--glass-border); }
-    footer a { color: var(--on-surface-variant); text-decoration: none; }
-    footer a:hover { color: var(--on-surface); }
+      footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 12px;
+        color: var(--outline);
+        border-top: 1px solid var(--glass-border);
+      }
+      footer a {
+        color: var(--on-surface-variant);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--on-surface);
+      }
 
-    .hamburger { display: none; background: none; border: none; color: var(--on-surface); font-size: 26px; cursor: pointer; padding: 0 4px; line-height: 1; }
-    .mobile-overlay { position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.6); z-index: 150; opacity:0; pointer-events:none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
-    .mobile-overlay.open { opacity:1; pointer-events:auto; }
-    .mobile-nav { position: fixed; top:0; right:-280px; width:260px; height:100vh; background: var(--surface-container); border-left: 1px solid var(--glass-border); z-index:200; transition: right 0.3s; padding: 20px; backdrop-filter: blur(20px); overflow-y:auto; }
-    .mobile-nav.open { right:0; }
-    .mobile-nav-header { display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--glass-border); margin-bottom:8px; }
-    .mobile-nav .close-btn { background:none; border:none; color:var(--on-surface); font-size:20px; cursor:pointer; padding:4px; }
-    .mobile-nav-links { display:flex; flex-direction:column; gap:4px; }
-    .mobile-nav-links a { display:block; padding:10px 12px; border-radius:8px; color:var(--on-surface-variant); text-decoration:none; font-size:14px; font-weight:500; transition:all 0.15s; }
-    .mobile-nav-links a:hover { background:var(--glass-hover); color:var(--on-surface); }
+      .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 26px;
+        cursor: pointer;
+        padding: 0 4px;
+        line-height: 1;
+      }
+      .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 150;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        backdrop-filter: blur(4px);
+      }
+      .mobile-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -280px;
+        width: 260px;
+        height: 100vh;
+        background: var(--surface-container);
+        border-left: 1px solid var(--glass-border);
+        z-index: 200;
+        transition: right 0.3s;
+        padding: 20px;
+        backdrop-filter: blur(20px);
+        overflow-y: auto;
+      }
+      .mobile-nav.open {
+        right: 0;
+      }
+      .mobile-nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--glass-border);
+        margin-bottom: 8px;
+      }
+      .mobile-nav .close-btn {
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .mobile-nav-links a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.15s;
+      }
+      .mobile-nav-links a:hover {
+        background: var(--glass-hover);
+        color: var(--on-surface);
+      }
 
-    @media (max-width: 640px) {
-      nav .links { display: none; }
-      .page { padding: 80px 16px 40px; }
-      .page-header h1 { font-size: 28px; }
-    }
-  </style>
-</head>
-<body>
-<div class="bg-glow"></div>
+      @media (max-width: 640px) {
+        nav .links {
+          display: none;
+        }
+        .page {
+          padding: 80px 16px 40px;
+        }
+        .page-header h1 {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-glow"></div>
 
-<nav>
-  <a href="index.html" class="logo">
-    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="url(#lg)"/><path d="M8 14L12 10L16 14L20 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 18L12 14L16 18L20 14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/><defs><linearGradient id="lg" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs></svg>
-    Stitch
-  </a>
-  <div class="links">
-    <a href="index.html">Home</a>
-    <a href="get-started.html">Get Started</a>
-    <a href="roundtrip.html">Roundtrip</a>
-    <a href="import.html">Import</a>
-    <a href="premium-design.html">Premium</a>
-    <a href="semantic-tokens.html">Semantic Tokens</a>
-    <a href="design-system.html">Design System</a>
-    <a href="https://stitch.withgoogle.com" class="btn-primary" target="_blank">Open Stitch</a>
-  </div>
-<button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
-<div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
-<div class="mobile-nav" id="mobile-nav">
-  <div class="mobile-nav-header">
-    <span style="font-weight:700;">Menu</span>
-    <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
-  </div>
-  <div class="mobile-nav-links">
-    <a href="index.html">Home</a>
-    <a href="get-started.html">Get Started</a>
-    <a href="roundtrip.html">Roundtrip</a>
-    <a href="import.html">Import</a>
-    <a href="premium-design.html">Premium</a>
-    <a href="semantic-tokens.html">Semantic Tokens</a>
-    <a href="design-system.html">Design System</a>
-    <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
-  </div>
-</div>
-</nav>
+    <nav>
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="url(#lg)" />
+          <path
+            d="M8 14L12 10L16 14L20 10"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8 18L12 14L16 18L20 14"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            opacity="0.5"
+          />
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="28" y2="28">
+              <stop stop-color="#6366f1" />
+              <stop offset="1" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+        </svg>
+        Stitch
+      </a>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="get-started.html">Get Started</a>
+        <a href="roundtrip.html">Roundtrip</a>
+        <a href="import.html">Import</a>
+        <a href="premium-design.html">Premium</a>
+        <a href="semantic-tokens.html">Semantic Tokens</a>
+        <a href="design-system.html">Design System</a>
+        <a href="https://stitch.withgoogle.com" class="btn-primary" target="_blank">Open Stitch</a>
+      </div>
+      <button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
+      <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
+      <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-header">
+          <span style="font-weight: 700">Menu</span>
+          <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
+        </div>
+        <div class="mobile-nav-links">
+          <a href="index.html">Home</a>
+          <a href="get-started.html">Get Started</a>
+          <a href="roundtrip.html">Roundtrip</a>
+          <a href="import.html">Import</a>
+          <a href="premium-design.html">Premium</a>
+          <a href="semantic-tokens.html">Semantic Tokens</a>
+          <a href="design-system.html">Design System</a>
+          <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
+        </div>
+      </div>
+    </nav>
 
-<main class="page">
-  <div class="page-header">
-    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="get-started.html">Get Started</a> / Import from your codebase</div>
-    <h1>Import from your codebase</h1>
-    <p>Reverse-engineer a design system document directly from your existing source code — no build step needed.</p>
-  </div>
+    <main class="page">
+      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="index.html">Home</a> / <a href="get-started.html">Get Started</a> / Import from
+          your codebase
+        </div>
+        <h1>Import from your codebase</h1>
+        <p>
+          Reverse-engineer a design system document directly from your existing source code — no
+          build step needed.
+        </p>
+      </div>
 
-  <p>The <strong>stitch::extract-design-md</strong> skill reads your components, stylesheets, Tailwind config, and theme files to create a semantic DESIGN.md. This lets you bring existing projects into Stitch's design workflow without starting from scratch.</p>
+      <p>
+        The <strong>stitch::extract-design-md</strong> skill reads your components, stylesheets,
+        Tailwind config, and theme files to create a semantic DESIGN.md. This lets you bring
+        existing projects into Stitch's design workflow without starting from scratch.
+      </p>
 
-  <h2>Quick prompt (no skills needed)</h2>
-  <p>If you already have the stitch-design plugin installed, just drop this into your agent:</p>
+      <h2>Quick prompt (no skills needed)</h2>
+      <p>If you already have the stitch-design plugin installed, just drop this into your agent:</p>
 
-  <div class="prompt-block">
-    <div class="prompt-label">PROMPT</div>
-    <div class="prompt-text">Extract the design system from ./src and save it to .stitch/DESIGN.md</div>
-  </div>
+      <div class="prompt-block">
+        <div class="prompt-label">PROMPT</div>
+        <div class="prompt-text">
+          Extract the design system from ./src and save it to .stitch/DESIGN.md
+        </div>
+      </div>
 
-  <h2>Using extract-design-md skill</h2>
-  <p>The skill scans your codebase for design-related information across multiple sources:</p>
+      <h2>Using extract-design-md skill</h2>
+      <p>The skill scans your codebase for design-related information across multiple sources:</p>
 
-  <p><strong>Components</strong> — Parses React, Vue, or Svelte components for styling patterns, class name conventions, and recurring structures.</p>
+      <p>
+        <strong>Components</strong> — Parses React, Vue, or Svelte components for styling patterns,
+        class name conventions, and recurring structures.
+      </p>
 
-  <p><strong>Stylesheets</strong> — Reads CSS, SCSS, and CSS Modules for custom properties, color definitions, typography rules, and media queries.</p>
+      <p>
+        <strong>Stylesheets</strong> — Reads CSS, SCSS, and CSS Modules for custom properties, color
+        definitions, typography rules, and media queries.
+      </p>
 
-  <p><strong>Tailwind config</strong> — Extracts the full theme configuration including custom colors, fonts, spacing scale, breakpoints, and animations.</p>
+      <p>
+        <strong>Tailwind config</strong> — Extracts the full theme configuration including custom
+        colors, fonts, spacing scale, breakpoints, and animations.
+      </p>
 
-  <p><strong>Theme files</strong> — Detects design token files in various formats (JSON, JS, TS) and maps them to semantic names.</p>
+      <p>
+        <strong>Theme files</strong> — Detects design token files in various formats (JSON, JS, TS)
+        and maps them to semantic names.
+      </p>
 
-  <p>It then synthesizes everything into a single <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">.stitch/DESIGN.md</code> file with YAML frontmatter and human-readable markdown sections.</p>
+      <p>
+        It then synthesizes everything into a single
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >.stitch/DESIGN.md</code
+        >
+        file with YAML frontmatter and human-readable markdown sections.
+      </p>
 
-  <h2>What gets extracted</h2>
-  <table>
-    <tr><th>Category</th><th>What gets captured</th></tr>
-    <tr><td><strong>Colors</strong></td><td>Hex values mapped to semantic names (e.g. <code style="font-size:12px;">#1a365d</code> → <code style="font-size:12px;">surface-container</code>)</td></tr>
-    <tr><td><strong>Typography</strong></td><td>Font families, sizes, weights, line heights, and letter spacing for each text style</td></tr>
-    <tr><td><strong>Spacing</strong></td><td>Padding and margin scale values extracted from CSS and Tailwind config</td></tr>
-    <tr><td><strong>Components</strong></td><td>Recurring UI patterns with their styling properties and variants</td></tr>
-    <tr><td><strong>Effects</strong></td><td>Glows, gradients, shadows, backdrop filters, and other visual effects</td></tr>
-  </table>
+      <h2>What gets extracted</h2>
+      <table>
+        <tr>
+          <th>Category</th>
+          <th>What gets captured</th>
+        </tr>
+        <tr>
+          <td><strong>Colors</strong></td>
+          <td>
+            Hex values mapped to semantic names (e.g. <code style="font-size: 12px">#1a365d</code> →
+            <code style="font-size: 12px">surface-container</code>)
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Typography</strong></td>
+          <td>
+            Font families, sizes, weights, line heights, and letter spacing for each text style
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Spacing</strong></td>
+          <td>Padding and margin scale values extracted from CSS and Tailwind config</td>
+        </tr>
+        <tr>
+          <td><strong>Components</strong></td>
+          <td>Recurring UI patterns with their styling properties and variants</td>
+        </tr>
+        <tr>
+          <td><strong>Effects</strong></td>
+          <td>Glows, gradients, shadows, backdrop filters, and other visual effects</td>
+        </tr>
+      </table>
 
-  <h2>Refining the output</h2>
-  <p>The generated DESIGN.md is a starting point — you may want to adjust naming conventions, merge similar tokens, or add missing values.</p>
+      <h2>Refining the output</h2>
+      <p>
+        The generated DESIGN.md is a starting point — you may want to adjust naming conventions,
+        merge similar tokens, or add missing values.
+      </p>
 
-  <div class="tip-box">
-    <div class="tip-label">Pro tip</div>
-    <p>Edit the resulting <code style="font-size:12px;">.stitch/DESIGN.md</code> file directly to refine token names, adjust descriptions, or add new design tokens before using it with Stitch. The file is plain markdown with YAML frontmatter — easy to version control and review.</p>
-  </div>
+      <div class="tip-box">
+        <div class="tip-label">Pro tip</div>
+        <p>
+          Edit the resulting <code style="font-size: 12px">.stitch/DESIGN.md</code> file directly to
+          refine token names, adjust descriptions, or add new design tokens before using it with
+          Stitch. The file is plain markdown with YAML frontmatter — easy to version control and
+          review.
+        </p>
+      </div>
 
-  <hr>
+      <hr />
 
-  <h2>What's next</h2>
-  <div class="next-links">
-    <a href="roundtrip.html" class="next-link">
-      <div class="nl-title">Code to Design roundtrip</div>
-      <div class="nl-desc">Import a React app, edit the design, export back to components</div>
-    </a>
-    <a href="premium-design.html" class="next-link">
-      <div class="nl-title">Premium design system</div>
-      <div class="nl-desc">Generate a curated design system with anti-generic standards</div>
-    </a>
-    <a href="semantic-tokens.html" class="next-link">
-      <div class="nl-title">Why semantic tokens?</div>
-      <div class="nl-desc">Understand why descriptive design language works better for AI</div>
-    </a>
-  </div>
-</main>
+      <h2>What's next</h2>
+      <div class="next-links">
+        <a href="roundtrip.html" class="next-link">
+          <div class="nl-title">Code to Design roundtrip</div>
+          <div class="nl-desc">Import a React app, edit the design, export back to components</div>
+        </a>
+        <a href="premium-design.html" class="next-link">
+          <div class="nl-title">Premium design system</div>
+          <div class="nl-desc">Generate a curated design system with anti-generic standards</div>
+        </a>
+        <a href="semantic-tokens.html" class="next-link">
+          <div class="nl-title">Why semantic tokens?</div>
+          <div class="nl-desc">Understand why descriptive design language works better for AI</div>
+        </a>
+      </div>
+    </main>
 
-<footer>
-  Built by <a href="https://github.com/google-labs-code">Google Labs</a> &middot; Licensed under Apache 2.0
-</footer>
-<script>
-function toggleMobileNav() {
-  document.getElementById('mobile-nav').classList.toggle('open');
-  document.getElementById('mobile-overlay').classList.toggle('open');
-}
-</script>
-</body>
+    <footer>
+      Built by <a href="https://github.com/google-labs-code">Google Labs</a> &middot; Licensed under
+      Apache 2.0
+    </footer>
+    <script>
+      function toggleMobileNav() {
+        document.getElementById('mobile-nav').classList.toggle('open');
+        document.getElementById('mobile-overlay').classList.toggle('open');
+      }
+    </script>
+  </body>
 </html>

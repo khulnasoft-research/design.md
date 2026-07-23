@@ -17,7 +17,9 @@ import { lint } from '../linter/index.js';
 import { diffMaps } from '../utils.js';
 import type { ComponentDef } from '../linter/model/spec.js';
 
-function serializeComponents(components: Map<string, ComponentDef>): Map<string, Record<string, unknown>> {
+function serializeComponents(
+  components: Map<string, ComponentDef>
+): Map<string, Record<string, unknown>> {
   const result = new Map<string, Record<string, unknown>>();
   for (const [name, comp] of components) {
     result.set(name, Object.fromEntries(comp.properties));
@@ -44,7 +46,7 @@ describe('diff: components', () => {
     const after = lint(BASE);
     const result = diffMaps(
       serializeComponents(before.designSystem.components),
-      serializeComponents(after.designSystem.components),
+      serializeComponents(after.designSystem.components)
     );
     expect(result.added).toEqual([]);
     expect(result.removed).toEqual([]);
@@ -54,13 +56,13 @@ describe('diff: components', () => {
   it('detects an added component', () => {
     const afterContent = BASE.replace(
       'padding: 12px',
-      'padding: 12px\n  button-secondary:\n    backgroundColor: "{colors.secondary}"\n    textColor: "#ffffff"',
+      'padding: 12px\n  button-secondary:\n    backgroundColor: "{colors.secondary}"\n    textColor: "#ffffff"'
     );
     const before = lint(BASE);
     const after = lint(afterContent);
     const result = diffMaps(
       serializeComponents(before.designSystem.components),
-      serializeComponents(after.designSystem.components),
+      serializeComponents(after.designSystem.components)
     );
     expect(result.added).toContain('button-secondary');
     expect(result.removed).toEqual([]);
@@ -78,7 +80,7 @@ colors:
     const after = lint(afterContent);
     const result = diffMaps(
       serializeComponents(before.designSystem.components),
-      serializeComponents(after.designSystem.components),
+      serializeComponents(after.designSystem.components)
     );
     expect(result.removed).toContain('button-primary');
     expect(result.added).toEqual([]);
@@ -90,7 +92,7 @@ colors:
     const after = lint(afterContent);
     const result = diffMaps(
       serializeComponents(before.designSystem.components),
-      serializeComponents(after.designSystem.components),
+      serializeComponents(after.designSystem.components)
     );
     expect(result.modified).toContain('button-primary');
     expect(result.added).toEqual([]);

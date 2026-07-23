@@ -46,9 +46,9 @@ export const useDesignMdState = create<DesignMdState>((set) => ({
   findings: [],
   setFindings: (findings) => {
     const summary = {
-      errors: findings.filter(f => f.level === 'error').length,
-      warnings: findings.filter(f => f.level === 'warning').length,
-      infos: findings.filter(f => f.level === 'info').length,
+      errors: findings.filter((f) => f.level === 'error').length,
+      warnings: findings.filter((f) => f.level === 'warning').length,
+      infos: findings.filter((f) => f.level === 'info').length,
     };
     set({ findings, summary });
   },
@@ -68,13 +68,14 @@ export const useDesignMdState = create<DesignMdState>((set) => ({
   isDirty: false,
   setIsDirty: (isDirty) => set({ isDirty }),
 
-  reset: () => set({
-    content: '',
-    findings: [],
-    summary: { errors: 0, warnings: 0, infos: 0 },
-    designSystem: null,
-    selectedTab: 'editor',
-    fileName: 'DESIGN.md',
-    isDirty: false,
-  }),
+  reset: () =>
+    set({
+      content: '',
+      findings: [],
+      summary: { errors: 0, warnings: 0, infos: 0 },
+      designSystem: null,
+      selectedTab: 'editor',
+      fileName: 'DESIGN.md',
+      isDirty: false,
+    }),
 }));

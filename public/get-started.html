@@ -1,375 +1,871 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Get started with Stitch Agent Skills. Install skills, connect MCP, and generate your first screen from your coding agent.">
-  <meta name="og:title" content="Get Started — Stitch Agent Skills">
-  <meta name="og:description" content="Install the Stitch Design Skills, connect to the MCP server, and generate your first screen — all from your coding agent.">
-  <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg">
-  <meta name="twitter:card" content="summary">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <title>Get Started — Stitch Agent Skills</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --surface: #0b1326; --surface-dim: #0b1326; --surface-bright: #31394d;
-      --surface-container-lowest: #060e20; --surface-container-low: #131b2e;
-      --surface-container: #171f33; --surface-container-high: #222a3d;
-      --surface-container-highest: #2d3449; --on-surface: #dae2fd;
-      --on-surface-variant: #c4c7c8; --primary: #ffffff; --on-primary: #2f3131;
-      --secondary: #adc9eb; --outline: #8e9192; --outline-variant: #444748;
-      --gradient-start: #6366f1; --gradient-mid: #8b5cf6; --gradient-violet: #a855f7;
-      --gradient-end: #d946ef; --glass-bg: rgba(255,255,255,0.04);
-      --glass-hover: rgba(255,255,255,0.07); --glass-border: rgba(255,255,255,0.06);
-      --glass-strong: rgba(255,255,255,0.10);
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: Inter, system-ui, sans-serif;
-      background: var(--surface); color: var(--on-surface);
-      line-height: 1.6; overflow-x: hidden;
-    }
-    ::selection { background: rgba(99,102,241,0.3); }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Get started with Stitch Agent Skills. Install skills, connect MCP, and generate your first screen from your coding agent."
+    />
+    <meta name="og:title" content="Get Started — Stitch Agent Skills" />
+    <meta
+      name="og:description"
+      content="Install the Stitch Design Skills, connect to the MCP server, and generate your first screen — all from your coding agent."
+    />
+    <meta name="og:image" content="https://design-md-blue.vercel.app/favicon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <title>Get Started — Stitch Agent Skills</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --surface: #0b1326;
+        --surface-dim: #0b1326;
+        --surface-bright: #31394d;
+        --surface-container-lowest: #060e20;
+        --surface-container-low: #131b2e;
+        --surface-container: #171f33;
+        --surface-container-high: #222a3d;
+        --surface-container-highest: #2d3449;
+        --on-surface: #dae2fd;
+        --on-surface-variant: #c4c7c8;
+        --primary: #ffffff;
+        --on-primary: #2f3131;
+        --secondary: #adc9eb;
+        --outline: #8e9192;
+        --outline-variant: #444748;
+        --gradient-start: #6366f1;
+        --gradient-mid: #8b5cf6;
+        --gradient-violet: #a855f7;
+        --gradient-end: #d946ef;
+        --glass-bg: rgba(255, 255, 255, 0.04);
+        --glass-hover: rgba(255, 255, 255, 0.07);
+        --glass-border: rgba(255, 255, 255, 0.06);
+        --glass-strong: rgba(255, 255, 255, 0.1);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: Inter, system-ui, sans-serif;
+        background: var(--surface);
+        color: var(--on-surface);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      ::selection {
+        background: rgba(99, 102, 241, 0.3);
+      }
 
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 14px 32px; display: flex; align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      background: rgba(11,19,38,0.6);
-      border-bottom: 1px solid var(--glass-border);
-    }
-    nav .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; text-decoration: none; color: var(--on-surface); }
-    nav .logo svg { width: 24px; height: 24px; }
-    nav .links { display: flex; gap: 20px; align-items: center; }
-    nav .links a { color: var(--on-surface-variant); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
-    nav .links a:hover { color: var(--on-surface); }
-    nav .links .btn-primary {
-      background: var(--primary); color: var(--on-primary); padding: 7px 18px;
-      border-radius: 999px; font-weight: 600; font-size: 12px;
-    }
-    nav .links .btn-primary:hover { opacity: 0.85; }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 14px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background: rgba(11, 19, 38, 0.6);
+        border-bottom: 1px solid var(--glass-border);
+      }
+      nav .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+        color: var(--on-surface);
+      }
+      nav .logo svg {
+        width: 24px;
+        height: 24px;
+      }
+      nav .links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      nav .links a {
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      nav .links a:hover {
+        color: var(--on-surface);
+      }
+      nav .links .btn-primary {
+        background: var(--primary);
+        color: var(--on-primary);
+        padding: 7px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+      nav .links .btn-primary:hover {
+        opacity: 0.85;
+      }
 
-    .bg-glow {
-      position: fixed; top: -40vh; left: 50%; transform: translateX(-50%);
-      width: 120vw; height: 80vh;
-      background: radial-gradient(ellipse at center, rgba(99,102,241,0.10), rgba(139,92,246,0.05), transparent);
-      pointer-events: none; z-index: 0;
-    }
+      .bg-glow {
+        position: fixed;
+        top: -40vh;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120vw;
+        height: 80vh;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(99, 102, 241, 0.1),
+          rgba(139, 92, 246, 0.05),
+          transparent
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
 
-    .page {
-      position: relative; z-index: 1; max-width: 800px;
-      margin: 0 auto; padding: 100px 24px 80px;
-    }
+      .page {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 100px 24px 80px;
+      }
 
-    .page-header { margin-bottom: 48px; }
-    .page-header .breadcrumb { font-size: 12px; color: var(--on-surface-variant); margin-bottom: 8px; }
-    .page-header .breadcrumb a { color: var(--secondary); text-decoration: none; }
-    .page-header .breadcrumb a:hover { text-decoration: underline; }
-    .page-header h1 {
-      font-family: 'Plus Jakarta Sans', Inter, sans-serif;
-      font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px;
-    }
-    .page-header p { font-size: 16px; color: var(--on-surface-variant); max-width: 600px; }
+      .page-header {
+        margin-bottom: 48px;
+      }
+      .page-header .breadcrumb {
+        font-size: 12px;
+        color: var(--on-surface-variant);
+        margin-bottom: 8px;
+      }
+      .page-header .breadcrumb a {
+        color: var(--secondary);
+        text-decoration: none;
+      }
+      .page-header .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+      .page-header h1 {
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 12px;
+      }
+      .page-header p {
+        font-size: 16px;
+        color: var(--on-surface-variant);
+        max-width: 600px;
+      }
 
-    h2 {
-      font-family: 'Plus Jakarta Sans', Inter, sans-serif;
-      font-size: 24px; font-weight: 700; letter-spacing: -0.02em;
-      margin-top: 48px; margin-bottom: 12px;
-    }
-    h3 {
-      font-size: 17px; font-weight: 600; margin-top: 28px; margin-bottom: 8px;
-    }
-    p { font-size: 15px; color: var(--on-surface-variant); margin-bottom: 16px; line-height: 1.7; }
-    p strong { color: var(--on-surface); }
+      h2 {
+        font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-top: 48px;
+        margin-bottom: 12px;
+      }
+      h3 {
+        font-size: 17px;
+        font-weight: 600;
+        margin-top: 28px;
+        margin-bottom: 8px;
+      }
+      p {
+        font-size: 15px;
+        color: var(--on-surface-variant);
+        margin-bottom: 16px;
+        line-height: 1.7;
+      }
+      p strong {
+        color: var(--on-surface);
+      }
 
-    .step-num {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 28px; height: 28px; border-radius: 50%;
-      background: rgba(99,102,241,0.15); color: var(--secondary);
-      font-size: 13px; font-weight: 700; margin-right: 10px;
-    }
+      .step-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(99, 102, 241, 0.15);
+        color: var(--secondary);
+        font-size: 13px;
+        font-weight: 700;
+        margin-right: 10px;
+      }
 
-    .terminal-window {
-      background: var(--surface-container-lowest);
-      border: 1px solid var(--glass-border); border-radius: 12px;
-      margin: 16px 0 20px; overflow: hidden;
-    }
-    .terminal-window .terminal-header {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 14px; background: rgba(255,255,255,0.02);
-      border-bottom: 1px solid var(--glass-border);
-    }
-    .terminal-window .terminal-header .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-    }
-    .terminal-window .terminal-header .dot:nth-child(1) { background: #ff5f56; }
-    .terminal-window .terminal-header .dot:nth-child(2) { background: #ffbd2e; }
-    .terminal-window .terminal-header .dot:nth-child(3) { background: #27c93f; }
-    .terminal-window .terminal-header .label { font-size: 11px; color: var(--outline); margin-left: 4px; }
-    .terminal-window pre {
-      padding: 14px 16px; font-family: 'JetBrains Mono', monospace;
-      font-size: 12.5px; line-height: 1.8; color: #c5c5c5;
-      overflow-x: auto; white-space: pre-wrap; margin: 0;
-    }
-    .terminal-window pre .prompt { color: var(--gradient-violet); }
-    .terminal-window pre .comment { color: #6a6a6a; }
-    .terminal-window pre .highlight { color: #a7d9a7; }
+      .terminal-window {
+        background: var(--surface-container-lowest);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        margin: 16px 0 20px;
+        overflow: hidden;
+      }
+      .terminal-window .terminal-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid var(--glass-border);
+      }
+      .terminal-window .terminal-header .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .terminal-window .terminal-header .dot:nth-child(1) {
+        background: #ff5f56;
+      }
+      .terminal-window .terminal-header .dot:nth-child(2) {
+        background: #ffbd2e;
+      }
+      .terminal-window .terminal-header .dot:nth-child(3) {
+        background: #27c93f;
+      }
+      .terminal-window .terminal-header .label {
+        font-size: 11px;
+        color: var(--outline);
+        margin-left: 4px;
+      }
+      .terminal-window pre {
+        padding: 14px 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12.5px;
+        line-height: 1.8;
+        color: #c5c5c5;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        margin: 0;
+      }
+      .terminal-window pre .prompt {
+        color: var(--gradient-violet);
+      }
+      .terminal-window pre .comment {
+        color: #6a6a6a;
+      }
+      .terminal-window pre .highlight {
+        color: #a7d9a7;
+      }
 
-    .agent-tabs {
-      display: flex; gap: 4px; margin-bottom: 0;
-      background: var(--surface-container-low);
-      border-radius: 10px 10px 0 0; padding: 4px; overflow-x: auto;
-    }
-    .agent-tab {
-      padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 500;
-      border: none; background: transparent; color: var(--on-surface-variant);
-      cursor: pointer; transition: all 0.15s; white-space: nowrap;
-    }
-    .agent-tab:hover { color: var(--on-surface); }
-    .agent-tab.active { background: var(--surface-container-high); color: var(--on-surface); }
-    .agent-content { display: none; }
-    .agent-content.active { display: block; }
+      .agent-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 0;
+        background: var(--surface-container-low);
+        border-radius: 10px 10px 0 0;
+        padding: 4px;
+        overflow-x: auto;
+      }
+      .agent-tab {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        border: none;
+        background: transparent;
+        color: var(--on-surface-variant);
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .agent-tab:hover {
+        color: var(--on-surface);
+      }
+      .agent-tab.active {
+        background: var(--surface-container-high);
+        color: var(--on-surface);
+      }
+      .agent-content {
+        display: none;
+      }
+      .agent-content.active {
+        display: block;
+      }
 
-    .prompt-block {
-      background: var(--surface-container-low);
-      border: 1px solid var(--glass-border); border-radius: 10px;
-      padding: 16px 18px; margin: 16px 0 20px;
-    }
-    .prompt-block .prompt-label {
-      font-size: 11px; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.05em; color: var(--gradient-violet); margin-bottom: 6px;
-    }
-    .prompt-block .prompt-text {
-      font-family: 'JetBrains Mono', monospace; font-size: 13px;
-      color: var(--on-surface); line-height: 1.7;
-    }
+      .prompt-block {
+        background: var(--surface-container-low);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin: 16px 0 20px;
+      }
+      .prompt-block .prompt-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--gradient-violet);
+        margin-bottom: 6px;
+      }
+      .prompt-block .prompt-text {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        color: var(--on-surface);
+        line-height: 1.7;
+      }
 
-    .tip-box {
-      background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.15);
-      border-radius: 10px; padding: 16px 18px; margin: 16px 0 20px;
-    }
-    .tip-box .tip-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--secondary); margin-bottom: 4px; }
-    .tip-box p { font-size: 14px; margin-bottom: 0; }
+      .tip-box {
+        background: rgba(99, 102, 241, 0.06);
+        border: 1px solid rgba(99, 102, 241, 0.15);
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin: 16px 0 20px;
+      }
+      .tip-box .tip-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--secondary);
+        margin-bottom: 4px;
+      }
+      .tip-box p {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
 
-    table {
-      width: 100%; border-collapse: collapse; margin: 16px 0 20px;
-      font-size: 13px;
-    }
-    table th { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--glass-border); color: var(--secondary); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
-    table td { padding: 10px 12px; border-bottom: 1px solid var(--glass-border); color: var(--on-surface-variant); }
-    table td strong { color: var(--on-surface); }
-    table tr:last-child td { border-bottom: none; }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0 20px;
+        font-size: 13px;
+      }
+      table th {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--glass-border);
+        color: var(--secondary);
+        font-weight: 600;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--glass-border);
+        color: var(--on-surface-variant);
+      }
+      table td strong {
+        color: var(--on-surface);
+      }
+      table tr:last-child td {
+        border-bottom: none;
+      }
 
-    .next-links {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px; margin: 24px 0;
-    }
-    .next-link {
-      background: var(--glass-bg); border: 1px solid var(--glass-border);
-      border-radius: 12px; padding: 16px; text-decoration: none;
-      transition: all 0.2s;
-    }
-    .next-link:hover { background: var(--glass-hover); transform: translateY(-1px); }
-    .next-link .nl-title { font-size: 14px; font-weight: 600; color: var(--on-surface); margin-bottom: 2px; }
-    .next-link .nl-desc { font-size: 12px; color: var(--on-surface-variant); }
+      .next-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin: 24px 0;
+      }
+      .next-link {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 16px;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .next-link:hover {
+        background: var(--glass-hover);
+        transform: translateY(-1px);
+      }
+      .next-link .nl-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--on-surface);
+        margin-bottom: 2px;
+      }
+      .next-link .nl-desc {
+        font-size: 12px;
+        color: var(--on-surface-variant);
+      }
 
-    hr { border: none; border-top: 1px solid var(--glass-border); margin: 40px 0; }
+      hr {
+        border: none;
+        border-top: 1px solid var(--glass-border);
+        margin: 40px 0;
+      }
 
-    footer {
-      text-align: center; padding: 24px; font-size: 12px;
-      color: var(--outline); border-top: 1px solid var(--glass-border);
-    }
-    footer a { color: var(--on-surface-variant); text-decoration: none; }
-    footer a:hover { color: var(--on-surface); }
+      footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 12px;
+        color: var(--outline);
+        border-top: 1px solid var(--glass-border);
+      }
+      footer a {
+        color: var(--on-surface-variant);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--on-surface);
+      }
 
-    .hamburger { display: none; background: none; border: none; color: var(--on-surface); font-size: 26px; cursor: pointer; padding: 0 4px; line-height:1; }
-    .mobile-overlay { position: fixed; top:0;left:0;right:0;bottom:0; background: rgba(0,0,0,0.6); z-index: 150; opacity:0; pointer-events:none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
-    .mobile-overlay.open { opacity:1; pointer-events:auto; }
-    .mobile-nav { position: fixed; top:0; right:-280px; width:260px; height:100vh; background: var(--surface-container); border-left: 1px solid var(--glass-border); z-index:200; transition: right 0.3s; padding: 20px; backdrop-filter: blur(20px); }
-    .mobile-nav.open { right:0; }
-    .mobile-nav-header { display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--glass-border); margin-bottom:8px; }
-    .mobile-nav .close-btn { background:none; border:none; color:var(--on-surface); font-size:20px; cursor:pointer; padding:4px; }
-    .mobile-nav-links { display:flex; flex-direction:column; gap:4px; }
-    .mobile-nav-links a { display:block; padding:10px 12px; border-radius:8px; color:var(--on-surface-variant); text-decoration:none; font-size:14px; font-weight:500; transition:all 0.15s; }
-    .mobile-nav-links a:hover { background:var(--glass-hover); color:var(--on-surface); }
-    @media (max-width: 640px) {
-      .hamburger { display: block; }
-      nav .links { display: none; }
-      .page { padding: 80px 16px 40px; }
-      .page-header h1 { font-size: 28px; }
-    }
-  </style>
-</head>
-<body>
-<div class="bg-glow"></div>
+      .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 26px;
+        cursor: pointer;
+        padding: 0 4px;
+        line-height: 1;
+      }
+      .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 150;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        backdrop-filter: blur(4px);
+      }
+      .mobile-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -280px;
+        width: 260px;
+        height: 100vh;
+        background: var(--surface-container);
+        border-left: 1px solid var(--glass-border);
+        z-index: 200;
+        transition: right 0.3s;
+        padding: 20px;
+        backdrop-filter: blur(20px);
+      }
+      .mobile-nav.open {
+        right: 0;
+      }
+      .mobile-nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--glass-border);
+        margin-bottom: 8px;
+      }
+      .mobile-nav .close-btn {
+        background: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .mobile-nav-links a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--on-surface-variant);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.15s;
+      }
+      .mobile-nav-links a:hover {
+        background: var(--glass-hover);
+        color: var(--on-surface);
+      }
+      @media (max-width: 640px) {
+        .hamburger {
+          display: block;
+        }
+        nav .links {
+          display: none;
+        }
+        .page {
+          padding: 80px 16px 40px;
+        }
+        .page-header h1 {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-glow"></div>
 
-<nav>
-  <a href="index.html" class="logo">
-    <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="url(#lg)"/><path d="M8 14L12 10L16 14L20 10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 18L12 14L16 18L20 14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/><defs><linearGradient id="lg" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs></svg>
-    Stitch
-  </a>
-  <div class="links">
-    <a href="index.html">Home</a>
-    <a href="roundtrip.html">Roundtrip</a>
-    <a href="import.html">Import</a>
-    <a href="premium-design.html">Premium</a>
-    <a href="semantic-tokens.html">Semantic Tokens</a>
-    <a href="design-system.html">Design System</a>
-    <a href="https://stitch.withgoogle.com" class="btn-primary" target="_blank">Open Stitch</a>
-  </div>
-  <button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
-  <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
-  <div class="mobile-nav" id="mobile-nav">
-    <div class="mobile-nav-header">
-      <span style="font-weight:700;">Menu</span>
-      <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
-    </div>
-    <div class="mobile-nav-links">
-      <a href="index.html">Home</a>
-      <a href="roundtrip.html">Roundtrip</a>
-      <a href="import.html">Import</a>
-      <a href="premium-design.html">Premium</a>
-      <a href="semantic-tokens.html">Semantic Tokens</a>
-      <a href="design-system.html">Design System</a>
-      <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
-    </div>
-  </div>
-</nav>
+    <nav>
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="url(#lg)" />
+          <path
+            d="M8 14L12 10L16 14L20 10"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8 18L12 14L16 18L20 14"
+            stroke="#fff"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            opacity="0.5"
+          />
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="28" y2="28">
+              <stop stop-color="#6366f1" />
+              <stop offset="1" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+        </svg>
+        Stitch
+      </a>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="roundtrip.html">Roundtrip</a>
+        <a href="import.html">Import</a>
+        <a href="premium-design.html">Premium</a>
+        <a href="semantic-tokens.html">Semantic Tokens</a>
+        <a href="design-system.html">Design System</a>
+        <a href="https://stitch.withgoogle.com" class="btn-primary" target="_blank">Open Stitch</a>
+      </div>
+      <button class="hamburger" aria-label="Menu" onclick="toggleMobileNav()">☰</button>
+      <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileNav()"></div>
+      <div class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-header">
+          <span style="font-weight: 700">Menu</span>
+          <button class="close-btn" aria-label="Close" onclick="toggleMobileNav()">✕</button>
+        </div>
+        <div class="mobile-nav-links">
+          <a href="index.html">Home</a>
+          <a href="roundtrip.html">Roundtrip</a>
+          <a href="import.html">Import</a>
+          <a href="premium-design.html">Premium</a>
+          <a href="semantic-tokens.html">Semantic Tokens</a>
+          <a href="design-system.html">Design System</a>
+          <a href="https://stitch.withgoogle.com" target="_blank">Open Stitch</a>
+        </div>
+      </div>
+    </nav>
 
-<main class="page">
-  <div class="page-header">
-    <div class="breadcrumb"><a href="index.html">Home</a> / Get Started</div>
-    <h1>Get started with Agent Skills</h1>
-    <p>Install the Stitch Design Skills, connect to the MCP server, and generate your first screen — all from your coding agent.</p>
-  </div>
+    <main class="page">
+      <div class="page-header">
+        <div class="breadcrumb"><a href="index.html">Home</a> / Get Started</div>
+        <h1>Get started with Agent Skills</h1>
+        <p>
+          Install the Stitch Design Skills, connect to the MCP server, and generate your first
+          screen — all from your coding agent.
+        </p>
+      </div>
 
-  <p>Stitch Design Skills are agent instructions that extend your coding agent with design superpowers — generating screens, extracting design systems, building multi-page sites, and converting designs to React components. They work with any agent that supports the Agent Skills standard: <strong>Gemini CLI</strong>, <strong>Claude Code</strong>, <strong>Cursor</strong>, or <strong>Antigravity</strong>.</p>
+      <p>
+        Stitch Design Skills are agent instructions that extend your coding agent with design
+        superpowers — generating screens, extracting design systems, building multi-page sites, and
+        converting designs to React components. They work with any agent that supports the Agent
+        Skills standard: <strong>Gemini CLI</strong>, <strong>Claude Code</strong>,
+        <strong>Cursor</strong>, or <strong>Antigravity</strong>.
+      </p>
 
-  <h2><span class="step-num">1</span> Install the plugin suite</h2>
-  <p>Run this from your project directory to install all three plugins (<code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">stitch-design</code>, <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">stitch-build</code>, <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">stitch-utilities</code>) with 13 skills total.</p>
+      <h2><span class="step-num">1</span> Install the plugin suite</h2>
+      <p>
+        Run this from your project directory to install all three plugins (<code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >stitch-design</code
+        >,
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >stitch-build</code
+        >,
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >stitch-utilities</code
+        >) with 13 skills total.
+      </p>
 
-  <div class="terminal-window">
-    <div class="terminal-header"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="label">Terminal</span></div>
-    <pre><span class="prompt">$</span> npx plugins add google-labs-code/stitch-skills --scope project --target claude-code</pre>
-  </div>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span
+          ><span class="label">Terminal</span>
+        </div>
+        <pre><span class="prompt">$</span> npx plugins add google-labs-code/stitch-skills --scope project --target claude-code</pre>
+      </div>
 
-  <h3>Pick your agent target</h3>
-  <p>Choose the tab for your agent and copy the command:</p>
+      <h3>Pick your agent target</h3>
+      <p>Choose the tab for your agent and copy the command:</p>
 
-  <div class="agent-tabs" id="agent-tabs">
-    <button class="agent-tab active" data-agent="claude">Claude Code</button>
-    <button class="agent-tab" data-agent="cursor">Cursor</button>
-    <button class="agent-tab" data-agent="gemini">Gemini CLI</button>
-    <button class="agent-tab" data-agent="antigravity">Antigravity</button>
-  </div>
-  <div class="terminal-window" style="border-radius:0 0 12px 12px;margin-top:0;">
-    <div class="terminal-header"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="label" id="agent-label">Terminal — claude-code</span></div>
-    <pre id="agent-command"><span class="prompt">$</span> npx plugins add google-labs-code/stitch-skills \<br>  --scope project --target claude-code</pre>
-  </div>
+      <div class="agent-tabs" id="agent-tabs">
+        <button class="agent-tab active" data-agent="claude">Claude Code</button>
+        <button class="agent-tab" data-agent="cursor">Cursor</button>
+        <button class="agent-tab" data-agent="gemini">Gemini CLI</button>
+        <button class="agent-tab" data-agent="antigravity">Antigravity</button>
+      </div>
+      <div class="terminal-window" style="border-radius: 0 0 12px 12px; margin-top: 0">
+        <div class="terminal-header">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span
+          ><span class="label" id="agent-label">Terminal — claude-code</span>
+        </div>
+        <pre
+          id="agent-command"
+        ><span class="prompt">$</span> npx plugins add google-labs-code/stitch-skills \<br>  --scope project --target claude-code</pre>
+      </div>
 
-  <div class="tip-box">
-    <div class="tip-label">Install selectively</div>
-    <p>If you only need specific skills, use <code style="font-size:12px;">npx skills add google-labs-code/stitch-skills --skills stitch::generate-design</code>. Note that many skills depend on each other — the full plugin install is the safer choice.</p>
-  </div>
+      <div class="tip-box">
+        <div class="tip-label">Install selectively</div>
+        <p>
+          If you only need specific skills, use
+          <code style="font-size: 12px"
+            >npx skills add google-labs-code/stitch-skills --skills stitch::generate-design</code
+          >. Note that many skills depend on each other — the full plugin install is the safer
+          choice.
+        </p>
+      </div>
 
-  <h2><span class="step-num">2</span> Connect the Stitch MCP server</h2>
-  <p>The skills talk to Stitch through the Model Context Protocol. Follow the <a href="https://stitch.withgoogle.com/docs/mcp/setup/" style="color:var(--secondary);">Stitch MCP Setup Instructions</a> to register the server and configure your API credentials.</p>
-  <p>Once connected, your agent gains access to tools like <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">list_projects</code>, <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">generate_screen_from_text</code>, and <code style="font-size:13px;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;">get_screen</code>.</p>
+      <h2><span class="step-num">2</span> Connect the Stitch MCP server</h2>
+      <p>
+        The skills talk to Stitch through the Model Context Protocol. Follow the
+        <a href="https://stitch.withgoogle.com/docs/mcp/setup/" style="color: var(--secondary)"
+          >Stitch MCP Setup Instructions</a
+        >
+        to register the server and configure your API credentials.
+      </p>
+      <p>
+        Once connected, your agent gains access to tools like
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >list_projects</code
+        >,
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >generate_screen_from_text</code
+        >, and
+        <code
+          style="
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+          "
+          >get_screen</code
+        >.
+      </p>
 
-  <h3>Verify the connection</h3>
-  <div class="prompt-block">
-    <div class="prompt-label">PROMPT</div>
-    <div class="prompt-text">List my Stitch projects.</div>
-  </div>
-  <p>You should see your existing projects — or an empty list if this is your first time. If you see an error, double-check that the MCP server is running and your API key is valid.</p>
+      <h3>Verify the connection</h3>
+      <div class="prompt-block">
+        <div class="prompt-label">PROMPT</div>
+        <div class="prompt-text">List my Stitch projects.</div>
+      </div>
+      <p>
+        You should see your existing projects — or an empty list if this is your first time. If you
+        see an error, double-check that the MCP server is running and your API key is valid.
+      </p>
 
-  <h2><span class="step-num">3</span> Generate your first screen</h2>
-  <p>Start with a rough idea. The <strong>enhance-prompt</strong> skill transforms vague concepts into structured, generation-ready prompts.</p>
+      <h2><span class="step-num">3</span> Generate your first screen</h2>
+      <p>
+        Start with a rough idea. The <strong>enhance-prompt</strong> skill transforms vague concepts
+        into structured, generation-ready prompts.
+      </p>
 
-  <div class="prompt-block">
-    <div class="prompt-label">PROMPT</div>
-    <div class="prompt-text">Enhance this prompt for Stitch: "Create a landing page for an artisanal coffee shop"</div>
-  </div>
+      <div class="prompt-block">
+        <div class="prompt-label">PROMPT</div>
+        <div class="prompt-text">
+          Enhance this prompt for Stitch: "Create a landing page for an artisanal coffee shop"
+        </div>
+      </div>
 
-  <p>Notice the output — the skill adds a platform specification, structures the page into numbered sections, replaces vague terms with specific UI/UX keywords, and generates a design system block with color roles. This enhanced prompt produces dramatically better results than the original.</p>
+      <p>
+        Notice the output — the skill adds a platform specification, structures the page into
+        numbered sections, replaces vague terms with specific UI/UX keywords, and generates a design
+        system block with color roles. This enhanced prompt produces dramatically better results
+        than the original.
+      </p>
 
-  <p>Now generate:</p>
+      <p>Now generate:</p>
 
-  <div class="prompt-block">
-    <div class="prompt-label">PROMPT</div>
-    <div class="prompt-text">Generate a screen in my Stitch project using the enhanced prompt from the previous step.</div>
-  </div>
+      <div class="prompt-block">
+        <div class="prompt-label">PROMPT</div>
+        <div class="prompt-text">
+          Generate a screen in my Stitch project using the enhanced prompt from the previous step.
+        </div>
+      </div>
 
-  <p>This takes 15–30 seconds. When complete, you'll see a confirmation with the screen ID and file paths. Open the generated screenshot to see your design — a complete landing page with hero section, feature cards, navigation, and footer, all from a single text prompt.</p>
+      <p>
+        This takes 15–30 seconds. When complete, you'll see a confirmation with the screen ID and
+        file paths. Open the generated screenshot to see your design — a complete landing page with
+        hero section, feature cards, navigation, and footer, all from a single text prompt.
+      </p>
 
-  <h2>What's next</h2>
-  <p>You've installed skills, connected to Stitch, and generated your first screen. Here's where to go from here:</p>
+      <h2>What's next</h2>
+      <p>
+        You've installed skills, connected to Stitch, and generated your first screen. Here's where
+        to go from here:
+      </p>
 
-  <div class="next-links">
-    <a href="import.html" class="next-link">
-      <div class="nl-title">Import from your codebase</div>
-      <div class="nl-desc">Extract a DESIGN.md from existing source code</div>
-    </a>
-    <a href="roundtrip.html" class="next-link">
-      <div class="nl-title">Code to Design roundtrip</div>
-      <div class="nl-desc">Import a React app, edit the design, export back to components</div>
-    </a>
-    <a href="#" class="next-link" onclick="alert('Prompt: Build in a loop');return false;">
-      <div class="nl-title">Build in a loop</div>
-      <div class="nl-desc">Generate an entire website from a single concept</div>
-    </a>
-    <a href="#" class="next-link" onclick="alert('See skill-reference.md');return false;">
-      <div class="nl-title">Skill reference</div>
-      <div class="nl-desc">Full catalog of all 13 skills</div>
-    </a>
-  </div>
+      <div class="next-links">
+        <a href="import.html" class="next-link">
+          <div class="nl-title">Import from your codebase</div>
+          <div class="nl-desc">Extract a DESIGN.md from existing source code</div>
+        </a>
+        <a href="roundtrip.html" class="next-link">
+          <div class="nl-title">Code to Design roundtrip</div>
+          <div class="nl-desc">Import a React app, edit the design, export back to components</div>
+        </a>
+        <a
+          href="#"
+          class="next-link"
+          onclick="
+            alert('Prompt: Build in a loop');
+            return false;
+          "
+        >
+          <div class="nl-title">Build in a loop</div>
+          <div class="nl-desc">Generate an entire website from a single concept</div>
+        </a>
+        <a
+          href="#"
+          class="next-link"
+          onclick="
+            alert('See skill-reference.md');
+            return false;
+          "
+        >
+          <div class="nl-title">Skill reference</div>
+          <div class="nl-desc">Full catalog of all 13 skills</div>
+        </a>
+      </div>
 
-  <hr>
+      <hr />
 
-  <h2>Troubleshooting</h2>
-  <table>
-    <tr><th>Problem</th><th>Fix</th></tr>
-    <tr><td><code style="font-size:12px;">npx plugins</code> not found</td><td>Install Node.js 18+: <code style="font-size:12px;">node --version</code></td></tr>
-    <tr><td>MCP server not responding</td><td>Verify setup: <a href="https://stitch.withgoogle.com/docs/mcp/setup/" style="color:var(--secondary);">MCP Setup guide</a></td></tr>
-    <tr><td>Skills not visible in agent</td><td>Restart the agent session after installation</td></tr>
-    <tr><td>Permission errors</td><td>Use <code style="font-size:12px;">--scope project</code> instead of <code style="font-size:12px;">--scope global</code></td></tr>
-    <tr><td>API key errors</td><td>Confirm the key in your agent's MCP config hasn't expired</td></tr>
-  </table>
-</main>
+      <h2>Troubleshooting</h2>
+      <table>
+        <tr>
+          <th>Problem</th>
+          <th>Fix</th>
+        </tr>
+        <tr>
+          <td><code style="font-size: 12px">npx plugins</code> not found</td>
+          <td>Install Node.js 18+: <code style="font-size: 12px">node --version</code></td>
+        </tr>
+        <tr>
+          <td>MCP server not responding</td>
+          <td>
+            Verify setup:
+            <a href="https://stitch.withgoogle.com/docs/mcp/setup/" style="color: var(--secondary)"
+              >MCP Setup guide</a
+            >
+          </td>
+        </tr>
+        <tr>
+          <td>Skills not visible in agent</td>
+          <td>Restart the agent session after installation</td>
+        </tr>
+        <tr>
+          <td>Permission errors</td>
+          <td>
+            Use <code style="font-size: 12px">--scope project</code> instead of
+            <code style="font-size: 12px">--scope global</code>
+          </td>
+        </tr>
+        <tr>
+          <td>API key errors</td>
+          <td>Confirm the key in your agent's MCP config hasn't expired</td>
+        </tr>
+      </table>
+    </main>
 
-<footer>
-  Built by <a href="https://github.com/google-labs-code">Google Labs</a> &middot; Licensed under Apache 2.0
-</footer>
+    <footer>
+      Built by <a href="https://github.com/google-labs-code">Google Labs</a> &middot; Licensed under
+      Apache 2.0
+    </footer>
 
-<script>
-  const agents = {
-    claude: { label: 'claude-code', cmd: 'npx plugins add google-labs-code/stitch-skills \\\n  --scope project --target claude-code' },
-    cursor: { label: 'cursor', cmd: 'npx plugins add google-labs-code/stitch-skills \\\n  --scope project --target cursor' },
-    gemini: { label: 'gemini-cli', cmd: 'npx plugins add google-labs-code/stitch-skills \\\n  --scope project --target gemini-cli' },
-    antigravity: { label: 'antigravity', cmd: 'npx plugins add google-labs-code/stitch-skills \\\n  --scope project --target antigravity' },
-  };
+    <script>
+      const agents = {
+        claude: {
+          label: 'claude-code',
+          cmd: 'npx plugins add google-labs-code/stitch-skills \\\n  --scope project --target claude-code',
+        },
+        cursor: {
+          label: 'cursor',
+          cmd: 'npx plugins add google-labs-code/stitch-skills \\\n  --scope project --target cursor',
+        },
+        gemini: {
+          label: 'gemini-cli',
+          cmd: 'npx plugins add google-labs-code/stitch-skills \\\n  --scope project --target gemini-cli',
+        },
+        antigravity: {
+          label: 'antigravity',
+          cmd: 'npx plugins add google-labs-code/stitch-skills \\\n  --scope project --target antigravity',
+        },
+      };
 
-  const tabs = document.querySelectorAll('.agent-tab');
-  const cmdEl = document.getElementById('agent-command');
-  const labelEl = document.getElementById('agent-label');
+      const tabs = document.querySelectorAll('.agent-tab');
+      const cmdEl = document.getElementById('agent-command');
+      const labelEl = document.getElementById('agent-label');
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const agent = agents[tab.dataset.agent];
-      labelEl.textContent = 'Terminal — ' + agent.label;
-      cmdEl.innerHTML = '<span class="prompt">$</span> ' + agent.cmd.replace(/\n/g, '<br>');
-    });
-  });
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          const agent = agents[tab.dataset.agent];
+          labelEl.textContent = 'Terminal — ' + agent.label;
+          cmdEl.innerHTML = '<span class="prompt">$</span> ' + agent.cmd.replace(/\n/g, '<br>');
+        });
+      });
 
-function toggleMobileNav() {
-  document.getElementById('mobile-nav').classList.toggle('open');
-  document.getElementById('mobile-overlay').classList.toggle('open');
-}
-</script>
-</body>
+      function toggleMobileNav() {
+        document.getElementById('mobile-nav').classList.toggle('open');
+        document.getElementById('mobile-overlay').classList.toggle('open');
+      }
+    </script>
+  </body>
 </html>

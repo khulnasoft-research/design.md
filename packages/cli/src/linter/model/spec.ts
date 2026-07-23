@@ -61,7 +61,8 @@ export interface ResolvedTypography {
   fontVariation?: string | undefined;
 }
 
-export type ResolvedValue = ResolvedColor | ResolvedDimension | ResolvedTypography | string | number | boolean;
+export type ResolvedValue =
+  ResolvedColor | ResolvedDimension | ResolvedTypography | string | number | boolean;
 
 // ── Re-exported from spec-config (single source of truth) ─────────
 export const VALID_TYPOGRAPHY_PROPS = _VALID_TYPOGRAPHY_PROPS;
@@ -126,17 +127,46 @@ const STANDARD_UNITS: Set<string> = new Set(_STANDARD_UNITS);
  */
 const CSS_UNITS = new Set([
   // Absolute
-  'px', 'cm', 'mm', 'in', 'pt', 'pc',
+  'px',
+  'cm',
+  'mm',
+  'in',
+  'pt',
+  'pc',
   // Relative to font
-  'em', 'rem', 'ex', 'ch', 'cap', 'ic', 'lh', 'rlh',
+  'em',
+  'rem',
+  'ex',
+  'ch',
+  'cap',
+  'ic',
+  'lh',
+  'rlh',
   // Viewport — classic
-  'vh', 'vw', 'vmin', 'vmax',
+  'vh',
+  'vw',
+  'vmin',
+  'vmax',
   // Viewport — dynamic/small/large (CSS Level 4)
-  'dvh', 'dvw', 'dvmin', 'dvmax',
-  'svh', 'svw', 'svmin', 'svmax',
-  'lvh', 'lvw', 'lvmin', 'lvmax',
+  'dvh',
+  'dvw',
+  'dvmin',
+  'dvmax',
+  'svh',
+  'svw',
+  'svmin',
+  'svmax',
+  'lvh',
+  'lvw',
+  'lvmin',
+  'lvmax',
   // Container query units
-  'cqw', 'cqh', 'cqi', 'cqb', 'cqmin', 'cqmax',
+  'cqw',
+  'cqh',
+  'cqi',
+  'cqb',
+  'cqmin',
+  'cqmax',
   // Percentage
   '%',
 ]);

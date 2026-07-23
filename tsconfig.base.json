@@ -12,8 +12,8 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@google/design-core": ["packages/design-core/src/index.ts"],
-      "@google/design-core/*": ["packages/design-core/src/*"]
+      "@scalify/design-core": ["packages/design-core/src/index.ts"],
+      "@scalify/design-core/*": ["packages/design-core/src/*"]
     },
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",

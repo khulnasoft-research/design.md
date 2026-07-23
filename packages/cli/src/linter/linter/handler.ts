@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type {
-  LinterSpec,
-  LintResult,
-  GradedTokenEdits,
-} from './spec.js';
+import type { LinterSpec, LintResult, GradedTokenEdits } from './spec.js';
 import type { DesignSystemState } from '../model/spec.js';
 import { runLinter, preEvaluate } from './runner.js';
 

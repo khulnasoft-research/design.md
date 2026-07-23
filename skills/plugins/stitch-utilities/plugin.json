@@ -1,0 +1,19 @@
+{
+  "name": "stitch-utilities",
+  "description": "Design utilities and assistants for Google Stitch — generate DESIGN.md specs, enhance prompts, build multi-page sites with stitch-loop, and enforce premium design standards.",
+  "version": "1.0.0",
+  "author": {
+    "name": "khulnasoft"
+  },
+  "homepage": "https://github.com/khulnasoft/stitch-skills",
+  "repository": "https://github.com/khulnasoft/stitch-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "stitch",
+    "design-system",
+    "prompt-engineering",
+    "design-md",
+    "website-generation",
+    "ui-standards"
+  ]
+}

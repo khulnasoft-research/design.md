@@ -19,7 +19,12 @@
  * Each function returns a ready-to-embed markdown string.
  */
 
-import type { SpecConfig, TypographyPropertyDef, SectionDef, ComponentSubTokenDef } from '../spec-config.js';
+import type {
+  SpecConfig,
+  TypographyPropertyDef,
+  SectionDef,
+  ComponentSubTokenDef,
+} from '../spec-config.js';
 
 // ── YAML code block helpers ─────────────────────────────────────
 
@@ -29,9 +34,7 @@ function yamlBlock(lines: string[]): string {
 }
 
 function yamlEntries(entries: Record<string, string>, indent = 2): string[] {
-  return Object.entries(entries).map(
-    ([k, v]) => `${' '.repeat(indent)}${k}: "${v}"`
-  );
+  return Object.entries(entries).map(([k, v]) => `${' '.repeat(indent)}${k}: "${v}"`);
 }
 
 function yamlObject(entries: Record<string, string | number>, indent = 4): string[] {
@@ -52,7 +55,10 @@ export function frontmatterExample(config: SpecConfig): string {
     'name: Daylight Prestige',
     'colors:',
     ...yamlEntries(
-      Object.fromEntries(Object.entries(config.EXAMPLES.colors).slice(0, 3)) as Record<string, string>
+      Object.fromEntries(Object.entries(config.EXAMPLES.colors).slice(0, 3)) as Record<
+        string,
+        string
+      >
     ),
     'typography:',
     `  ${typoName}:`,
@@ -89,9 +95,7 @@ export function componentsExample(config: SpecConfig): string {
 /** Typography property list (for the schema section). */
 export function typographyPropertyList(config: SpecConfig): string {
   return config.TYPOGRAPHY_PROPERTIES.map((p: TypographyPropertyDef) =>
-    p.description
-      ? `- \`${p.name}\` (${p.type}) - ${p.description}`
-      : `- \`${p.name}\` (${p.type})`
+    p.description ? `- \`${p.name}\` (${p.type}) - ${p.description}` : `- \`${p.name}\` (${p.type})`
   ).join('\n');
 }
 
@@ -107,9 +111,9 @@ export function sectionOrderList(config: SpecConfig): string {
 
 /** Component sub-token property list. */
 export function componentSubTokenList(config: SpecConfig): string {
-  return config.COMPONENT_SUB_TOKENS
-    .map((t: ComponentSubTokenDef) => `- ${t.name}: \\<${t.type}\\>`)
-    .join('\n');
+  return config.COMPONENT_SUB_TOKENS.map(
+    (t: ComponentSubTokenDef) => `- ${t.name}: \\<${t.type}\\>`
+  ).join('\n');
 }
 
 /** Recommended token names grouped by category. */

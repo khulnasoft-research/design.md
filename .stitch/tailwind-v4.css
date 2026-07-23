@@ -57,19 +57,19 @@
   --color-tab-active-border: #6366f14d;
   --color-nav-bg: #0b132699;
   --color-terminal-bg: #060e20cc;
-  --font-display: "Plus Jakarta Sans";
-  --font-headline-lg: "Plus Jakarta Sans";
-  --font-headline-md: "Plus Jakarta Sans";
-  --font-title-lg: "Inter";
-  --font-body-lg: "Inter";
-  --font-body-md: "Inter";
-  --font-body-sm: "Inter";
-  --font-label-sm: "Inter";
-  --font-label-tiny: "Inter";
-  --font-code-sm: "JetBrains Mono, Fira Code, monospace";
-  --font-code-xs: "JetBrains Mono, Fira Code, monospace";
-  --font-nav-link: "Inter";
-  --font-section-label: "Inter";
+  --font-display: 'Plus Jakarta Sans';
+  --font-headline-lg: 'Plus Jakarta Sans';
+  --font-headline-md: 'Plus Jakarta Sans';
+  --font-title-lg: 'Inter';
+  --font-body-lg: 'Inter';
+  --font-body-md: 'Inter';
+  --font-body-sm: 'Inter';
+  --font-label-sm: 'Inter';
+  --font-label-tiny: 'Inter';
+  --font-code-sm: 'JetBrains Mono, Fira Code, monospace';
+  --font-code-xs: 'JetBrains Mono, Fira Code, monospace';
+  --font-nav-link: 'Inter';
+  --font-section-label: 'Inter';
   --text-display: 84px;
   --text-headline-lg: 40px;
   --text-headline-md: 32px;
@@ -118,4 +118,3 @@
   --spacing-hero-padding-top: 120px;
   --spacing-hero-padding-bottom: 80px;
 }
-

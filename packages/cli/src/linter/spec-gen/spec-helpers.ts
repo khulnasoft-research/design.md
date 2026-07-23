@@ -57,9 +57,9 @@ export function getSpecContent(specPath?: string): string {
   } catch {
     throw new Error(
       `Failed to load spec.md.\n` +
-      `  Bundled path: ${bundledPath}\n` +
-      `  Dev path:     ${devPath}\n` +
-      `If running from a built bundle, ensure the build script copies docs/spec.md into dist/.`
+        `  Bundled path: ${bundledPath}\n` +
+        `  Dev path:     ${devPath}\n` +
+        `If running from a built bundle, ensure the build script copies docs/spec.md into dist/.`
     );
   }
 }
@@ -67,10 +67,10 @@ export function getSpecContent(specPath?: string): string {
 export function getRulesTable(rules: RuleDescriptor[]): string {
   let table = '| Rule | Severity | What it checks |\n';
   table += '|------|----------|----------------|\n';
-  
+
   for (const rule of rules) {
     table += `| ${rule.name} | ${rule.severity} | ${rule.description} |\n`;
   }
-  
+
   return table;
 }

@@ -8,7 +8,9 @@ import { ComponentPreview } from './ComponentPreview';
 export function TokenBrowser() {
   const { designSystem } = useDesignMdState();
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState<'all' | 'colors' | 'typography' | 'spacing' | 'rounded' | 'components'>('all');
+  const [category, setCategory] = useState<
+    'all' | 'colors' | 'typography' | 'spacing' | 'rounded' | 'components'
+  >('all');
 
   if (!designSystem) {
     return (
@@ -71,28 +73,40 @@ export function TokenBrowser() {
         {(category === 'all' || category === 'typography') && (
           <div className="token-section">
             <h3>Typography</h3>
-            <TypographyShowcase typography={designSystem.typography as Record<string, unknown>} search={search} />
+            <TypographyShowcase
+              typography={designSystem.typography as Record<string, unknown>}
+              search={search}
+            />
           </div>
         )}
 
         {(category === 'all' || category === 'spacing') && (
           <div className="token-section">
             <h3>Spacing</h3>
-            <SpacingGrid spacing={designSystem.spacing as Record<string, unknown>} search={search} />
+            <SpacingGrid
+              spacing={designSystem.spacing as Record<string, unknown>}
+              search={search}
+            />
           </div>
         )}
 
         {(category === 'all' || category === 'rounded') && (
           <div className="token-section">
             <h3>Rounded Corners</h3>
-            <RoundedGrid rounded={designSystem.rounded as Record<string, unknown>} search={search} />
+            <RoundedGrid
+              rounded={designSystem.rounded as Record<string, unknown>}
+              search={search}
+            />
           </div>
         )}
 
         {(category === 'all' || category === 'components') && (
           <div className="token-section">
             <h3>Components</h3>
-            <ComponentPreview components={designSystem.components as Record<string, unknown>} search={search} />
+            <ComponentPreview
+              components={designSystem.components as Record<string, unknown>}
+              search={search}
+            />
           </div>
         )}
       </div>
@@ -137,5 +151,3 @@ function RoundedGrid({ rounded, search }: { rounded?: Record<string, unknown>; s
     </div>
   );
 }
-
-

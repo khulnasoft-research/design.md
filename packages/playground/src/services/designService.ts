@@ -3,12 +3,7 @@
  * Handles all design.md file operations and state management
  */
 
-import type {
-  DesignSystem,
-  LintReport,
-  ExportResult,
-  DesignDiffReport,
-} from '@google/design-core';
+import type { DesignSystem, LintReport, ExportResult, DesignDiffReport } from '@scalify/design-core';
 
 export class DesignService {
   private designSystem: DesignSystem | null = null;
@@ -25,7 +20,9 @@ export class DesignService {
       this.lastModified = new Date();
       return data.designSystem;
     } catch (error) {
-      throw new Error(`Error loading design file: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Error loading design file: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
   }
 
@@ -40,7 +37,9 @@ export class DesignService {
       this.filePath = path;
       this.lastModified = new Date();
     } catch (error) {
-      throw new Error(`Error saving design file: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Error saving design file: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
   }
 
@@ -54,11 +53,16 @@ export class DesignService {
       if (!response.ok) throw new Error(`Failed to lint file: ${response.statusText}`);
       return response.json();
     } catch (error) {
-      throw new Error(`Error linting design file: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Error linting design file: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
   }
 
-  async export(path: string, format: 'tailwind-v3' | 'tailwind-v4' | 'dtcg' | 'json'): Promise<ExportResult> {
+  async export(
+    path: string,
+    format: 'tailwind-v3' | 'tailwind-v4' | 'dtcg' | 'json'
+  ): Promise<ExportResult> {
     try {
       const response = await fetch('/api/design/export', {
         method: 'POST',
@@ -68,7 +72,9 @@ export class DesignService {
       if (!response.ok) throw new Error(`Failed to export file: ${response.statusText}`);
       return response.json();
     } catch (error) {
-      throw new Error(`Error exporting design file: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Error exporting design file: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
   }
 
@@ -82,7 +88,9 @@ export class DesignService {
       if (!response.ok) throw new Error(`Failed to diff files: ${response.statusText}`);
       return response.json();
     } catch (error) {
-      throw new Error(`Error diffing design files: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Error diffing design files: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
   }
 

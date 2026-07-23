@@ -49,12 +49,15 @@ export default defineCommand({
     const diff = {
       tokens: {
         colors: diffMaps(beforeReport.designSystem.colors, afterReport.designSystem.colors),
-        typography: diffMaps(beforeReport.designSystem.typography, afterReport.designSystem.typography),
+        typography: diffMaps(
+          beforeReport.designSystem.typography,
+          afterReport.designSystem.typography
+        ),
         rounded: diffMaps(beforeReport.designSystem.rounded, afterReport.designSystem.rounded),
         spacing: diffMaps(beforeReport.designSystem.spacing, afterReport.designSystem.spacing),
         components: diffMaps(
           serializeComponents(beforeReport.designSystem.components),
-          serializeComponents(afterReport.designSystem.components),
+          serializeComponents(afterReport.designSystem.components)
         ),
       },
       findings: {
@@ -65,8 +68,9 @@ export default defineCommand({
           warnings: afterReport.summary.warnings - beforeReport.summary.warnings,
         },
       },
-      regression: afterReport.summary.errors > beforeReport.summary.errors
-        || afterReport.summary.warnings > beforeReport.summary.warnings,
+      regression:
+        afterReport.summary.errors > beforeReport.summary.errors ||
+        afterReport.summary.warnings > beforeReport.summary.warnings,
     };
 
     console.log(formatOutput(diff, args));
@@ -74,7 +78,9 @@ export default defineCommand({
   },
 });
 
-function serializeComponents(components: Map<string, ComponentDef>): Map<string, Record<string, unknown>> {
+function serializeComponents(
+  components: Map<string, ComponentDef>
+): Map<string, Record<string, unknown>> {
   const result = new Map<string, Record<string, unknown>>();
   for (const [name, comp] of components) {
     result.set(name, Object.fromEntries(comp.properties));

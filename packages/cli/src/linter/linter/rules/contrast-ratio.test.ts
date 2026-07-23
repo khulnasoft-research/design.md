@@ -36,7 +36,7 @@ describe('contrastCheck', () => {
         'button-good': { backgroundColor: '{colors.black}', textColor: '{colors.white}' },
       },
     });
-    const contrastWarnings = contrastCheck(state).filter(d => d.message.includes('contrast'));
+    const contrastWarnings = contrastCheck(state).filter((d) => d.message.includes('contrast'));
     expect(contrastWarnings.length).toBe(0);
   });
 });

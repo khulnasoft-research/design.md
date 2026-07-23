@@ -93,59 +93,68 @@ spacing:
   margin: 64px
   panel-padding: 120px
 ---
- 
+
 ## Brand & Style
- 
+
 This design system establishes an atmosphere of intellectual authority and discovery. It targets a sophisticated audience that values long-form investigative journalism, historical context, and precision data. The brand personality is scholarly yet avant-garde, blending the archival feel of physical parchment and ink with the crispness of modern digital mapping.
- 
+
 The aesthetic follows a **High-Contrast / Minimalist** approach. It rejects modern trends of soft shadows and rounded corners in favor of a rigid, monumental structure. The emotional response is intended to be one of quiet focus, evoking the feeling of a researcher in a darkened library illuminated by a single high-intensity lamp.
- 
+
 ## Colors
- 
+
 The palette is restricted to four core tones to maintain an editorial rigor.
+
 - **Obsidian Canvas (#080C14):** The foundational ground. It provides a deep, non-distracting void that allows content to emerge.
 - **Ink Navy (#0A0E1A):** Used for primary content containers and headings to create a subtle shift from the background without losing the dark-mode immersion.
 - **Slate Structure (#2C3A4A):** The color of technicality. Used for hair-line borders, grid lines, and utilitarian UI elements.
 - **Antique Gold (#C9A227):** A singular, high-intensity accent. It must be used sparingly—ideally only once per screen view—to act as a beacon for the most important action or data point.
- 
+
 ## Typography
- 
+
 The typography system relies on the interplay between traditional literary serifs and technical geometric sans-serifs.
+
 - **Headlines:** Use **Newsreader** at large scales. Its high-contrast strokes and sharp serifs command attention. Increased tracking on display sizes enhances the "monumental" feel.
 - **Body:** **Noto Serif** is utilized for its warmth and legibility over long periods. The 1.7 line height is mandatory to prevent text blocks from feeling dense or unapproachable.
 - **Labels & UI:** **Space Grotesk** serves as the annotation layer. It is used in all-caps with wide tracking to mimic the coordinate labels found on topographical charts.
- 
+
 ## Layout & Spacing
- 
+
 This design system employs a **Full-Bleed Panel Grid** with scroll-snap functionality. Each panel represents a "chapter" or "map sheet" in the experience.
+
 - **Offset Text Blocks:** Avoid centering text. Content should be offset to the left or right of the vertical center line to create a dynamic, editorial rhythm.
 - **Alternating Panels:** Visual weight should shift between panels (e.g., a text-heavy slate panel followed by a full-screen image/data visualization on the obsidian canvas).
 - **Margins:** Generous margins (64px+) ensure that content never feels crowded, maintaining the "Atlas" feel of vast, explored territory.
- 
+
 ## Elevation & Depth
- 
+
 In accordance with the flat, cartographic nature of the design system, **shadows are strictly prohibited**. Depth is created exclusively through:
+
 - **Tonal Stepping:** Layering the Primary Ink Navy (#0A0E1A) over the Neutral Obsidian (#080C14).
 - **Hairline Borders:** Using 1px solid Slate (#2C3A4A) to define boundaries between panels or components.
 - **Z-Index Layering:** Elements like fixed navigation or labels float over content with 100% opacity, relying on color contrast rather than blur or shadow to stand out.
- 
+
 ## Shapes
- 
+
 The shape language is defined by the **0px border radius**. All containers, buttons, and decorative elements must utilize sharp, 90-degree angles. This reflects the precision of a mapmaker's tools and the rigid lines of architectural drafting. No exceptions are made for circular profile images or icons; these should be framed in square or rectangular containers.
- 
+
 ## Components
- 
+
 ### Buttons
+
 Primary buttons use the Antique Gold (#C9A227) fill with Navy (#0A0E1A) text. They are rectangular (0px radius) and lack any hover shadow; hover states are indicated by a 1px Slate (#2C3A4A) outline or a slight color shift in the gold.
- 
+
 ### Pull Quotes
+
 Quotes are treated with high editorial importance. They feature the large Newsreader italic typeface and are anchored by a 2px vertical gold border on the left. They should often be placed in the "offset" layout area to break the body text flow.
- 
+
 ### Lists & Annotations
+
 Lists use the Label-style font (Space Grotesk) for bullets or numbers. Items are separated by subtle horizontal hair-lines in Slate (#2C3A4A).
- 
+
 ### Input Fields
+
 Inputs are simple 1px Slate outlines against the Navy surface. Focus states are indicated by the border changing to Gold. Labeling always sits above the field in uppercase, wide-tracked Space Grotesk.
- 
+
 ### Data Panels
+
 A unique component for this design system is the "Coordinate Panel"—a small, fixed UI element in the corner of the viewport that displays progress or metadata in the Label font style, mimicking the legend of a map.

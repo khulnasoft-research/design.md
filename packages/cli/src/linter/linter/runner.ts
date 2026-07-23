@@ -28,21 +28,23 @@ function isDescriptorArray(rules: LintRule[] | RuleDescriptor[]): rules is RuleD
  */
 export function runLinter(
   state: DesignSystemState,
-  rules: LintRule[] | RuleDescriptor[] = DEFAULT_RULES,
+  rules: LintRule[] | RuleDescriptor[] = DEFAULT_RULES
 ): LintResult {
   const findings: Finding[] = isDescriptorArray(rules)
-    ? rules.flatMap(desc => desc.run(state).map(f => ({
-        severity: f.severity ?? desc.severity,
-        path: f.path,
-        message: f.message,
-      })))
-    : rules.flatMap(rule => rule(state));
+    ? rules.flatMap((desc) =>
+        desc.run(state).map((f) => ({
+          severity: f.severity ?? desc.severity,
+          path: f.path,
+          message: f.message,
+        }))
+      )
+    : rules.flatMap((rule) => rule(state));
   return {
     findings,
     summary: {
-      errors: findings.filter(d => d.severity === 'error').length,
-      warnings: findings.filter(d => d.severity === 'warning').length,
-      infos: findings.filter(d => d.severity === 'info').length,
+      errors: findings.filter((d) => d.severity === 'error').length,
+      warnings: findings.filter((d) => d.severity === 'warning').length,
+      infos: findings.filter((d) => d.severity === 'info').length,
     },
   };
 }
@@ -52,7 +54,7 @@ export function runLinter(
  */
 export function preEvaluate(
   state: DesignSystemState,
-  rules: LintRule[] | RuleDescriptor[] = DEFAULT_RULES,
+  rules: LintRule[] | RuleDescriptor[] = DEFAULT_RULES
 ): GradedTokenEdits {
   const { findings } = runLinter(state, rules);
   const fixes: TokenEditEntry[] = [];

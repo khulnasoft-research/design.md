@@ -28,7 +28,7 @@ const MAX_TYPO_DISTANCE = 2;
  */
 export function unknownKey(state: DesignSystemState): RuleFinding[] {
   const knownSet = new Set<string>(SCHEMA_KEYS);
-  return (state.unknownKeys ?? []).flatMap(key => {
+  return (state.unknownKeys ?? []).flatMap((key) => {
     if (knownSet.has(key)) return [];
 
     let bestMatch: string | undefined;
@@ -42,10 +42,12 @@ export function unknownKey(state: DesignSystemState): RuleFinding[] {
     }
 
     if (bestDist <= MAX_TYPO_DISTANCE && bestMatch) {
-      return [{
-        path: key,
-        message: `Unknown key "${key}" — did you mean "${bestMatch}"?`,
-      }];
+      return [
+        {
+          path: key,
+          message: `Unknown key "${key}" — did you mean "${bestMatch}"?`,
+        },
+      ];
     }
 
     return [];
@@ -55,6 +57,7 @@ export function unknownKey(state: DesignSystemState): RuleFinding[] {
 export const unknownKeyRule: RuleDescriptor = {
   name: 'unknown-key',
   severity: 'warning',
-  description: 'Unknown key — warns when a top-level YAML key looks like a typo of a known schema key.',
+  description:
+    'Unknown key — warns when a top-level YAML key looks like a typo of a known schema key.',
   run: unknownKey,
 };

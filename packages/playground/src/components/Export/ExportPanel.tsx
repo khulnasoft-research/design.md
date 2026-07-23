@@ -85,11 +85,7 @@ export function ExportPanel() {
           </select>
         </div>
 
-        <button
-          className="btn btn-primary"
-          onClick={handleExport}
-          disabled={loading || !path}
-        >
+        <button className="btn btn-primary" onClick={handleExport} disabled={loading || !path}>
           {loading ? 'Exporting...' : 'Export'}
         </button>
       </div>

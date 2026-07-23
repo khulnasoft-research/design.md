@@ -20,7 +20,11 @@ describe('formatOutput', () => {
     it('renders a lint report instead of [object Object]', () => {
       const lintOutput = {
         findings: [
-          { severity: 'warning', path: 'colors.surface', message: "'surface' is defined but never referenced." },
+          {
+            severity: 'warning',
+            path: 'colors.surface',
+            message: "'surface' is defined but never referenced.",
+          },
           { severity: 'info', message: 'Design system defines 10 colors.' },
         ],
         summary: { errors: 0, warnings: 1, infos: 1 },
@@ -38,9 +42,7 @@ describe('formatOutput', () => {
 
     it('renders findings without a path', () => {
       const lintOutput = {
-        findings: [
-          { severity: 'info', message: 'Token count summary.' },
-        ],
+        findings: [{ severity: 'info', message: 'Token count summary.' }],
         summary: { errors: 0, warnings: 0, infos: 1 },
       };
 

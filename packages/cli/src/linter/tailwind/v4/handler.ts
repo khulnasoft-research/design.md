@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { TailwindV4EmitterSpec, TailwindV4EmitterResult, TailwindV4ThemeData } from './spec.js';
+import type {
+  TailwindV4EmitterSpec,
+  TailwindV4EmitterResult,
+  TailwindV4ThemeData,
+} from './spec.js';
 import type { DesignSystemState, ResolvedDimension } from '../../model/spec.js';
 
 const VALID_TOKEN_NAME = /^[a-zA-Z0-9][a-zA-Z0-9-]*$/;

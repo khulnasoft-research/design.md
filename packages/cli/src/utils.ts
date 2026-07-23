@@ -31,11 +31,13 @@ export async function readInput(filePath: string): Promise<string> {
   try {
     return readFileSync(filePath, 'utf-8');
   } catch (error) {
-    console.error(JSON.stringify({
-      error: 'FILE_READ_ERROR',
-      message: error instanceof Error ? error.message : String(error),
-      path: filePath,
-    }));
+    console.error(
+      JSON.stringify({
+        error: 'FILE_READ_ERROR',
+        message: error instanceof Error ? error.message : String(error),
+        path: filePath,
+      })
+    );
     process.exitCode = 2;
     throw error; // bubbles up, but process will exit with code 2 if uncaught
   }
@@ -97,9 +99,9 @@ function isLintOutput(obj: Record<string, unknown>): boolean {
   if (!Array.isArray(obj.findings)) return false;
   if (typeof obj.summary !== 'object' || obj.summary === null) return false;
   const s = obj.summary as Record<string, unknown>;
-  return typeof s.errors === 'number'
-    && typeof s.warnings === 'number'
-    && typeof s.infos === 'number';
+  return (
+    typeof s.errors === 'number' && typeof s.warnings === 'number' && typeof s.infos === 'number'
+  );
 }
 
 function formatLintAsMarkdown(obj: Record<string, unknown>): string {
@@ -125,14 +127,17 @@ function formatAsText(data: unknown, indent = 0): string {
   if (typeof data === 'string') return data;
   if (typeof data === 'number' || typeof data === 'boolean') return String(data);
   if (Array.isArray(data)) {
-    return data.map(item => `${'  '.repeat(indent)}- ${formatAsText(item, indent + 1)}`).join('\n');
+    return data
+      .map((item) => `${'  '.repeat(indent)}- ${formatAsText(item, indent + 1)}`)
+      .join('\n');
   }
   if (typeof data === 'object') {
     return Object.entries(data as Record<string, unknown>)
       .map(([key, val]) => {
-        const valStr = typeof val === 'object' && val !== null
-          ? '\n' + formatAsText(val, indent + 1)
-          : ' ' + formatAsText(val, indent + 1);
+        const valStr =
+          typeof val === 'object' && val !== null
+            ? '\n' + formatAsText(val, indent + 1)
+            : ' ' + formatAsText(val, indent + 1);
         return `${'  '.repeat(indent)}${key}:${valStr}`;
       })
       .join('\n');
@@ -160,7 +165,7 @@ export function serializeDesignSystem(state: Record<string, unknown>): Record<st
  */
 export function diffMaps<V>(
   before: Map<string, V>,
-  after: Map<string, V>,
+  after: Map<string, V>
 ): { added: string[]; removed: string[]; modified: string[] } {
   const added: string[] = [];
   const removed: string[] = [];

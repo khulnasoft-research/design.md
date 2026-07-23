@@ -1,9 +1,9 @@
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
-const STITCH_API_URL = process.env.STITCH_API_URL || "https://stitch.withgoogle.com/api/mcp";
-const STITCH_API_KEY = process.env.STITCH_API_KEY || "";
-const PORT = parseInt(process.env.PORT || "3030");
+const STITCH_API_URL = process.env.STITCH_API_URL || 'https://stitch.withgoogle.com/api/mcp';
+const STITCH_API_KEY = process.env.STITCH_API_KEY || '';
+const PORT = parseInt(process.env.PORT || '3030');
 
 interface MCPRequest {
   id: string;
@@ -18,11 +18,11 @@ async function getClient() {
   if (client) return client;
   transport = new StreamableHTTPClientTransport(new URL(STITCH_API_URL), {
     headers: {
-      "Content-Type": "application/json",
-      ...(STITCH_API_KEY ? { "X-Goog-Api-Key": STITCH_API_KEY } : {}),
+      'Content-Type': 'application/json',
+      ...(STITCH_API_KEY ? { 'X-Goog-Api-Key': STITCH_API_KEY } : {}),
     },
   });
-  client = new Client({ name: "stitch-playground", version: "0.1.0" });
+  client = new Client({ name: 'stitch-playground', version: '0.1.0' });
   await client.connect(transport);
   return client;
 }
@@ -30,21 +30,24 @@ async function getClient() {
 async function handleRequest(req: Request): Promise<Response> {
   const url = new URL(req.url);
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
 
-  if (req.method === "OPTIONS") {
+  if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers });
   }
 
-  if (url.pathname === "/api/health") {
-    return Response.json({ ok: true, stitchUrl: STITCH_API_URL, hasKey: !!STITCH_API_KEY }, { headers });
+  if (url.pathname === '/api/health') {
+    return Response.json(
+      { ok: true, stitchUrl: STITCH_API_URL, hasKey: !!STITCH_API_KEY },
+      { headers }
+    );
   }
 
-  if (url.pathname === "/api/tools") {
+  if (url.pathname === '/api/tools') {
     try {
       const c = await getClient();
       const result = await c.listTools();
@@ -54,12 +57,12 @@ async function handleRequest(req: Request): Promise<Response> {
     }
   }
 
-  if (url.pathname === "/api/call" && req.method === "POST") {
+  if (url.pathname === '/api/call' && req.method === 'POST') {
     try {
       const body: MCPRequest = await req.json();
       const c = await getClient();
       const result = await c.request(
-        { method: "tools/call", params: { name: body.method, arguments: body.params } },
+        { method: 'tools/call', params: { name: body.method, arguments: body.params } },
         { onprogress: () => {} }
       );
       return Response.json(result, { headers });
@@ -68,7 +71,7 @@ async function handleRequest(req: Request): Promise<Response> {
     }
   }
 
-  return Response.json({ error: "not found" }, { status: 404, headers });
+  return Response.json({ error: 'not found' }, { status: 404, headers });
 }
 
 Bun.serve({
@@ -78,4 +81,4 @@ Bun.serve({
 
 console.log(`Stitch Playground API running on http://localhost:${PORT}`);
 console.log(`Stitch API URL: ${STITCH_API_URL}`);
-console.log(`Auth: ${STITCH_API_KEY ? "API key configured" : "NO API KEY - set STITCH_API_KEY"}`);
+console.log(`Auth: ${STITCH_API_KEY ? 'API key configured' : 'NO API KEY - set STITCH_API_KEY'}`);

@@ -109,11 +109,11 @@ spacing:
 
 This design system is built upon a philosophy of **Architectural Minimalism** mixed with **Journalistic Gravitas**. It is designed for high-performance athletic heritage brands, marathon organizers, and prestigious sporting publications. The aesthetic targets an audience that values discipline, endurance, and historical prestige.
 
-The UI evokes a premium matte finish, avoiding glossy gradients or excessive shadows in favor of structural clarity and "Color Stacking." The emotional response is one of calm authority—resembling a high-end broadsheet newspaper or a contemporary gallery exhibition. It prioritizes legibility, precision timing, and editorial flow. 
+The UI evokes a premium matte finish, avoiding glossy gradients or excessive shadows in favor of structural clarity and "Color Stacking." The emotional response is one of calm authority—resembling a high-end broadsheet newspaper or a contemporary gallery exhibition. It prioritizes legibility, precision timing, and editorial flow.
 
 ## Colors
 
-The palette is rooted in high-contrast neutrals and a single, evocative accent color.  
+The palette is rooted in high-contrast neutrals and a single, evocative accent color.
 
 - **Primary (#1A1C1E):** A deep ink used for headlines and core text to provide maximum readability and a sense of permanence.
 - **Secondary (#6C7278):** A sophisticated slate used primarily for utilitarian elements like borders, captions, and metadata.
@@ -137,17 +137,17 @@ The 16px base unit dictates all padding and margins. Vertical rhythm is strictly
 
 ## Elevation & Depth
 
-Depth in this system is achieved through **Color Stacking** and **Architectural Outlines** rather than shadows.  
+Depth in this system is achieved through **Color Stacking** and **Architectural Outlines** rather than shadows.
 
 1. **Base Layer:** The Neutral (#F7F5F2) background serves as the ground.
 2. **Surface Layer:** White (#FFFFFF) cards or sections sit directly on the ground.
-3. **Definition:** Every surface layer is defined by a 1px solid Secondary (#6C7278) border. 
+3. **Definition:** Every surface layer is defined by a 1px solid Secondary (#6C7278) border.
 
 Shadows should be avoided entirely to maintain the matte, premium finish. The hierarchy is established purely through the contrast between the limestone background and the pure white foreground containers.
 
 ## Shapes
 
-The shape language is defined by **Architectural Sharpness**. All interactive elements, containers, and inputs utilize a minimal **4px corner radius**. This provides just enough softness to feel modern while maintaining a rigid, engineered aesthetic that reflects the precision of the marathon theme. 
+The shape language is defined by **Architectural Sharpness**. All interactive elements, containers, and inputs utilize a minimal **4px corner radius**. This provides just enough softness to feel modern while maintaining a rigid, engineered aesthetic that reflects the precision of the marathon theme.
 
 ## Components
 
@@ -166,11 +166,13 @@ The shape language is defined by **Architectural Sharpness**. All interactive el
 ## Do's and Don'ts
 
 ### Do:
+
 - **Do** use asymmetrical margins. If the left margin is `16 (5.5rem)`, try making the right margin `24 (8.5rem)` to create an editorial layout.
 - **Do** use `Space Grotesk` for anything that feels like "data" or "process."
 - **Do** lean into the "Limestone" warmth. Pure grey (#808080) is too cold; always use the `Slate Gray` (#6C7278) which has a hint of blue-gold.
 
 ### Don't:
+
 - **Don't** use 100% black. Always use `Deep Ink` (#1A1C1E).
 - **Don't** use "pill" buttons. The `4px` radius is a strict rule to maintain architectural discipline.
 - **Don't** use dividers. If two pieces of content need separation, increase the spacing token (e.g., move from `4` to `6`) or change the background tone.

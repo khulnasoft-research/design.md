@@ -30,7 +30,7 @@ export function ColorGrid({ colors, search }: ColorGridProps) {
         const colorValue = String(value);
         const isHex = colorValue.startsWith('#');
         const isRgb = colorValue.startsWith('rgb');
-        
+
         return (
           <div key={name} className="color-item">
             <div

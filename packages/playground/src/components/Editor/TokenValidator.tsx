@@ -16,7 +16,8 @@ export function TokenValidator() {
           )}
           {summary.warnings > 0 && (
             <span className="badge badge-warning">
-              <AlertTriangle size={14} /> {summary.warnings} Warning{summary.warnings !== 1 ? 's' : ''}
+              <AlertTriangle size={14} /> {summary.warnings} Warning
+              {summary.warnings !== 1 ? 's' : ''}
             </span>
           )}
           {summary.infos > 0 && (

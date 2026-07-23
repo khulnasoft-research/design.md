@@ -25,9 +25,9 @@ const modelHandler = new ModelHandler();
 function buildState(overrides: Partial<ParsedDesignSystem> = {}): DesignSystemState {
   const parsed: ParsedDesignSystem = { sourceMap: new Map(), ...overrides };
   const result = modelHandler.execute(parsed);
-  const hasErrors = result.findings.some(d => d.severity === 'error');
+  const hasErrors = result.findings.some((d) => d.severity === 'error');
   if (hasErrors) {
-    throw new Error(`Model build failed: ${result.findings.map(d => d.message).join(', ')}`);
+    throw new Error(`Model build failed: ${result.findings.map((d) => d.message).join(', ')}`);
   }
   return result.designSystem;
 }
@@ -75,13 +75,13 @@ describe('preEvaluate', () => {
         'button-broken': {
           backgroundColor: '{colors.nonexistent}',
           textColor: '{colors.white}',
-        }
+        },
       },
     });
     const graded = preEvaluate(state);
-    expect(graded.fixes.length).toBeGreaterThan(0);       // error: broken ref
+    expect(graded.fixes.length).toBeGreaterThan(0); // error: broken ref
     expect(graded.improvements.length).toBeGreaterThan(0); // warning: contrast
-    expect(graded.suggestions.length).toBeGreaterThan(0);  // info: summary
+    expect(graded.suggestions.length).toBeGreaterThan(0); // info: summary
   });
 
   it('accepts custom rules', () => {

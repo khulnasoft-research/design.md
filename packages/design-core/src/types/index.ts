@@ -1,8 +1,3 @@
-/**
- * Core type definitions for DESIGN.md system
- * Shared across CLI, MCP Server, and Playground
- */
-
 export interface DesignToken {
   name: string;
   value: string | number | boolean;
@@ -12,7 +7,7 @@ export interface DesignToken {
 }
 
 export interface ColorToken extends DesignToken {
-  value: string; // hex, rgb, hsl
+  value: string;
   contrast?: number;
 }
 

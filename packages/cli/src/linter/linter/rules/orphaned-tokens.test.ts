@@ -25,7 +25,7 @@ describe('orphanedTokens', () => {
       },
     });
     const findings = orphanedTokens(state);
-    const orphan = findings.find(d => d.message.includes('unused'));
+    const orphan = findings.find((d) => d.message.includes('unused'));
     expect(orphan).toBeDefined();
   });
 
@@ -100,11 +100,11 @@ describe('orphanedTokens', () => {
       },
     });
     const findings = orphanedTokens(state);
-    const orphan = findings.find(d => d.path === 'colors.brand-blue');
+    const orphan = findings.find((d) => d.path === 'colors.brand-blue');
     expect(orphan).toBeDefined();
     // And confirms `on-primary` does not get flagged just because it's not
     // directly referenced.
-    expect(findings.find(d => d.path === 'colors.on-primary')).toBeUndefined();
+    expect(findings.find((d) => d.path === 'colors.on-primary')).toBeUndefined();
   });
 
   it('does not flag MD3 baseline families even when no component references them', () => {

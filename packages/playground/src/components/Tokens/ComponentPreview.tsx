@@ -21,7 +21,10 @@ export function ComponentPreview({ components, search }: ComponentPreviewProps) 
           </div>
           <div className="component-details">
             <div className="component-type">
-              Type: <span className="type-value">{typeof value === 'object' ? 'object' : typeof value}</span>
+              Type:{' '}
+              <span className="type-value">
+                {typeof value === 'object' ? 'object' : typeof value}
+              </span>
             </div>
             {typeof value === 'object' && value !== null && (
               <div className="component-properties">

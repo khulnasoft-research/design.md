@@ -22,10 +22,13 @@ import type { RuleDescriptor, RuleFinding } from './types.js';
  */
 export function missingTypography(state: DesignSystemState): RuleFinding[] {
   if (state.typography.size === 0 && state.colors.size > 0) {
-    return [{
-      path: 'typography',
-      message: "No typography tokens defined. Agents will use default font choices, reducing your control over the design system's typographic identity.",
-    }];
+    return [
+      {
+        path: 'typography',
+        message:
+          "No typography tokens defined. Agents will use default font choices, reducing your control over the design system's typographic identity.",
+      },
+    ];
   }
   return [];
 }
@@ -33,6 +36,6 @@ export function missingTypography(state: DesignSystemState): RuleFinding[] {
 export const missingTypographyRule: RuleDescriptor = {
   name: 'missing-typography',
   severity: 'warning',
-  description: "Missing typography — warns when colors are defined but no typography tokens exist.",
+  description: 'Missing typography — warns when colors are defined but no typography tokens exist.',
   run: missingTypography,
 };
