@@ -500,7 +500,7 @@ export class OrchestrationService {
     if (this.policyEngine) {
       const policyResult = await this.policyEngine.enforce(draft.designSystem);
       if (!policyResult.compliant) {
-        const errors = policyResult.violations.filter((v) => v.severity === 'error');
+        const errors = policyResult.violations.filter((v: { severity: string }) => v.severity === 'error');
         if (errors.length > 0 && request.action !== 'reject') {
           await this.logAudit({
             tenantId: request.tenantId,
@@ -509,12 +509,12 @@ export class OrchestrationService {
             resource: 'design_system',
             resourceId: request.draftId,
             outcome: 'failure',
-            failureReason: `Policy violations: ${errors.map((e) => e.message).join('; ')}`,
+            failureReason: `Policy violations: ${errors.map((e: { message: string }) => e.message).join('; ')}`,
             changes: {},
             duration: Date.now() - startTime,
           });
           throw new Error(
-            `Design system violates organizational policies: ${errors.map((e) => e.message).join('; ')}`
+            `Design system violates organizational policies: ${errors.map((e: { message: string }) => e.message).join('; ')}`
           );
         }
       }

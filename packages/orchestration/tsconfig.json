@@ -13,7 +13,6 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "rootDir": "./src",
     "outDir": "./dist",
     "declaration": true,
     "declarationMap": true,
@@ -24,7 +23,9 @@
       "@scalify/enterprise-controls": ["../enterprise-controls/dist/index.d.ts"],
       "@scalify/enterprise-controls/*": ["../enterprise-controls/dist/*.d.ts"],
       "@scalify/ai-orchestration": ["../ai-orchestration/dist/index.d.ts"],
-      "@scalify/ai-orchestration/*": ["../ai-orchestration/dist/*.d.ts"]
+      "@scalify/ai-orchestration/*": ["../ai-orchestration/dist/*.d.ts"],
+      "@scalify/cli": ["../cli/dist/index.d.ts"],
+      "@scalify/cli/*": ["../cli/dist/*.d.ts"]
     }
   },
   "include": ["src/**/*.ts"],
