@@ -21,6 +21,10 @@
     "./feedback": {
       "types": "./dist/feedback/index.d.ts",
       "import": "./dist/feedback/index.js"
+    },
+    "./providers": {
+      "types": "./dist/providers/index.d.ts",
+      "import": "./dist/providers/index.js"
     }
   },
   "files": [
@@ -40,7 +44,10 @@
   ],
   "dependencies": {
     "@scalify/design-core": "*",
-    "ai": "latest"
+    "ai": "latest",
+    "@ai-sdk/openai": "latest",
+    "@ai-sdk/anthropic": "latest",
+    "@ai-sdk/google": "latest"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",

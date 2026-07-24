@@ -22,6 +22,16 @@ export { DefaultFeedbackProcessor, createFeedbackProcessor } from './feedback/in
 // Utilities
 export { generateId } from './utils.js';
 
+// AI Providers
+export type { AIProvider, ProviderConfig, ResolvedProviderConfig } from './providers/index.js';
+export {
+  resolveProviderConfig,
+  createLanguageModel,
+  detectAvailableProvider,
+  createDefaultLanguageModel,
+  listConfiguredProviders,
+} from './providers/index.js';
+
 // Re-export workflow types from design-core
 export type {
   PromptRequest,
