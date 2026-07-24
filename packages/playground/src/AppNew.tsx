@@ -5,6 +5,7 @@ import {
   GitCompare,
   Download,
   Wrench,
+  Globe,
   Plus,
   Download as DownloadIcon,
 } from 'lucide-react';
@@ -15,10 +16,11 @@ import { TokenValidator } from './components/Editor/TokenValidator';
 import { TokenBrowser } from './components/Tokens/TokenBrowser';
 import { DesignDiff } from './components/Comparison/DesignDiff';
 import { ExportPanel } from './components/Export/ExportPanel';
+import PlatformAnalysis from './components/PlatformAnalysis/PlatformAnalysis';
 import './styles.css';
 import './styles/editor.css';
 
-type TabType = 'editor' | 'tokens' | 'diff' | 'export' | 'tools';
+type TabType = 'editor' | 'tokens' | 'diff' | 'export' | 'tools' | 'platforms';
 
 export default function App() {
   const [connected, setConnected] = useState(false);
@@ -98,6 +100,7 @@ export default function App() {
     { id: 'diff', label: 'Compare', icon: <GitCompare size={18} /> },
     { id: 'export', label: 'Export', icon: <Download size={18} /> },
     { id: 'tools', label: 'Tools', icon: <Wrench size={18} /> },
+    { id: 'platforms', label: 'Platforms', icon: <Globe size={18} /> },
   ];
 
   return (
@@ -145,6 +148,7 @@ export default function App() {
           {selectedTab === 'diff' && <DesignDiff />}
           {selectedTab === 'export' && <ExportPanel />}
           {selectedTab === 'tools' && <ToolsPanel />}
+          {selectedTab === 'platforms' && <PlatformAnalysis />}
         </div>
       </div>
     </div>
