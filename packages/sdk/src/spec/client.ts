@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { z } from "zod";
-import { DEFAULT_STITCH_API_URL } from "../constants.js";
+import { z } from 'zod';
+import { DEFAULT_STITCH_API_URL } from '../constants.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. INPUT SCHEMA - What the client receives for configuration
@@ -42,9 +42,8 @@ export const StitchConfigSchema = z
       return hasApiKey || hasOAuth;
     },
     {
-      message:
-        "Authentication failed. Provide either 'apiKey' OR ('accessToken' + 'projectId').",
-    },
+      message: "Authentication failed. Provide either 'apiKey' OR ('accessToken' + 'projectId').",
+    }
   );
 
 export type StitchConfig = z.infer<typeof StitchConfigSchema>;
@@ -67,7 +66,7 @@ export const ToolsSchema = z.object({
       name: z.string(),
       description: z.string().optional(),
       inputSchema: z.unknown().optional(),
-    }),
+    })
   ),
 });
 export type Tools = z.infer<typeof ToolsSchema>;
@@ -76,8 +75,8 @@ export type Tools = z.infer<typeof ToolsSchema>;
 // 3. BEHAVIOR INTERFACE - The contract
 // ─────────────────────────────────────────────────────────────────────────────
 export interface StitchToolClientSpec {
-  name: "stitch-tool-client";
-  description: "Authenticated tool pipe for Stitch MCP Server";
+  name: 'stitch-tool-client';
+  description: 'Authenticated tool pipe for Stitch MCP Server';
 
   /**
    * Validate configuration and establish connection.

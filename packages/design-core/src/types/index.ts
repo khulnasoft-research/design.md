@@ -112,3 +112,23 @@ export interface ValidationResult {
   errors: ValidationError[];
   warnings: ValidationError[];
 }
+
+// Enterprise Workflow Types (Phase 1+)
+export type {
+  PromptRequest,
+  PromptAcknowledgment,
+  DesignSystemDraft,
+  ValidationReport,
+  IterationFeedback,
+  IterationResult,
+  IterationRecord,
+  ApprovalRequest,
+  ApprovalConfirmation,
+  ApprovalRecord,
+  PublishedDesignSystem,
+  ExportRequest,
+  WorkflowExportResult,
+  WorkflowStep,
+  WorkflowState,
+  WorkflowError,
+} from './enterprise-workflow.js';

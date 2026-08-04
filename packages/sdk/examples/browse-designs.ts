@@ -5,15 +5,15 @@
  * Usage:
  *   STITCH_API_KEY=your-key bun packages/sdk/examples/browse-designs.ts
  */
-import "./_require-key.js";
-import { stitch } from "@google/stitch-sdk";
+import './_require-key.js';
+import { stitch } from '@google/stitch-sdk';
 
-console.log("🔍 Fetching projects...");
+console.log('🔍 Fetching projects...');
 
 const projects = await stitch.projects();
 
 if (projects.length === 0) {
-  console.log("📭 No projects found.");
+  console.log('📭 No projects found.');
   process.exit(0);
 }
 
@@ -24,7 +24,7 @@ for (const project of projects) {
 
   const screens = await project.screens();
   if (screens.length === 0) {
-    console.log("  📭 No screens in this project.");
+    console.log('  📭 No screens in this project.');
     continue;
   }
 
@@ -34,8 +34,8 @@ for (const project of projects) {
     try {
       const htmlUrl = await screen.getHtml();
       const imageUrl = await screen.getImage();
-      console.log(`     📄 HTML:  ${htmlUrl || "(No HTML available)"}`);
-      console.log(`     🖼️  Image: ${imageUrl || "(No Image available)"}`);
+      console.log(`     📄 HTML:  ${htmlUrl || '(No HTML available)'}`);
+      console.log(`     🖼️  Image: ${imageUrl || '(No Image available)'}`);
     } catch (e: any) {
       console.log(`     ❌ Error fetching URLs: ${e.message}`);
     }

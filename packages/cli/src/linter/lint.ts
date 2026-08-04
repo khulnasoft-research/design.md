@@ -13,7 +13,12 @@
 // limitations under the License.
 
 import { ParserHandler, ModelHandler, runLinter } from '@scalify/design-core';
-import type { ParsedDesignSystem, DesignSystemState, Finding, LintRule } from '@scalify/design-core';
+import type {
+  ParsedDesignSystem,
+  DesignSystemState,
+  Finding,
+  LintRule,
+} from '@scalify/design-core';
 import { TailwindEmitterHandler } from './tailwind/handler.js';
 import type { TailwindEmitterResult } from './tailwind/spec.js';
 

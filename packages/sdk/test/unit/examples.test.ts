@@ -12,28 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, it, expect } from "vitest";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 /**
  * Contract tests: ensure example files use correct API field names.
  * These are static analysis tests — they parse example source code
  * and verify correctness without executing against the live API.
  */
-describe("Example Contract Tests", () => {
-  const examplesDir = resolve(import.meta.dirname, "../../examples");
+describe('Example Contract Tests', () => {
+  const examplesDir = resolve(import.meta.dirname, '../../examples');
 
-  describe("generate-variants.ts", () => {
-    const source = readFileSync(
-      resolve(examplesDir, "generate-variants.ts"),
-      "utf8",
-    );
+  describe('generate-variants.ts', () => {
+    const source = readFileSync(resolve(examplesDir, 'generate-variants.ts'), 'utf8');
 
     it("should use 'variantCount' not 'numVariants' in variantOptions", () => {
       // The API schema (VariantOptions) uses 'variantCount', not 'numVariants'.
-      expect(source).not.toContain("numVariants");
-      expect(source).toContain("variantCount");
+      expect(source).not.toContain('numVariants');
+      expect(source).toContain('variantCount');
     });
   });
 });

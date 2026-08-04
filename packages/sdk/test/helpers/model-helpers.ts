@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { MockLanguageModelV3 } from "ai/test";
-import type { LanguageModelV3GenerateResult } from "@ai-sdk/provider";
+import { MockLanguageModelV3 } from 'ai/test';
+import type { LanguageModelV3GenerateResult } from '@ai-sdk/provider';
 
 /**
  * Creates an AI SDK v6 mock response with the correct shape.
  * Single source of truth for the MockLanguageModelV3 response format.
  */
 export function mockResponse(
-  content: LanguageModelV3GenerateResult["content"],
-  finishReason: string = "stop",
+  content: LanguageModelV3GenerateResult['content'],
+  finishReason: string = 'stop'
 ): LanguageModelV3GenerateResult {
   return {
     content,
@@ -44,7 +44,7 @@ export function mockResponse(
  */
 export function createTextMock(text: string) {
   return new MockLanguageModelV3({
-    doGenerate: async () => mockResponse([{ type: "text", text }]),
+    doGenerate: async () => mockResponse([{ type: 'text', text }]),
   });
 }
 
@@ -66,18 +66,16 @@ export function createToolCallMock(opts: {
         return mockResponse(
           [
             {
-              type: "tool-call" as const,
-              toolCallId: opts.toolCallId ?? "call-1",
+              type: 'tool-call' as const,
+              toolCallId: opts.toolCallId ?? 'call-1',
               toolName: opts.toolName,
               input: JSON.stringify(opts.input),
             },
           ],
-          "tool-calls",
+          'tool-calls'
         );
       }
-      return mockResponse([
-        { type: "text" as const, text: opts.followUpText ?? "Done." },
-      ]);
+      return mockResponse([{ type: 'text' as const, text: opts.followUpText ?? 'Done.' }]);
     },
   });
 }
@@ -86,14 +84,10 @@ export function createToolCallMock(opts: {
  * Returns a real Gemini model for E2E testing.
  * Requires GOOGLE_GENERATIVE_AI_API_KEY env var.
  */
-export async function createGeminiModel(
-  modelId = "gemini-3.1-flash-lite-preview",
-) {
-  const { createGoogleGenerativeAI } = await import("@ai-sdk/google");
-  const apiKey =
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey)
-    throw new Error("Set GOOGLE_GENERATIVE_AI_API_KEY or GEMINI_API_KEY");
+export async function createGeminiModel(modelId = 'gemini-3.1-flash-lite-preview') {
+  const { createGoogleGenerativeAI } = await import('@ai-sdk/google');
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error('Set GOOGLE_GENERATIVE_AI_API_KEY or GEMINI_API_KEY');
   const google = createGoogleGenerativeAI({ apiKey });
   return google(modelId);
 }

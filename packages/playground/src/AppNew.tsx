@@ -5,8 +5,10 @@ import {
   GitCompare,
   Download,
   Wrench,
+  Globe,
   Plus,
   Download as DownloadIcon,
+  Sparkles,
 } from 'lucide-react';
 import { health, callTool } from './api';
 import { useDesignMdState } from './hooks/useDesignMdState';
@@ -15,10 +17,12 @@ import { TokenValidator } from './components/Editor/TokenValidator';
 import { TokenBrowser } from './components/Tokens/TokenBrowser';
 import { DesignDiff } from './components/Comparison/DesignDiff';
 import { ExportPanel } from './components/Export/ExportPanel';
+import PlatformAnalysis from './components/PlatformAnalysis/PlatformAnalysis';
+import GenerateWorkflow from './components/Generate/GenerateWorkflow';
 import './styles.css';
 import './styles/editor.css';
 
-type TabType = 'editor' | 'tokens' | 'diff' | 'export' | 'tools';
+type TabType = 'generate' | 'editor' | 'tokens' | 'diff' | 'export' | 'tools' | 'platforms';
 
 export default function App() {
   const [connected, setConnected] = useState(false);
@@ -93,11 +97,13 @@ export default function App() {
   };
 
   const tabs: Array<{ id: TabType; label: string; icon: React.ReactNode }> = [
+    { id: 'generate', label: 'Generate', icon: <Sparkles size={18} /> },
     { id: 'editor', label: 'Editor', icon: <FileText size={18} /> },
     { id: 'tokens', label: 'Tokens', icon: <Palette size={18} /> },
     { id: 'diff', label: 'Compare', icon: <GitCompare size={18} /> },
     { id: 'export', label: 'Export', icon: <Download size={18} /> },
     { id: 'tools', label: 'Tools', icon: <Wrench size={18} /> },
+    { id: 'platforms', label: 'Platforms', icon: <Globe size={18} /> },
   ];
 
   return (
@@ -130,6 +136,8 @@ export default function App() {
         </div>
 
         <div className="content-area">
+          {selectedTab === 'generate' && <GenerateWorkflow />}
+
           {selectedTab === 'editor' && (
             <div className="editor-split-panel">
               <div className="editor-pane">
@@ -145,6 +153,7 @@ export default function App() {
           {selectedTab === 'diff' && <DesignDiff />}
           {selectedTab === 'export' && <ExportPanel />}
           {selectedTab === 'tools' && <ToolsPanel />}
+          {selectedTab === 'platforms' && <PlatformAnalysis />}
         </div>
       </div>
     </div>

@@ -24,8 +24,8 @@ export interface DesignMdState {
   setDesignSystem: (ds: Record<string, unknown> | null) => void;
 
   // UI state
-  selectedTab: 'editor' | 'tokens' | 'diff' | 'export' | 'tools';
-  setSelectedTab: (tab: 'editor' | 'tokens' | 'diff' | 'export' | 'tools') => void;
+  selectedTab: 'generate' | 'editor' | 'tokens' | 'diff' | 'export' | 'tools';
+  setSelectedTab: (tab: 'generate' | 'editor' | 'tokens' | 'diff' | 'export' | 'tools') => void;
 
   // File state
   fileName: string;
@@ -59,7 +59,7 @@ export const useDesignMdState = create<DesignMdState>((set) => ({
   designSystem: null,
   setDesignSystem: (designSystem) => set({ designSystem }),
 
-  selectedTab: 'editor',
+  selectedTab: 'generate',
   setSelectedTab: (selectedTab) => set({ selectedTab }),
 
   fileName: 'DESIGN.md',
@@ -74,7 +74,7 @@ export const useDesignMdState = create<DesignMdState>((set) => ({
       findings: [],
       summary: { errors: 0, warnings: 0, infos: 0 },
       designSystem: null,
-      selectedTab: 'editor',
+      selectedTab: 'generate',
       fileName: 'DESIGN.md',
       isDirty: false,
     }),

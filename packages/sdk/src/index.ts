@@ -13,31 +13,31 @@
 // limitations under the License.
 
 // Domain classes
-export { Stitch } from "../generated/src/stitch.js";
-export { Project } from "./project-ext.js"; // Extended: includes uploadImage(), downloadAssets()
-export { Screen } from "../generated/src/screen.js";
-export { DesignSystem } from "../generated/src/designsystem.js";
+export { Stitch } from '../generated/src/stitch.js';
+export { Project } from './project-ext.js'; // Extended: includes uploadImage(), downloadAssets()
+export { Screen } from '../generated/src/screen.js';
+export { DesignSystem } from '../generated/src/designsystem.js';
 
 // Infrastructure (handwritten)
-export { StitchToolClient } from "./client.js";
-export { StitchProxy } from "./proxy/core.js";
-export { repairToolSchemas, repairSchema } from "./schema-repair.js";
+export { StitchToolClient } from './client.js';
+export { StitchProxy } from './proxy/core.js';
+export { repairToolSchemas, repairSchema } from './schema-repair.js';
 
 // Virtual Tools
-export { downloadAssetsTool } from "./proxy/virtual-tools.js";
-export type { VirtualToolDefinition } from "./spec/client.js";
+export { downloadAssetsTool } from './proxy/virtual-tools.js';
+export type { VirtualToolDefinition } from './spec/client.js';
 
 // Singleton
-export { stitch } from "./singleton.js";
+export { stitch } from './singleton.js';
 
 // Error handling
-export { StitchError, StitchErrorCode } from "./spec/errors.js";
+export { StitchError, StitchErrorCode } from './spec/errors.js';
 
 // FIFE URL utilities
-export { buildFifeSuffix, type FifeImageOptions } from "./fife.js";
+export { buildFifeSuffix, type FifeImageOptions } from './fife.js';
 
 // Resource name utilities
-export { parseResourceName } from "./utils.js";
+export { parseResourceName } from './utils.js';
 
 // Tool catalog (generated)
 export {
@@ -45,26 +45,22 @@ export {
   type ToolDefinition,
   type ToolInputSchema,
   type ToolPropertySchema,
-} from "../generated/src/tool-definitions.js";
-export { toolMap, type ToolParam, type ToolInfo } from "./tool-map.js";
+} from '../generated/src/tool-definitions.js';
+export { toolMap, type ToolParam, type ToolInfo } from './tool-map.js';
 
 // Types (config + data interfaces)
-export type { StitchConfig, StitchConfigInput } from "./spec/client.js";
-export { StitchProxyConfigSchema } from "./spec/proxy.js";
+export type { StitchConfig, StitchConfigInput } from './spec/client.js';
+export { StitchProxyConfigSchema } from './spec/proxy.js';
 export type {
   ProjectData,
   GenerateScreenParams,
   DesignTheme,
   ScreenInstance,
   ThumbnailScreenshot,
-} from "./types.js";
+} from './types.js';
 
 // Upload types
-export type {
-  UploadInput,
-  UploadResult,
-  UploadErrorCode,
-} from "./spec/upload.js";
+export type { UploadInput, UploadResult, UploadErrorCode } from './spec/upload.js';
 
 // Download types
 export type {
@@ -73,4 +69,4 @@ export type {
   DownloadAssetsResult,
   DownloadedScreenTrace,
   DownloadAssetsErrorCode,
-} from "./spec/download.js";
+} from './spec/download.js';

@@ -31,7 +31,6 @@ export async function callTool<T = unknown>(
     method: 'POST',
     body: JSON.stringify({ id: crypto.randomUUID(), method, params }),
   });
-  // MCP response: { content: [{ type: "text", text: "..." }], isError: false }
   const content = (data as Record<string, unknown>).content as
     Array<{ type: string; text: string }> | undefined;
   if (content && content.length > 0) {
@@ -43,6 +42,8 @@ export async function callTool<T = unknown>(
   }
   return data as unknown as T;
 }
+
+// ── Stitch MCP Tools ─────────────────────────────────────────────────────────
 
 export async function listProjects(filter?: string) {
   return callTool<{ projects: Array<Record<string, unknown>> }>(
@@ -99,7 +100,8 @@ export async function generateVariants(
   });
 }
 
-// New MCP tools for DESIGN.md
+// ── DESIGN.md Tools ──────────────────────────────────────────────────────────
+
 export async function lintDesignMd(path: string) {
   return callTool<Record<string, unknown>>('lint_design_md', { path });
 }
@@ -141,4 +143,177 @@ export async function validateComponentTokens(path: string, component: string) {
 
 export async function mergeDesignTokens(paths: string[], strategy?: 'override' | 'combine') {
   return callTool<Record<string, unknown>>('merge_design_tokens', { paths, strategy });
+}
+
+// ── Workflow API ─────────────────────────────────────────────────────────────
+
+export interface GenerateRequest {
+  prompt: string;
+  tenantId?: string;
+  title?: string;
+}
+
+export interface GenerateResponse {
+  acknowledgment: {
+    promptId: string;
+    timestamp: string;
+    tenantId: string;
+    status: string;
+    message: string;
+  };
+  draft: {
+    id: string;
+    promptId: string;
+    version: string;
+    createdAt: string;
+    designSystem: SerializedDesignSystem;
+    validationReport: {
+      findings: unknown[];
+      summary: { errors: number; warnings: number; infos: number };
+      tokenCompleteness: number;
+      wcagCompliance: { aa: boolean; aaa: boolean };
+    };
+    generationMetadata: {
+      modelUsed: string;
+      tokensUsed: number;
+      promptHash: string;
+      generationTime: number;
+    };
+  } | null;
+}
+
+export interface SerializedDesignSystem {
+  name?: string;
+  description?: string;
+  colors: Record<string, { hex: string; r: number; g: number; b: number; a: number; luminance: number }>;
+  typography: Record<string, unknown>;
+  rounded: Record<string, { type: string; value: number; unit: string }>;
+  spacing: Record<string, { type: string; value: number; unit: string }>;
+  components: Record<string, unknown>;
+}
+
+export interface DraftSummary {
+  id: string;
+  promptId: string;
+  version: string;
+  createdAt: string;
+  name?: string;
+  validationReport: {
+    findings: unknown[];
+    summary: { errors: number; warnings: number; infos: number };
+  };
+}
+
+export interface FeedbackRequest {
+  draftId: string;
+  message: string;
+  type?: 'refine' | 'regenerate' | 'reject';
+  targetArea?: string;
+  proposedChanges?: Record<string, unknown>;
+  tenantId?: string;
+}
+
+export interface FeedbackResponse {
+  iterationNumber: number;
+  designSystem: SerializedDesignSystem;
+  validationReport: {
+    findings: unknown[];
+    summary: { errors: number; warnings: number; infos: number };
+  };
+  changesSummary: {
+    changedTokens: string[];
+    addedTokens: string[];
+    removedTokens: string[];
+    affectedComponents: string[];
+  };
+}
+
+export interface ApproveRequest {
+  draftId: string;
+  action?: 'approve' | 'reject';
+  notes?: string;
+  tenantId?: string;
+}
+
+export interface ApproveResponse {
+  designSystemId: string;
+  status: string;
+  timestamp: string;
+  exportFormats: Array<{ format: string; url: string }>;
+}
+
+export interface ExportWorkflowRequest {
+  designSystemId: string;
+  format: 'tailwind-v4' | 'tailwind-v3' | 'dtcg' | 'css';
+  tenantId?: string;
+}
+
+export interface ExportWorkflowResponse {
+  exportId: string;
+  format: string;
+  content: string;
+  auditTrail: {
+    promptId: string;
+    iterationCount: number;
+    approvalChain: string[];
+    exportedAt: string;
+    exportedBy: string;
+  };
+}
+
+export async function generateDesignSystem(request: GenerateRequest): Promise<GenerateResponse> {
+  return api('/api/workflow/generate', {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
+}
+
+export async function getDraft(draftId: string, tenantId?: string): Promise<{
+  id: string;
+  promptId: string;
+  version: string;
+  createdAt: string;
+  designSystem: SerializedDesignSystem;
+  validationReport: unknown;
+  generationMetadata: unknown;
+}> {
+  const params = tenantId ? `?tenantId=${tenantId}` : '';
+  return api(`/api/workflow/draft/${draftId}${params}`);
+}
+
+export async function listDrafts(tenantId?: string): Promise<{ drafts: DraftSummary[] }> {
+  const params = tenantId ? `?tenantId=${tenantId}` : '';
+  return api(`/api/workflow/drafts${params}`);
+}
+
+export async function submitFeedback(request: FeedbackRequest): Promise<FeedbackResponse> {
+  return api('/api/workflow/feedback', {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
+}
+
+export async function approveDraft(request: ApproveRequest): Promise<ApproveResponse> {
+  return api('/api/workflow/approve', {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
+}
+
+export async function exportDesignSystem(request: ExportWorkflowRequest): Promise<ExportWorkflowResponse> {
+  return api('/api/workflow/export', {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
+}
+
+export async function getIterationHistory(draftId: string): Promise<{
+  iterations: Array<{
+    iterationNumber: number;
+    feedback: unknown;
+    timestamp: string;
+    validationReport: unknown;
+  }>;
+}> {
+  return api(`/api/workflow/history/${draftId}`);
 }

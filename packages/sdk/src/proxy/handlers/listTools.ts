@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import type { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import type { ProxyContext } from "../client.js";
-import { refreshTools } from "../client.js";
-import { downloadAssetsTool } from "../virtual-tools.js";
+import { ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import type { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import type { ProxyContext } from '../client.js';
+import { refreshTools } from '../client.js';
+import { downloadAssetsTool } from '../virtual-tools.js';
 
 const PROXY_VIRTUAL_TOOLS = [downloadAssetsTool].map((t) => ({
   name: t.name,
@@ -27,21 +27,16 @@ const PROXY_VIRTUAL_TOOLS = [downloadAssetsTool].map((t) => ({
 /**
  * Register the tools/list handler.
  */
-export function registerListToolsHandler(
-  server: Server,
-  ctx: ProxyContext,
-): void {
+export function registerListToolsHandler(server: Server, ctx: ProxyContext): void {
   server.setRequestHandler(ListToolsRequestSchema, async () => {
     try {
       await refreshTools(ctx);
     } catch (err) {
-      console.error("[stitch-proxy] Failed to refresh tools:", err);
+      console.error('[stitch-proxy] Failed to refresh tools:', err);
       if (ctx.remoteTools.length === 0) {
         throw err;
       } else {
-        console.warn(
-          "[stitch-proxy] Warning: Using stale tools due to refresh failure",
-        );
+        console.warn('[stitch-proxy] Warning: Using stale tools due to refresh failure');
       }
     }
     return { tools: [...ctx.remoteTools, ...PROXY_VIRTUAL_TOOLS] };

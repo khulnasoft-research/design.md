@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, it, expect } from "vitest";
-import { validateComponent } from "../helpers/component-validator.js";
+import { describe, it, expect } from 'vitest';
+import { validateComponent } from '../helpers/component-validator.js';
 
 const VALID_COMPONENT = `
 import React from 'react';
@@ -63,8 +63,8 @@ const UNPARSEABLE = `
 this is not valid tsx {{{
 `;
 
-describe("Component Validator", () => {
-  it("validates a correct component", async () => {
+describe('Component Validator', () => {
+  it('validates a correct component', async () => {
     const result = await validateComponent(VALID_COMPONENT);
     expect(result.valid).toBe(true);
     expect(result.hasPropsInterface).toBe(true);
@@ -73,20 +73,20 @@ describe("Component Validator", () => {
     expect(result.parseError).toBeUndefined();
   });
 
-  it("rejects missing Props interface", async () => {
+  it('rejects missing Props interface', async () => {
     const result = await validateComponent(MISSING_PROPS);
     expect(result.valid).toBe(false);
     expect(result.hasPropsInterface).toBe(false);
   });
 
-  it("detects hardcoded hex colors", async () => {
+  it('detects hardcoded hex colors', async () => {
     const result = await validateComponent(HARDCODED_HEX);
     expect(result.valid).toBe(false);
     expect(result.hardcodedHexValues.length).toBeGreaterThan(0);
-    expect(result.hardcodedHexValues).toContain("#ff6b2c");
+    expect(result.hardcodedHexValues).toContain('#ff6b2c');
   });
 
-  it("handles unparseable code gracefully", async () => {
+  it('handles unparseable code gracefully', async () => {
     const result = await validateComponent(UNPARSEABLE);
     expect(result.valid).toBe(false);
     expect(result.parseError).toBeDefined();

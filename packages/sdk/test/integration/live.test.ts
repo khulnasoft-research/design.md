@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, it, expect, beforeAll } from "vitest";
-import { resolve } from "node:path";
-import { Stitch } from "../../generated/src/stitch.js";
-import { StitchToolClient } from "../../src/client.js";
-import { Project } from "../../src/project-ext.js";
+import { describe, it, expect, beforeAll } from 'vitest';
+import { resolve } from 'node:path';
+import { Stitch } from '../../generated/src/stitch.js';
+import { StitchToolClient } from '../../src/client.js';
+import { Project } from '../../src/project-ext.js';
 
-const runIfConfigured = process.env.STITCH_ACCESS_TOKEN
-  ? describe
-  : describe.skip;
+const runIfConfigured = process.env.STITCH_ACCESS_TOKEN ? describe : describe.skip;
 
-runIfConfigured("Stitch Live Integration", () => {
+runIfConfigured('Stitch Live Integration', () => {
   let sdk: Stitch;
 
   beforeAll(async () => {
@@ -31,28 +29,28 @@ runIfConfigured("Stitch Live Integration", () => {
     sdk = new Stitch(client);
   });
 
-  it("should list projects", async () => {
+  it('should list projects', async () => {
     const projects = await sdk.projects();
     expect(Array.isArray(projects)).toBe(true);
     if (projects.length > 0) {
-      expect(projects[0]).toHaveProperty("id");
+      expect(projects[0]).toHaveProperty('id');
     }
   });
 
-  it("should create and retrieve a project via callTool + identity map", async () => {
+  it('should create and retrieve a project via callTool + identity map', async () => {
     const client = new StitchToolClient();
     await client.connect();
-    const result = await client.callTool<any>("create_project", {
+    const result = await client.callTool<any>('create_project', {
       title: `Test Project ${Date.now()}`,
     });
-    const projectId = result.name?.replace("projects/", "") ?? result.projectId;
+    const projectId = result.name?.replace('projects/', '') ?? result.projectId;
     expect(projectId).toBeDefined();
 
     const project = sdk.project(projectId);
     expect(project.id).toBe(projectId);
     const screens = await project.screens();
     expect(Array.isArray(screens)).toBe(true);
-    console.log("Created & retrieved project via identity map:", project.id);
+    console.log('Created & retrieved project via identity map:', project.id);
   }, 30000);
 });
 
@@ -63,11 +61,11 @@ runIfConfigured("Stitch Live Integration", () => {
 // See upload-handler.ts DEBUGGING TRAPS for full context.
 const runIfKey = process.env.STITCH_API_KEY ? describe : describe.skip;
 
-runIfKey("Project.uploadImage (E2E)", () => {
+runIfKey('Project.uploadImage (E2E)', () => {
   let client: StitchToolClient;
   let project: Project;
 
-  const FIXTURE_PNG = resolve(import.meta.dirname, "../fixtures/1x1.png");
+  const FIXTURE_PNG = resolve(import.meta.dirname, '../fixtures/1x1.png');
 
   beforeAll(async () => {
     client = new StitchToolClient({ apiKey: process.env.STITCH_API_KEY });
@@ -76,35 +74,35 @@ runIfKey("Project.uploadImage (E2E)", () => {
     const sdk = new Stitch(client);
     const created = await sdk.createProject(`upload-e2e-${Date.now()}`);
     project = new Project(client, created.projectId);
-    console.log("E2E upload project:", project.projectId);
+    console.log('E2E upload project:', project.projectId);
   }, 30000);
 
-  it("should return a non-empty Screen[] after uploading a PNG", async () => {
+  it('should return a non-empty Screen[] after uploading a PNG', async () => {
     const screens = await project.uploadImage(FIXTURE_PNG, {
-      title: "e2e-upload-test",
+      title: 'e2e-upload-test',
     });
 
     expect(Array.isArray(screens)).toBe(true);
     expect(screens.length).toBeGreaterThan(0);
   }, 60000);
 
-  it("should return a screen with a non-empty id", async () => {
+  it('should return a screen with a non-empty id', async () => {
     const [screen] = await project.uploadImage(FIXTURE_PNG, {
-      title: "e2e-id-check",
+      title: 'e2e-id-check',
     });
 
     expect(screen.id).toBeTruthy();
-    console.log("Uploaded screen id:", screen.id);
+    console.log('Uploaded screen id:', screen.id);
   }, 60000);
 
-  it("should return a screen whose getImage() resolves to a URL", async () => {
+  it('should return a screen whose getImage() resolves to a URL', async () => {
     const [screen] = await project.uploadImage(FIXTURE_PNG, {
-      title: "e2e-image-url",
+      title: 'e2e-image-url',
     });
 
     const url = await screen.getImage();
-    expect(typeof url).toBe("string");
+    expect(typeof url).toBe('string');
     expect(url.length).toBeGreaterThan(0);
-    console.log("Uploaded screen image URL:", url);
+    console.log('Uploaded screen image URL:', url);
   }, 60000);
 });

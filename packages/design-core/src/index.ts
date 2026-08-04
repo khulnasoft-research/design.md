@@ -37,12 +37,7 @@ export {
   isTokenReference,
 } from './model/spec.js';
 
-export type {
-  LintResult,
-  GradedTokenEdits,
-  TokenEditEntry,
-  LinterSpec,
-} from './linter/spec.js';
+export type { LintResult, GradedTokenEdits, TokenEditEntry, LinterSpec } from './linter/spec.js';
 
 export { runLinter, preEvaluate } from './linter/runner.js';
 export { DEFAULT_RULES, DEFAULT_RULE_DESCRIPTORS } from './linter/rules/index.js';
@@ -86,6 +81,11 @@ export {
   loadSpecConfig,
   getSpecConfig,
 } from './spec-config.js';
-export type { SectionDef, TypographyPropertyDef, ComponentSubTokenDef, SpecConfig } from './spec-config.js';
+export type {
+  SectionDef,
+  TypographyPropertyDef,
+  ComponentSubTokenDef,
+  SpecConfig,
+} from './spec-config.js';
 
 export { VERSION } from './version.js';

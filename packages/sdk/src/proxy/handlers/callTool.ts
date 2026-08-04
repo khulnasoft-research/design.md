@@ -12,19 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import type { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import type { ProxyContext } from "../client.js";
-import { forwardToStitch } from "../client.js";
-import { isVirtualTool, handleVirtualTool } from "../virtual-tools.js";
+import { CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import type { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import type { ProxyContext } from '../client.js';
+import { forwardToStitch } from '../client.js';
+import { isVirtualTool, handleVirtualTool } from '../virtual-tools.js';
 
 /**
  * Register the tools/call handler.
  */
-export function registerCallToolHandler(
-  server: Server,
-  ctx: ProxyContext,
-): void {
+export function registerCallToolHandler(server: Server, ctx: ProxyContext): void {
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
     console.error(`[stitch-proxy] Calling tool: ${name}`);
@@ -34,13 +31,11 @@ export function registerCallToolHandler(
         return await handleVirtualTool(name, args, ctx);
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : String(err);
-        console.error(
-          `[stitch-proxy] Virtual tool call failed: ${errorMessage}`,
-        );
+        console.error(`[stitch-proxy] Virtual tool call failed: ${errorMessage}`);
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: `Error calling virtual tool ${name}: ${errorMessage}`,
             },
           ],
@@ -50,7 +45,7 @@ export function registerCallToolHandler(
     }
 
     try {
-      const result = await forwardToStitch(ctx.config, "tools/call", {
+      const result = await forwardToStitch(ctx.config, 'tools/call', {
         name,
         arguments: args,
       });
@@ -59,9 +54,7 @@ export function registerCallToolHandler(
       const errorMessage = err instanceof Error ? err.message : String(err);
       console.error(`[stitch-proxy] Tool call failed: ${errorMessage}`);
       return {
-        content: [
-          { type: "text", text: `Error calling ${name}: ${errorMessage}` },
-        ],
+        content: [{ type: 'text', text: `Error calling ${name}: ${errorMessage}` }],
         isError: true,
       };
     }

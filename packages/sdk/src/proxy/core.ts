@@ -12,17 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { Tool } from "@modelcontextprotocol/sdk/types.js";
-import { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
-import {
-  StitchProxyConfigSchema,
-  StitchProxyConfig,
-  StitchProxySpec,
-} from "../spec/proxy.js";
-import { ProxyContext, initializeStitchConnection } from "./client.js";
-import { registerListToolsHandler } from "./handlers/listTools.js";
-import { registerCallToolHandler } from "./handlers/callTool.js";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
+import { StitchProxyConfigSchema, StitchProxyConfig, StitchProxySpec } from '../spec/proxy.js';
+import { ProxyContext, initializeStitchConnection } from './client.js';
+import { registerListToolsHandler } from './handlers/listTools.js';
+import { registerCallToolHandler } from './handlers/callTool.js';
 
 /**
  * A proxy server that forwards MCP requests to Stitch.
@@ -51,7 +47,7 @@ export class StitchProxy implements StitchProxySpec {
 
     if (!this.config.apiKey && !this.config.accessToken) {
       throw new Error(
-        "StitchProxy requires an API key (STITCH_API_KEY) or access token (STITCH_ACCESS_TOKEN)",
+        'StitchProxy requires an API key (STITCH_API_KEY) or access token (STITCH_ACCESS_TOKEN)'
       );
     }
 
@@ -64,7 +60,7 @@ export class StitchProxy implements StitchProxySpec {
         capabilities: {
           tools: {},
         },
-      },
+      }
     );
 
     // Shared context for handlers
@@ -85,7 +81,7 @@ export class StitchProxy implements StitchProxySpec {
     console.error(`[stitch-proxy] Connecting to ${this.config.url}...`);
     await initializeStitchConnection(this.ctx);
     await this.server.connect(transport);
-    console.error("[stitch-proxy] Proxy server running");
+    console.error('[stitch-proxy] Proxy server running');
   }
 
   async close(): Promise<void> {

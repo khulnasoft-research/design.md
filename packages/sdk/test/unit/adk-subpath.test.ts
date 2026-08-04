@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest';
 
-describe("@google/stitch-sdk/adk subpath", () => {
-  it("exports stitchAdkTools from the adk entry point", async () => {
-    const mod = await import("../../src/adk.js");
-    expect(typeof mod.stitchAdkTools).toBe("function");
+describe('@google/stitch-sdk/adk subpath', () => {
+  it('exports stitchAdkTools from the adk entry point', async () => {
+    const mod = await import('../../src/adk.js');
+    expect(typeof mod.stitchAdkTools).toBe('function');
   });
 
-  it("main entry point does NOT export stitchAdkTools", async () => {
-    const mod = await import("../../src/index.js");
-    expect(mod).not.toHaveProperty("stitchAdkTools");
+  it('main entry point does NOT export stitchAdkTools', async () => {
+    const mod = await import('../../src/index.js');
+    expect(mod).not.toHaveProperty('stitchAdkTools');
   });
 });

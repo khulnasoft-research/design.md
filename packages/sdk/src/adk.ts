@@ -26,4 +26,4 @@
  *   tools: stitchAdkTools(),
  * });
  */
-export { stitchAdkTools } from "./adk-adapter.js";
+export { stitchAdkTools } from './adk-adapter.js';

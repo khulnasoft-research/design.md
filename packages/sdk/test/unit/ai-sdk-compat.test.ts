@@ -12,18 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { generateText, stepCountIs } from "ai";
-import {
-  mockResponse,
-  createTextMock,
-  createToolCallMock,
-} from "../helpers/model-helpers.js";
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { generateText, stepCountIs } from 'ai';
+import { mockResponse, createTextMock, createToolCallMock } from '../helpers/model-helpers.js';
 
 const mockCallTool = vi.fn();
 
 // Mock the singleton to inject a controllable client
-vi.mock("../../src/singleton.js", () => ({
+vi.mock('../../src/singleton.js', () => ({
   getOrCreateClient: () => ({
     callTool: mockCallTool,
   }),
@@ -35,80 +31,80 @@ vi.mock("../../src/singleton.js", () => ({
  * Verifies that stitchTools() output is plug-and-play with Vercel AI SDK v6's
  * generateText(). Uses MockLanguageModelV3 to simulate LLM tool calls.
  */
-describe("AI SDK compatibility", () => {
+describe('AI SDK compatibility', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("stitchTools() output is accepted by generateText({ tools })", async () => {
-    const { stitchTools } = await import("../../src/tools-adapter.js");
-    const tools = stitchTools({ include: ["create_project"] });
+  it('stitchTools() output is accepted by generateText({ tools })', async () => {
+    const { stitchTools } = await import('../../src/tools-adapter.js');
+    const tools = stitchTools({ include: ['create_project'] });
 
     const result = await generateText({
-      model: createTextMock("I created a project."),
+      model: createTextMock('I created a project.'),
       tools,
-      prompt: "Create a project called Test",
+      prompt: 'Create a project called Test',
     });
 
-    expect(result.text).toBe("I created a project.");
+    expect(result.text).toBe('I created a project.');
   });
 
-  it("each tool has the expected structural properties", async () => {
-    const { stitchTools } = await import("../../src/tools-adapter.js");
-    const tools = stitchTools({ include: ["create_project"] });
+  it('each tool has the expected structural properties', async () => {
+    const { stitchTools } = await import('../../src/tools-adapter.js');
+    const tools = stitchTools({ include: ['create_project'] });
 
     for (const [, tool] of Object.entries(tools)) {
       const t = tool as Record<string, unknown>;
-      expect(t.type).toBe("dynamic");
-      expect(typeof t.description).toBe("string");
-      expect(t.inputSchema).toHaveProperty("jsonSchema");
-      expect(typeof t.execute).toBe("function");
+      expect(t.type).toBe('dynamic');
+      expect(typeof t.description).toBe('string');
+      expect(t.inputSchema).toHaveProperty('jsonSchema');
+      expect(typeof t.execute).toBe('function');
     }
   });
 
-  it("mock LLM tool call triggers the correct execute function", async () => {
-    const { stitchTools } = await import("../../src/tools-adapter.js");
-    const tools = stitchTools({ include: ["create_project"] });
+  it('mock LLM tool call triggers the correct execute function', async () => {
+    const { stitchTools } = await import('../../src/tools-adapter.js');
+    const tools = stitchTools({ include: ['create_project'] });
 
     mockCallTool.mockResolvedValue({
-      name: "projects/123",
-      title: "Test Project",
+      name: 'projects/123',
+      title: 'Test Project',
     });
 
     await generateText({
       model: createToolCallMock({
-        toolName: "create_project",
-        input: { title: "Test Project" },
-        followUpText: "Done.",
+        toolName: 'create_project',
+        input: { title: 'Test Project' },
+        followUpText: 'Done.',
       }),
       tools,
-      prompt: "Create a project",
+      prompt: 'Create a project',
       stopWhen: stepCountIs(3),
     });
 
-    expect(mockCallTool).toHaveBeenCalledWith("create_project", {
-      title: "Test Project",
+    expect(mockCallTool).toHaveBeenCalledWith('create_project', {
+      title: 'Test Project',
     });
   });
 
-  it("tool result flows back through the AI SDK pipeline", async () => {
-    const { stitchTools } = await import("../../src/tools-adapter.js");
-    const tools = stitchTools({ include: ["create_project"] });
+  it('tool result flows back through the AI SDK pipeline', async () => {
+    const { stitchTools } = await import('../../src/tools-adapter.js');
+    const tools = stitchTools({ include: ['create_project'] });
 
-    mockCallTool.mockResolvedValue({ name: "projects/456", title: "My App" });
+    mockCallTool.mockResolvedValue({ name: 'projects/456', title: 'My App' });
 
     const result = await generateText({
       model: createToolCallMock({
-        toolName: "create_project",
-        input: { title: "My App" },
-        followUpText: "Created project My App with ID 456.",
+        toolName: 'create_project',
+        input: { title: 'My App' },
+        followUpText: 'Created project My App with ID 456.',
       }),
       tools,
-      prompt: "Create a project called My App",
+      prompt: 'Create a project called My App',
       stopWhen: stepCountIs(3),
     });
 
     expect(mockCallTool).toHaveBeenCalledTimes(1);
-    expect(result.text).toBe("Created project My App with ID 456.");
+    expect(result.text).toBe('Created project My App with ID 456.');
   });
 });

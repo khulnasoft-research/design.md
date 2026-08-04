@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { defineConfig } from "vitest/config";
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    exclude: ["**/node_modules/**", "**/dist/**", "test/integration/**"],
+    exclude: ['**/node_modules/**', '**/dist/**', 'test/integration/**'],
   },
 });

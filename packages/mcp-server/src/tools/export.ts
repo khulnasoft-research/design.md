@@ -1,11 +1,10 @@
 import { readFile } from 'node:fs/promises';
-import { lint } from '@google/design.md/linter';
+import { lint } from '@scalify/cli/linter';
 import type { ToolDefinition, ToolHandler } from '../types.js';
 
 export const EXPORT_DEFINITION: ToolDefinition = {
   name: 'export_design_md',
-  description:
-    'Export DESIGN.md tokens to Tailwind v3 JSON, Tailwind v4 CSS, or W3C DTCG format.',
+  description: 'Export DESIGN.md tokens to Tailwind v3 JSON, Tailwind v4 CSS, or W3C DTCG format.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -28,8 +27,7 @@ export const handleExportDesignMd: ToolHandler = async (id, args) => {
   const fmt = format as string;
 
   if (fmt === 'css-tailwind') {
-    const { TailwindV4EmitterHandler, serializeTailwindV4 } =
-      await import('@google/design.md/linter');
+    const { TailwindV4EmitterHandler, serializeTailwindV4 } = await import('@scalify/cli/linter');
     const handler = new TailwindV4EmitterHandler();
     const result = handler.execute(report.designSystem);
     if (!result.success) throw new Error(result.error.message);
@@ -38,7 +36,7 @@ export const handleExportDesignMd: ToolHandler = async (id, args) => {
       output: serializeTailwindV4(result.data.theme),
     };
   } else if (fmt === 'json-tailwind' || fmt === 'tailwind') {
-    const { TailwindEmitterHandler } = await import('@google/design.md/linter');
+    const { TailwindEmitterHandler } = await import('@scalify/cli/linter');
     const handler = new TailwindEmitterHandler();
     const result = handler.execute(report.designSystem);
     if (!result.success) throw new Error(result.error.message);
@@ -47,7 +45,7 @@ export const handleExportDesignMd: ToolHandler = async (id, args) => {
       output: JSON.stringify(result.data, null, 2),
     };
   } else if (fmt === 'dtcg') {
-    const { DtcgEmitterHandler } = await import('@google/design.md/linter');
+    const { DtcgEmitterHandler } = await import('@scalify/cli/linter');
     const handler = new DtcgEmitterHandler();
     const result = handler.execute(report.designSystem);
     if (!result.success) throw new Error(result.error.message);

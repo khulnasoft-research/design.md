@@ -46,7 +46,7 @@
     "check-package": "bun run scripts/check-package.ts"
   },
   "dependencies": {
-    "@scalify/design-core": "workspace:*",
+    "@scalify/design-core": "*",
     "citty": "^0.1.6",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx": "^3.1.1",

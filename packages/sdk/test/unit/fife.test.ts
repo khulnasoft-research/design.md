@@ -12,33 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, it, expect } from "vitest";
-import { buildFifeSuffix, type FifeImageOptions } from "../../src/fife.js";
+import { describe, it, expect } from 'vitest';
+import { buildFifeSuffix, type FifeImageOptions } from '../../src/fife.js';
 
-describe("buildFifeSuffix", () => {
-  it("returns empty string when no options", () => {
-    expect(buildFifeSuffix()).toBe("");
+describe('buildFifeSuffix', () => {
+  it('returns empty string when no options', () => {
+    expect(buildFifeSuffix()).toBe('');
   });
 
-  it("returns empty string for empty options object", () => {
-    expect(buildFifeSuffix({})).toBe("");
+  it('returns empty string for empty options object', () => {
+    expect(buildFifeSuffix({})).toBe('');
   });
 
-  it("returns =w{n} for width only", () => {
-    expect(buildFifeSuffix({ width: 780 })).toBe("=w780");
+  it('returns =w{n} for width only', () => {
+    expect(buildFifeSuffix({ width: 780 })).toBe('=w780');
   });
 
-  it("returns =h{n} for height only", () => {
-    expect(buildFifeSuffix({ height: 1200 })).toBe("=h1200");
+  it('returns =h{n} for height only', () => {
+    expect(buildFifeSuffix({ height: 1200 })).toBe('=h1200');
   });
 
-  it("returns =w{n}-h{n} for both width and height", () => {
-    expect(buildFifeSuffix({ width: 780, height: 1688 })).toBe("=w780-h1688");
+  it('returns =w{n}-h{n} for both width and height', () => {
+    expect(buildFifeSuffix({ width: 780, height: 1688 })).toBe('=w780-h1688');
   });
 
-  it("appends to a base URL correctly", () => {
-    const base = "https://lh3.googleusercontent.com/abc123";
+  it('appends to a base URL correctly', () => {
+    const base = 'https://lh3.googleusercontent.com/abc123';
     const suffix = buildFifeSuffix({ width: 780 });
-    expect(base + suffix).toBe("https://lh3.googleusercontent.com/abc123=w780");
+    expect(base + suffix).toBe('https://lh3.googleusercontent.com/abc123=w780');
   });
 });

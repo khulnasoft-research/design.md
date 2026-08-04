@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import fs from "node:fs";
-import path from "node:path";
+import fs from 'node:fs';
+import path from 'node:path';
 
 /**
  * Assets extracted from Stitch-generated HTML.
@@ -31,9 +31,7 @@ export interface StitchAssets {
  * block and Google Fonts links in the `<head>`.
  */
 export function extractStitchAssets(html: string): StitchAssets {
-  const configMatch = html.match(
-    /<script id="tailwind-config">([\s\S]*?)<\/script>/,
-  );
+  const configMatch = html.match(/<script id="tailwind-config">([\s\S]*?)<\/script>/);
   const fontLinks = html.match(/<link[^>]*fonts\.googleapis\.com[^>]*>/g) ?? [];
   return {
     tailwindConfig: configMatch?.[1] ?? null,
@@ -55,44 +53,30 @@ export function parseGeneratedFiles(output: string): Record<string, string> {
   return files;
 }
 
-const ROOT_FILES = new Set([
-  "index.html",
-  "package.json",
-  "vite.config.ts",
-  "tsconfig.json",
-]);
+const ROOT_FILES = new Set(['index.html', 'package.json', 'vite.config.ts', 'tsconfig.json']);
 
 /**
  * Writes generated files to a Vite preview app directory.
  * Root-level files (index.html, package.json, etc.) go in `outputDir`,
  * everything else goes in `outputDir/src/`.
  */
-export function writePreviewApp(
-  files: Record<string, string>,
-  outputDir: string,
-): void {
+export function writePreviewApp(files: Record<string, string>, outputDir: string): void {
   // Clear previous output
   fs.rmSync(outputDir, { recursive: true, force: true });
-  const srcDir = path.join(outputDir, "src");
+  const srcDir = path.join(outputDir, 'src');
   fs.mkdirSync(srcDir, { recursive: true });
 
   for (const [filename, content] of Object.entries(files)) {
-    const dest = path.join(
-      ROOT_FILES.has(filename) ? outputDir : srcDir,
-      filename,
-    );
+    const dest = path.join(ROOT_FILES.has(filename) ? outputDir : srcDir, filename);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.writeFileSync(dest, content);
   }
 
   // Gemini doesn't know about the root/src split — fix the entry point path
-  const indexPath = path.join(outputDir, "index.html");
+  const indexPath = path.join(outputDir, 'index.html');
   try {
-    const html = fs.readFileSync(indexPath, "utf-8");
-    fs.writeFileSync(
-      indexPath,
-      html.replace(/src="\/main\.tsx"/, 'src="/src/main.tsx"'),
-    );
+    const html = fs.readFileSync(indexPath, 'utf-8');
+    fs.writeFileSync(indexPath, html.replace(/src="\/main\.tsx"/, 'src="/src/main.tsx"'));
   } catch {
     // index.html doesn't exist — nothing to rewrite
   }

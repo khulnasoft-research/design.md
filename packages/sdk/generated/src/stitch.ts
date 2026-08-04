@@ -6,8 +6,8 @@ Source: tools-manifest.json (sha256:d831990b27e9...)
         domain-map.json     (sha256:715639788724...)
 Generated: 2026-06-01T04:11:36.685Z
  */
-import { type StitchToolClient } from "../../src/client.js";
-import { StitchError } from "../../src/spec/errors.js";
+import { type StitchToolClient } from '../../src/client.js';
+import { StitchError } from '../../src/spec/errors.js';
 import {
   ComponentTokens,
   DesignTheme,
@@ -37,12 +37,9 @@ import {
   SessionOutputComponent,
   VariantOptions,
   SelectedScreenInstance,
-} from "./types.generated.js";
-import {
-  ListProjectsResponse,
-  CreateProjectResponse,
-} from "./responses.generated.js";
-import { Project } from "../../src/project-ext.js";
+} from './types.generated.js';
+import { ListProjectsResponse, CreateProjectResponse } from './responses.generated.js';
+import { Project } from '../../src/project-ext.js';
 
 /** Main entry point. Manages projects. */
 export class Stitch {
@@ -54,12 +51,9 @@ export class Stitch {
    */
   async projects(): Promise<Project[]> {
     try {
-      const raw = await this.client.callTool<ListProjectsResponse>(
-        "list_projects",
-        {},
-      );
+      const raw = await this.client.callTool<ListProjectsResponse>('list_projects', {});
       return (raw?.projects || []).map((item) =>
-        this.client.entities.resolve(Project, ["projectId"], item),
+        this.client.entities.resolve(Project, ['projectId'], item)
       );
     } catch (error) {
       throw StitchError.fromUnknown(error);
@@ -72,11 +66,8 @@ export class Stitch {
    */
   async createProject(title?: string): Promise<Project> {
     try {
-      const raw = await this.client.callTool<CreateProjectResponse>(
-        "create_project",
-        { title },
-      );
-      return this.client.entities.resolve(Project, ["projectId"], raw);
+      const raw = await this.client.callTool<CreateProjectResponse>('create_project', { title });
+      return this.client.entities.resolve(Project, ['projectId'], raw);
     } catch (error) {
       throw StitchError.fromUnknown(error);
     }
@@ -84,6 +75,6 @@ export class Stitch {
 
   /** Create a Project handle from an existing ID without an API call. */
   project(id: string): Project {
-    return this.client.entities.resolve(Project, ["projectId"], id);
+    return this.client.entities.resolve(Project, ['projectId'], id);
   }
 }

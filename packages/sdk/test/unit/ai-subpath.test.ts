@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest';
 
 /**
  * TDD Cycle 1: The @google/stitch-sdk/ai subpath exports stitchTools.
  */
-describe("@google/stitch-sdk/ai subpath", () => {
-  it("exports stitchTools from the ai entry point", async () => {
-    const mod = await import("../../src/ai.js");
-    expect(typeof mod.stitchTools).toBe("function");
+describe('@google/stitch-sdk/ai subpath', () => {
+  it('exports stitchTools from the ai entry point', async () => {
+    const mod = await import('../../src/ai.js');
+    expect(typeof mod.stitchTools).toBe('function');
   });
 
-  it("main entry point does NOT export stitchTools", async () => {
-    const mod = await import("../../src/index.js");
-    expect(mod).not.toHaveProperty("stitchTools");
+  it('main entry point does NOT export stitchTools', async () => {
+    const mod = await import('../../src/index.js');
+    expect(mod).not.toHaveProperty('stitchTools');
   });
 });
